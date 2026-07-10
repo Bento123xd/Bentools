@@ -1,0 +1,6 @@
+{
+  "name": "Flashcards para Idiomas",
+  "description": "Sistema de flashcards com repetição espaçada (SRS) para aprendizagem de idiomas, incluindo pronúncia por áudio e estatísticas de progresso.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
