@@ -122,3 +122,13 @@ footer small{font-size:.72rem;opacity:.5}
   nav a{color:var(--ink)!important}
   header{background:rgba(16,17,24,.6);backdrop-filter:blur(8px)}
 }
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:260px;gap:14px}
+.gallery figure{overflow:hidden;background:var(--paper)}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.gallery figure:hover img{transform:scale(1.05)}
+.gallery .g1{grid-row:span 2}
+.gallery figure:last-child{grid-column:span 2}
+@media (max-width:860px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:190px}.gallery .g1{grid-column:span 2;grid-row:span 1}.gallery figure:last-child{grid-column:span 2}}
+.gallery figure:last-child img{object-position:center 82%}
