@@ -1,8 +1,8 @@
 const S=window.SITE,$=i=>document.getElementById(i);
 document.title=S.nome;$("nome").textContent=S.nome;$("heroNome").textContent=S.nome;$("slogan").textContent=S.slogan;$("logo").src=S.logo;
-const w="https://wa.me/"+S.whatsapp+"?text="+encodeURIComponent("Olá! Quero agendar um horário na "+S.nome);
+const w=S.whatsappLink;
 ["agendarNav","agendarHero","wpp"].forEach(i=>$(i).href=w);
-$("insta").href=S.instagram;$("mapa").href=S.mapa;$("endereco").textContent=S.endereco;$("rodape").textContent="© "+new Date().getFullYear()+" "+S.nome;
+$("slogan").insertAdjacentHTML("afterend",`<p class="rating">★ ${S.nota} · ${S.avaliacoes} avaliações no Google</p>`);$("insta").href=S.instagram;$("mapa").href=S.mapa;$("endereco").textContent=S.endereco;$("rodape").textContent="© "+new Date().getFullYear()+" "+S.nome;
 $("listaServicos").innerHTML=S.servicos.map(([n,d,p])=>`<div class="card"><h3>${n}</h3><small>${d}</small><div class="p">${p}</div></div>`).join("");
 $("listaEquipe").innerHTML=S.equipe.map(([n,c],i)=>`<div class="card"><img src="img/equipe${i+1}.svg" alt="${n}"><h3>${n}</h3><small>${c}</small></div>`).join("");
 $("listaGaleria").innerHTML=S.galeria.map(g=>`<img src="${g}" alt="Galeria" loading="lazy">`).join("");

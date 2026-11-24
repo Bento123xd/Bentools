@@ -20,3 +20,4 @@ h2{text-align:center;color:var(--gold);text-transform:uppercase;letter-spacing:2
 footer{text-align:center;padding:30px;color:var(--mut);background:#000}
 .wpp{position:fixed;right:20px;bottom:20px;background:#25d366;color:#000;font-weight:700;padding:14px 18px;border-radius:30px;box-shadow:0 4px 12px #0008}
 @media(max-width:760px){.burger{display:block}nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#0e0e0e;padding:20px}nav.open{display:flex}}
+.rating{color:var(--gold);margin:-12px 0 24px}
