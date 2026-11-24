@@ -1,0 +1,12 @@
+const S=window.SITE,$=i=>document.getElementById(i);
+document.title=S.nome;$("nome").textContent=S.nome;$("heroNome").textContent=S.nome;$("slogan").textContent=S.slogan;$("logo").src=S.logo;
+const w="https://wa.me/"+S.whatsapp+"?text="+encodeURIComponent("Olá! Quero agendar um horário na "+S.nome);
+["agendarNav","agendarHero","wpp"].forEach(i=>$(i).href=w);
+$("insta").href=S.instagram;$("mapa").href=S.mapa;$("endereco").textContent=S.endereco;$("rodape").textContent="© "+new Date().getFullYear()+" "+S.nome;
+$("listaServicos").innerHTML=S.servicos.map(([n,d,p])=>`<div class="card"><h3>${n}</h3><small>${d}</small><div class="p">${p}</div></div>`).join("");
+$("listaEquipe").innerHTML=S.equipe.map(([n,c],i)=>`<div class="card"><img src="img/equipe${i+1}.svg" alt="${n}"><h3>${n}</h3><small>${c}</small></div>`).join("");
+$("listaGaleria").innerHTML=S.galeria.map(g=>`<img src="${g}" alt="Galeria" loading="lazy">`).join("");
+$("listaDep").innerHTML=S.depoimentos.map(([t,a])=>`<div class="card"><p>“${t}”</p><small>— ${a}</small></div>`).join("");
+$("horarios").innerHTML=S.horarios.map(([d,h])=>`<li><span>${d}</span><span>${h}</span></li>`).join("");
+const nav=document.querySelector("nav");document.querySelector(".burger").onclick=()=>nav.classList.toggle("open");
+nav.onclick=()=>nav.classList.remove("open");

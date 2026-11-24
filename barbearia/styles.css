@@ -1,0 +1,22 @@
+:root{--bg:#0e0e0e;--alt:#161616;--card:#1f1f1f;--gold:#c9a24a;--txt:#eee;--mut:#999}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:12px 5%;background:#0e0e0ecc;backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--gold)}.brand img{height:40px;border-radius:50%}
+nav{display:flex;gap:20px;align-items:center}nav a:hover{color:var(--gold)}
+.btn{display:inline-block;background:var(--gold);color:#000;padding:10px 22px;border-radius:4px;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.burger{display:none;background:none;border:0;color:var(--gold);font-size:26px}
+.hero{min-height:100vh;display:grid;place-items:center;text-align:center;padding:100px 5% 40px;background:linear-gradient(#0008,#000d),url(img/hero.svg) center/cover}
+.hero h1{font-size:clamp(2.2rem,7vw,4.5rem);color:var(--gold);text-transform:uppercase;letter-spacing:3px}.hero p{margin:12px 0 28px;color:var(--mut);font-size:1.2rem}
+section{padding:80px 5%}section.alt{background:var(--alt)}.hero{padding-top:100px}
+h2{text-align:center;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1100px;margin:auto}
+.card{background:var(--card);padding:24px;border-radius:8px;border:1px solid #2a2a2a}
+.card h3{color:var(--gold)}.card .p{font-size:1.4rem;font-weight:700;margin-top:8px}.card small{color:var(--mut)}
+.card img{width:100%;border-radius:6px;margin-bottom:12px}.card ul{list-style:none}.card li{display:flex;justify-content:space-between;padding:4px 0}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;max-width:1100px;margin:auto}.gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px}
+footer{text-align:center;padding:30px;color:var(--mut);background:#000}
+.wpp{position:fixed;right:20px;bottom:20px;background:#25d366;color:#000;font-weight:700;padding:14px 18px;border-radius:30px;box-shadow:0 4px 12px #0008}
+@media(max-width:760px){.burger{display:block}nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#0e0e0e;padding:20px}nav.open{display:flex}}
