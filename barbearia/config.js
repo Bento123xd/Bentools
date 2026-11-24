@@ -10,7 +10,7 @@ window.SITE = {
   instagram: "https://instagram.com/barbearia_dokunha",
   endereco: "Rua dos Andradas, Galeria Chaves, 1444 - Subsolo - Centro Histórico, Porto Alegre - RS, 90020-970",
   mapa: "https://maps.google.com/?q=Barbearia+do+Kunha+Rua+dos+Andradas+1444+Porto+Alegre",
-  horarios: [["Seg - Sáb", "Fecha às 18h (confirmar abertura)"], ["Domingo", "Confirmar"]],
+  horarios: [["Segunda", "09h às 18h"], ["Terça", "09h às 18h"], ["Quarta", "09h às 18h"], ["Quinta", "09h às 18h"], ["Sexta", "09h às 19h"], ["Sábado", "09h às 13h"], ["Domingo", "Fechado"]],
   servicos: [
     ["Corte Masculino", "Degradê, social ou tesoura", "R$ 50"],
     ["Barba", "Toalha quente e navalha", "R$ 40"],
