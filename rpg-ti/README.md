@@ -9,7 +9,7 @@ Os instaladores ficam nas [Releases do repositório](https://github.com/Bento123
 - **Linux** (Debian, Ubuntu, Mint, 64 bits): `masmorra-do-deploy_<versão>_amd64.deb`
 
   ```bash
-  sudo apt install ./masmorra-do-deploy_1.1.0_amd64.deb
+  sudo apt install ./masmorra-do-deploy_1.2.0_amd64.deb
   ```
 
 - **Windows 10 e 11** (64 bits): `Masmorra-do-Deploy-Setup-<versão>.exe`. O instalador não tem assinatura digital; se o SmartScreen avisar, clique em “Mais informações” e “Executar assim mesmo”.
