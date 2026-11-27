@@ -40,32 +40,36 @@ Também dá para jogar no navegador abrindo `index.html`.
 
 ## DLC: Ringue da Matemática
 
-Modo extra, aberto pela tela inicial, com 113 perguntas de Números Complexos e Polinômios baseadas nas listas do curso Técnico em Desenvolvimento de Sistemas (IFRS Canoas, 4º ano). Cada nível tem um tema:
+Modo extra de estudo, aberto pela tela inicial, com 117 perguntas de Polinômios baseadas nas Listas 1, 2 e 3 do curso Técnico em Desenvolvimento de Sistemas (IFRS Canoas, 4º ano). Em cada nível as perguntas seguem uma ordem fixa, da mais fácil para a mais difícil:
 
-| Nível | Tema | Perguntas |
-|---|---|---|
-| Júnior | Complexos na forma algébrica: unidade imaginária, potências de i, igualdade, conjugado, módulo e operações | 29 |
-| Pleno | Divisão de complexos, argumento e forma trigonométrica | 26 |
-| Sênior | Polinômios: grau, valor numérico, identidade, teorema do resto, D'Alembert e Briot-Ruffini | 28 |
-| Tech Lead | Equações algébricas: multiplicidade, raízes conjugadas, raízes racionais, PA, PG e Girard | 30 |
+| Nível | Tema | Base | Perguntas |
+|---|---|---|---|
+| Nível 1 | Grau, valor numérico, raízes, forma fatorada, identidade e frações parciais | Lista 1 | 28 |
+| Nível 2 | Método da chave, teorema do resto, D'Alembert e Briot-Ruffini | Lista 2 | 29 |
+| Nível 3 | Raízes nulas, multiplicidade, abaixamento do grau, raízes conjugadas e raízes racionais | Lista 3, primeira parte | 31 |
+| Nível 4 | Raízes duplas e triplas, relações de Girard, PA, PG, determinantes e equações irracionais | Lista 3, segunda parte | 29 |
 
+- Antes de cada nível aparece um resumo da matéria.
+- Toda pergunta, certa ou errada, mostra a resposta dada, a resposta certa e a resolução passo a passo. Nas de marcar, o jogo explica por que cada alternativa errada está errada.
+- No fim do nível há uma revisão completa: os erros aparecem abertos, os acertos podem ser abertos com um toque, e as perguntas não respondidas também trazem a resolução.
 - Não há limite de tempo. O alvo é um boneco de palha pendurado como saco de pancadas, com 1000 de vida. Cada acerto é um soco de boxe.
-- O dano cresce com a sequência de acertos. O golpe nº k vale `(1 + 0.1·(k − 1)) ^ (1.001 · 2^(k − 1))`:
+- O golpe nº k da sequência vale `força ^ expoente`, com força `1 + 0.1·(k − 1)` e expoente `1.001 · 1.1^(k − 1)`: o expoente começa em 1.001 e a cada acerto seguido soma 1/10 dele mesmo. Errar volta ao golpe 1.
 
-  | Golpe | Conta | Dano |
+  | Golpe | Dano | Total acumulado |
   |---|---|---|
-  | 1º | 1^1.001 | 1 |
-  | 2º | 1.1^2.002 | 1.21 |
-  | 3º | 1.2^4.004 | 2.08 |
-  | 4º | 1.3^8.008 | 8.17 |
-  | 5º | 1.4^16.016 | 218.97 |
-  | 6º | 1.5^32.032 | 437 074 (nocaute) |
+  | 1º | 1 | 1 |
+  | 5º | 1.64 | 6.4 |
+  | 10º | 4.55 | 21.5 |
+  | 15º | 27.88 | 93.5 |
+  | 19º | 308.07 | 680.9 |
+  | 20º | 677.35 | 1358 (nocaute) |
 
-  Errar volta ao golpe 1. Para ajustar a curva, mude `MAT_FORCA_PASSO` e `MAT_EXP_INICIAL` em `index.html`.
-- Pontos por acerto: `10 × golpe × nível + dano causado`. O nocaute dá bônus de 250 × nível.
-- Parte das perguntas é de marcar; a maioria pede a conta e a resposta digitada. Use ponto como separador decimal (a vírgula também é aceita). O leitor entende frações (`3/4`), raízes (`2√7`, `√2/2`), complexos (`2-3i`, `-i`, `1/2i`) e um `x =` no começo. Valores decimais são aceitos com 2 casas (`5.29` para `2√7`). Quando há várias raízes, a ordem não importa.
-- O nível termina no nocaute ou quando as perguntas acabam. Os recordes da DLC (pontos, nocaute e maior sequência por nível) ficam salvos por conta no próprio aparelho.
-- As perguntas ficam em `MAT_RAW`. Os gabaritos das listas têm alguns erros, que foram corrigidos no jogo: Lista 1 de Complexos, 4 (o certo é 3/2 ± i/2), 7 (√−100 ÷ 2 = 5i, não 10i) e 61h (−3√2 − 3√2i); Polinômios Lista 1, 8 (a = −10/3); Polinômios Lista 2, 18 (a = −3 e b = −7). A questão 21 da Lista 3 ficou de fora porque não tem solução: com x = 2i a parte real nunca zera.
+  Ou seja, 20 acertos seguidos derrubam o boneco. Para ajustar a curva, mude `MAT_FORCA_PASSO`, `MAT_EXP_INICIAL` e `MAT_EXP_SOMA` em `index.html`.
+- Pontos por acerto: `10 × golpe × nível + dano causado`. O nocaute dá bônus de 250 × nível. Depois do nocaute dá para continuar respondendo as perguntas que faltam (sem dano, só pontos).
+- Parte das perguntas é de marcar; a maioria pede a conta e a resposta digitada. Use ponto como separador decimal (a vírgula também é aceita). O leitor entende frações (`3/4`), raízes (`2√3`, `-1+√3`), complexos (`3-i`, `-1/2+√3/2i`) e um `x =` no começo. Decimais são aceitos com 2 casas. Quando há várias raízes, a ordem não importa.
+- Os recordes da DLC (pontos, nocaute e maior sequência por nível) ficam salvos por conta no próprio aparelho.
+- As perguntas ficam em `MAT_RAW`, no formato `{ l, q, s: [passos], o: [...], ow: [...] }` (marcar) ou `{ l, q, s, f: [...], lab?, set? }` (digitar).
+- Erros dos gabaritos das listas que foram corrigidos no jogo: Lista 1, questão 8 (a = −10/3, não −10/2); Lista 2, exercício geral 1c (resto 97, não 98) e 18 (a = −3 e b = −7, logo a − b = 4); Lista 3, exercício 16 (o resto é 30, não 0). A questão 21 da Lista 3 ficou de fora porque não tem solução: com x = 2i a parte real nunca zera.
 
 ## Desenvolvimento do app para computador
 

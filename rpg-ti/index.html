@@ -421,6 +421,32 @@ button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .key:active { transform: translateY(1px); }
 .mat-q .err { color: #b8404a; }
 .btn.punch { align-self: flex-end; background: var(--glove); color: #fff; box-shadow: 0 4px 0 var(--glove-dark); }
+
+.resumo { display: flex; flex-direction: column; gap: 10px; border-left: 4px solid var(--dom); }
+.resumo h2 { font-size: 22px; }
+.resumo ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; }
+.linha-resp { font-size: 15px; }
+.linha-resp b { font-family: var(--f-mono); font-weight: 700; }
+.linha-resp .certo { color: #23663b; }
+.linha-resp .errado { color: #a3323d; }
+.passos { display: flex; flex-direction: column; gap: 6px; background: rgba(255,255,255,.55); border-radius: 8px; padding: 10px 12px; }
+.passos ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 5px; font-size: 15px; line-height: 1.5; }
+.passos .eyebrow { color: var(--paper-muted); font-size: 12px; }
+.porque { font-size: 15px; }
+.outras { font-size: 15px; }
+.outras summary { cursor: pointer; font-weight: 600; }
+.outras ul { margin: 6px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.mat-acoes { justify-content: flex-end; }
+.mat-q .btn.ghost { background: transparent; color: var(--paper-ink); border: 1px solid var(--paper-ink); box-shadow: none; }
+.rev { padding: 0; overflow: hidden; }
+.rev summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; padding: 14px 16px; font-weight: 600; }
+.rev summary::-webkit-details-marker { display: none; }
+.rev summary .eyebrow { display: block; font-size: 12px; margin-bottom: 2px; }
+.rev .marca { font-family: var(--f-display); font-weight: 800; font-size: 20px; }
+.rev-ok .marca { color: var(--ok); }
+.rev-bad { border-color: var(--bad); }
+.rev-bad .marca { color: var(--bad); }
+.rev-corpo { background: var(--paper); color: var(--paper-ink); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
 @media (max-width: 760px) {
   .ring { grid-template-columns: 1fr; }
   .ring-side { position: sticky; top: 0; z-index: 4; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 10px 12px; border-radius: 0 0 var(--r) var(--r); }
@@ -1368,148 +1394,336 @@ function vEnd() {
 /* ================= DLC: Ringue da Matemática =================
  * Treino sem relógio contra um boneco de palha (saco de pancadas) com 1000 de vida.
  * Cada acerto é um soco. Golpe nº k da sequência: dano = força^expoente, com
- *   força    = 1 + 0.1·(k − 1)          → o 1º golpe é 1^1.001 = 1
- *   expoente = 1.001 · 2^(k − 1)        → dobra a cada acerto seguido
- * Errar zera a sequência. As perguntas vêm das listas de Números Complexos e Polinômios.
+ *   força    = 1 + 0.1·(k − 1)            → o 1º golpe é 1^1.001 = 1
+ *   expoente = 1.001 · 1.1^(k − 1)        → a cada acerto seguido soma 1/10 dele mesmo
+ * Errar zera a sequência. As perguntas vêm das Listas 1, 2 e 3 de Polinômios, em ordem de dificuldade,
+ * e cada uma traz a resolução passo a passo (e, nas de marcar, o motivo de cada alternativa errada).
  */
 const MAT_HP = 1000;
-const MAT_FORCA_PASSO = 0.1, MAT_EXP_INICIAL = 1.001;
+const MAT_FORCA_PASSO = 0.1, MAT_EXP_INICIAL = 1.001, MAT_EXP_SOMA = 0.1;
 const matForca = (k) => 1 + MAT_FORCA_PASSO * (k - 1);
-const matExpo = (k) => MAT_EXP_INICIAL * 2 ** (k - 1);
+/* o expoente começa em 1.001 e, a cada acerto seguido, soma 1/10 dele mesmo */
+const matExpo = (k) => MAT_EXP_INICIAL * (1 + MAT_EXP_SOMA) ** (k - 1);
 const matGolpe = (k) => matForca(k) ** matExpo(k);
 
 const MAT_NIVEIS = [
-  { nome: "Júnior", cor: "#7fc8d8", tema: "Complexos na forma algébrica", txt: "Unidade imaginária, potências de i, igualdade, conjugado, módulo e operações.", fonte: "Números Complexos · Lista 1, partes 1 a 9" },
-  { nome: "Pleno", cor: "#9ed3a9", tema: "Divisão e forma trigonométrica", txt: "Divisão de complexos, inverso, argumento e as formas polar e algébrica.", fonte: "Números Complexos · Lista 1, partes 10 a 12" },
-  { nome: "Sênior", cor: "#f0a07a", tema: "Polinômios e divisão", txt: "Grau, valor numérico, identidade, teorema do resto, D'Alembert e Briot-Ruffini.", fonte: "Polinômios · Listas 1 e 2" },
-  { nome: "Tech Lead", cor: "#c7a8ff", tema: "Equações algébricas", txt: "Multiplicidade, raízes complexas conjugadas, raízes racionais, PA, PG e relações de Girard.", fonte: "Polinômios · Lista 3" }
+  {
+    nome: "Nível 1", cor: "#7fc8d8", tema: "Conceitos de polinômios",
+    txt: "Grau, valor numérico, raízes, forma fatorada, polinômios idênticos e frações parciais.",
+    fonte: "Polinômios · Lista 1",
+    resumo: [
+      "Polinômio: P(x) = aₙxⁿ + … + a₁x + a₀. O grau é o maior expoente de x com coeficiente diferente de zero.",
+      "Grau de um produto = soma dos graus. Grau de [P(x)]ⁿ = n · grau de P. Numa soma vale o maior grau.",
+      "Valor numérico: P(a) é o resultado de trocar x por a. Se P(a) = 0, a é raiz (ou zero) de P.",
+      "Forma fatorada: P(x) = aₙ(x − r₁)(x − r₂)…(x − rₙ), onde r₁, …, rₙ são as raízes.",
+      "Identicamente nulo: todos os coeficientes valem 0. Polinômios idênticos: coeficientes de mesmo grau iguais.",
+      "Frações parciais: escreva a fração como A/(x − r₁) + B/(x − r₂) + … e ache A, B… trocando x pelas raízes."
+    ]
+  },
+  {
+    nome: "Nível 2", cor: "#9ed3a9", tema: "Divisão de polinômios",
+    txt: "Método da chave, teorema do resto, teorema de D'Alembert e dispositivo de Briot-Ruffini.",
+    fonte: "Polinômios · Lista 2",
+    resumo: [
+      "Divisão: P(x) = D(x) · Q(x) + R(x), com grau de R menor que o grau de D.",
+      "Teorema do resto: o resto da divisão de P(x) por (x − a) é P(a). Para (bx + a), use a raiz x = −a/b.",
+      "D'Alembert: P(x) é divisível por (x − a) se e somente se P(a) = 0.",
+      "Divisível por (x − a)(x − b): basta P(a) = 0 e P(b) = 0.",
+      "Briot-Ruffini: complete os coeficientes com zeros, desça o primeiro, multiplique pela raiz do divisor e some ao próximo. O último número é o resto.",
+      "Se o divisor for bx + a com b ≠ 1, use a raiz −a/b e divida o quociente por b. O resto não muda."
+    ]
+  },
+  {
+    nome: "Nível 3", cor: "#f0a07a", tema: "Raízes e equações algébricas",
+    txt: "Raízes nulas, multiplicidade, abaixamento do grau, raízes complexas conjugadas e raízes racionais.",
+    fonte: "Polinômios · Lista 3, primeira parte",
+    resumo: [
+      "Raízes nulas: se o termo independente é 0, o número de raízes nulas é o menor expoente de x.",
+      "Multiplicidade: quantas vezes o fator (x − a) aparece. Ex.: em (x − 2)³, 2 é raiz tripla.",
+      "Abaixamento do grau: conhecida uma raiz, divida por (x − raiz) com Briot-Ruffini e resolva o quociente.",
+      "Raízes conjugadas: se os coeficientes são reais e a + bi é raiz, então a − bi também é, com a mesma multiplicidade.",
+      "Raiz racional p/q (coeficientes inteiros): p divide o termo independente a₀ e q divide o coeficiente líder aₙ.",
+      "Ferramentas: agrupar termos, x² − a² = (x − a)(x + a) e trocar y = x² em equações biquadradas."
+    ]
+  },
+  {
+    nome: "Nível 4", cor: "#c7a8ff", tema: "Relações de Girard e problemas",
+    txt: "Raízes duplas e triplas com parâmetros, relações de Girard, PA, PG, determinantes e equações irracionais.",
+    fonte: "Polinômios · Lista 3, segunda parte",
+    resumo: [
+      "Girard para ax³ + bx² + cx + d = 0 com raízes r₁, r₂, r₃: r₁ + r₂ + r₃ = −b/a; r₁r₂ + r₁r₃ + r₂r₃ = c/a; r₁r₂r₃ = −d/a.",
+      "Raiz dupla r: dividindo P duas vezes por (x − r), os dois restos são zero.",
+      "Raízes em PA: a − r, a, a + r (soma 3a). Em PG: a/q, a, aq (produto a³).",
+      "Raízes simétricas: r e −r somam zero.",
+      "Expressões úteis: 1/a + 1/b + 1/c = (ab + ac + bc)/abc e a² + b² + c² = (a + b + c)² − 2(ab + ac + bc).",
+      "Equação irracional: isole a raiz, eleve ao quadrado e teste cada solução na equação original."
+    ]
+  }
 ];
 
-/* Formato: { l: nível, q: enunciado, e: explicação } e então
- *   o: [correta, erradas…]              → pergunta de marcar
- *   f: [respostas], lab?: [rótulos], set?: true (qualquer ordem) → pergunta de calcular e digitar
- * As respostas usam o mesmo leitor que o jogador: 1.5, 3/4, 2-3i, 2√7, -1/2i… */
+/* Formato (as perguntas aparecem na ordem do array, da mais fácil para a mais difícil):
+ *   { l: nível, q: enunciado, s: [passos da resolução] } e então
+ *   o: [correta, erradas…], ow: [null, por que cada errada está errada…]   → marcar
+ *   f: [respostas], lab?: [rótulos], set?: true (qualquer ordem)            → calcular e digitar */
 const MAT_RAW = [
-  /* ---------- Júnior ---------- */
-  { l: 0, q: "Resolva x² + 25 = 0 em ℂ. Digite as duas raízes.", f: ["5i", "-5i"], set: true, e: "x² = −25 ⇒ x = ±√(−25) = ±5i." },
-  { l: 0, q: "Resolva x² − 4x + 5 = 0.", f: ["2+i", "2-i"], set: true, e: "Δ = 16 − 20 = −4 e √Δ = 2i ⇒ x = (4 ± 2i)/2 = 2 ± i." },
-  { l: 0, q: "Resolva x² − 6x + 13 = 0.", f: ["3+2i", "3-2i"], set: true, e: "Δ = 36 − 52 = −16 e √Δ = 4i ⇒ x = (6 ± 4i)/2 = 3 ± 2i." },
-  { l: 0, q: "Resolva 2x² − 6x + 5 = 0.", f: ["3/2+1/2i", "3/2-1/2i"], set: true, e: "Δ = 36 − 40 = −4 e √Δ = 2i ⇒ x = (6 ± 2i)/4 = 1.5 ± 0.5i." },
-  { l: 0, q: "Resolva x⁴ + 13x² + 36 = 0. São quatro raízes.", f: ["2i", "-2i", "3i", "-3i"], set: true, e: "Com y = x²: y² + 13y + 36 = 0 ⇒ y = −4 ou y = −9 ⇒ x = ±2i ou x = ±3i." },
-  { l: 0, q: "Quanto vale √(−100) ÷ 2?", f: ["5i"], e: "√(−100) = 10i, e 10i ÷ 2 = 5i." },
-  { l: 0, q: "Calcule (3 + 3i)².", f: ["18i"], e: "9 + 18i + 9i² = 9 + 18i − 9 = 18i." },
-  { l: 0, q: "O valor de i^{35} é", o: ["−i", "i", "−1", "1"], e: "35 = 4·8 + 3, então i^{35} = i³ = −i." },
-  { l: 0, q: "Calcule √(i^{15} + i^{56} + i^{81}).", f: ["1"], e: "i^{15} = i³ = −i, i^{56} = 1 e i^{81} = i. A soma dá 1, e √1 = 1." },
-  { l: 0, q: "Calcule (i^{25} + i^{18}) ÷ i^{22}.", f: ["1-i"], e: "i^{25} = i, i^{18} = −1 e i^{22} = −1 ⇒ (i − 1) ÷ (−1) = 1 − i." },
-  { l: 0, q: "Calcule i^{600} − i^{285}.", f: ["1-i"], e: "600 é múltiplo de 4 ⇒ i^{600} = 1. 285 = 4·71 + 1 ⇒ i^{285} = i. Resultado: 1 − i." },
-  { l: 0, q: "Para que valor de k o número Z = (2k − 6) + 2i é imaginário puro?", f: ["3"], e: "Imaginário puro: parte real zero e parte imaginária diferente de zero. 2k − 6 = 0 ⇒ k = 3." },
-  { l: 0, q: "Para que valor de m o número Z = 2 + (3m − 1)i é real?", f: ["1/3"], e: "Real: parte imaginária zero. 3m − 1 = 0 ⇒ m = 1/3 (≈ 0.33)." },
-  { l: 0, q: "Dado Z = (5x − 10) + (2x + 4)i, ache x para Z ser real e para Z ser imaginário puro.", f: ["-2", "2"], lab: ["Z real: x =", "Z imaginário puro: x ="], e: "Real: 2x + 4 = 0 ⇒ x = −2. Imaginário puro: 5x − 10 = 0 ⇒ x = 2 (e a parte imaginária fica 8 ≠ 0)." },
-  { l: 0, q: "Ache x e y reais tais que x + y − 5i = 1 + (x − y)i.", f: ["-2", "3"], lab: ["x =", "y ="], e: "Partes reais: x + y = 1. Imaginárias: x − y = −5. Somando: 2x = −4 ⇒ x = −2 e y = 3." },
-  { l: 0, q: "Ache x e y reais tais que x + y + (2x − y)i = 8 + 10i.", f: ["6", "2"], lab: ["x =", "y ="], e: "x + y = 8 e 2x − y = 10. Somando: 3x = 18 ⇒ x = 6 e y = 2." },
-  { l: 0, q: "Z₁ = m − 1 + (m + n)i é igual a Z₂ = 5 + 2i. Quanto vale n²?", o: ["16", "25", "4", "9"], e: "m − 1 = 5 ⇒ m = 6. m + n = 2 ⇒ n = −4 ⇒ n² = 16." },
-  { l: 0, q: "Qual é o conjugado de Z = −5 + 8i?", f: ["-5-8i"], e: "O conjugado troca o sinal da parte imaginária: Z̄ = −5 − 8i." },
-  { l: 0, q: "Calcule o módulo de Z = 3 − 4i.", f: ["5"], e: "|Z| = √(3² + 4²) = √25 = 5." },
-  { l: 0, q: "Calcule o módulo de Z = √3 − 5i. Pode escrever com √ ou em decimal.", f: ["2√7"], e: "|Z| = √(3 + 25) = √28 = 2√7 ≈ 5.29." },
-  { l: 0, q: "Se Z = √10 + 2√2·i, então |Z| é", o: ["3√2", "2√10", "8√2", "3√3"], e: "|Z| = √(10 + 8) = √18 = 3√2." },
-  { l: 0, q: "Com Z₁ = 5 + 2i e Z₂ = 3 − 4i, calcule Z₁ · Z₂.", f: ["23-14i"], e: "15 − 20i + 6i − 8i² = 15 − 14i + 8 = 23 − 14i." },
-  { l: 0, q: "Com Z₁ = 5 + 2i, calcule (Z₁)².", f: ["21+20i"], e: "25 + 20i + 4i² = 25 + 20i − 4 = 21 + 20i." },
-  { l: 0, q: "Com Z₁ = 2 − i e Z₂ = −3 + 2i, calcule 2Z₁ − 3Z₂.", f: ["13-8i"], e: "2Z₁ = 4 − 2i e 3Z₂ = −9 + 6i. Então 4 − 2i + 9 − 6i = 13 − 8i." },
-  { l: 0, q: "Ache Z ∈ ℂ tal que 5Z + 2Z̄ = 14 + 9i.", f: ["2+3i"], e: "Com Z = a + bi: 5a + 5bi + 2a − 2bi = 7a + 3bi = 14 + 9i ⇒ a = 2 e b = 3." },
-  { l: 0, q: "Desenvolva (1 + i)^{10}.", f: ["32i"], e: "(1 + i)² = 2i, então (1 + i)^{10} = (2i)⁵ = 32·i⁵ = 32i." },
-  { l: 0, q: "Em f(Z) = Z² − Z + 1, calcule f(1 − i).", f: ["-i"], e: "(1 − i)² = −2i. Então −2i − (1 − i) + 1 = −2i − 1 + i + 1 = −i." },
-  { l: 0, q: "Para que valor de b o produto (2 + bi)(3 + i) é imaginário puro?", f: ["6"], e: "(2 + bi)(3 + i) = (6 − b) + (2 + 3b)i. Parte real zero ⇒ b = 6 (a parte imaginária fica 20 ≠ 0)." },
-  { l: 0, q: "Quanto vale S = i + i² + i³ + … + i^{100}?", o: ["0", "i", "1", "−1"], e: "A cada 4 potências seguidas a soma é i − 1 − i + 1 = 0. São 100 termos, 25 blocos de 4: S = 0." },
+  /* ================= Nível 1 · Lista 1 ================= */
+  { l: 0, q: "Com P(x) = 2x³ − x² + x + 3, calcule P(2).", f: ["17"],
+    s: ["Valor numérico: troque x por 2.", "P(2) = 2·2³ − 2² + 2 + 3 = 2·8 − 4 + 2 + 3.", "16 − 4 + 2 + 3 = 17."] },
+  { l: 0, q: "Se P(x) tem grau 4, qual é o grau de [P(x)]³ + [P(x)]² + 3P(x)?", o: ["12", "20", "24", "4"],
+    ow: [null, "20 é 12 + 8: numa soma os graus não se somam, vale o maior.", "24 multiplica os expoentes 4·3·2, mas cada termo tem o próprio grau.", "4 é o grau de 3P(x) sozinho; a soma tem o grau do maior termo."],
+    s: ["Grau de uma potência: grau de [P]ⁿ = n · grau de P.", "[P]³ tem grau 3·4 = 12; [P]² tem grau 2·4 = 8; 3P tem grau 4.", "Numa soma, o grau é o do termo de maior grau. Só [P]³ tem grau 12, então nada cancela.", "Grau = 12."] },
+  { l: 0, q: "p(x) e q(x) têm graus n e m. Qual é o grau de 2(x − 1)³·p(x)·q⁴(x)?", o: ["3 + n + 4m", "12nm", "3nm⁴", "3 + n + m⁴"],
+    ow: [null, "Multiplicou os graus; num produto de polinômios os graus se somam.", "Multiplicou em vez de somar e elevou m à quarta.", "q⁴(x) tem grau 4·m, não m⁴: elevar à 4ª multiplica o grau por 4."],
+    s: ["Num produto, os graus dos fatores se somam. A constante 2 tem grau 0.", "(x − 1)³ tem grau 3, p(x) tem grau n e q⁴(x) tem grau 4m.", "Total: 3 + n + 4m."] },
+  { l: 0, q: "O número 3 é raiz de P(x) = x³ − 3x² + 2x − 6?", o: ["Sim, porque P(3) = 0", "Não, porque P(3) = 6", "Não, porque P(3) = −6", "Não, porque P(3) = 54"],
+    ow: [null, "6 é o valor antes de somar o −6 final: 27 − 27 + 6 = 6, e ainda falta − 6.", "−6 é P(0), o termo independente. Para testar a raiz 3 é preciso calcular P(3).", "54 aparece trocando o sinal de −3x²: 27 + 27 + 6 − 6. O certo é 27 − 27."],
+    s: ["a é raiz quando P(a) = 0.", "P(3) = 3³ − 3·3² + 2·3 − 6 = 27 − 27 + 6 − 6 = 0.", "Logo 3 é raiz. Agrupando: x²(x − 3) + 2(x − 3) = (x − 3)(x² + 2)."] },
+  { l: 0, q: "Qual é a soma das raízes de P(x) = −2(x + 2)(x − 3)(x + 5)?", f: ["-4"],
+    s: ["Na forma fatorada, cada fator (x − r) dá a raiz r.", "x + 2 = 0 ⇒ x = −2; x − 3 = 0 ⇒ x = 3; x + 5 = 0 ⇒ x = −5. O −2 da frente só multiplica, não é raiz.", "Soma: −2 + 3 − 5 = −4."] },
+  { l: 0, q: "Qual polinômio tem raízes −2, −1 e 2?", o: ["x³ + x² − 4x − 4", "x³ − x² − 4x + 4", "x³ − x² − 4x − 4", "x³ + x² + 4x + 4"],
+    ow: [null, "Esse é (x − 1)(x² − 4): tem raízes 1, 2 e −2. Os sinais foram trocados.", "Teste x = −1: −1 − 1 + 4 − 4 = −2 ≠ 0.", "Teste x = 2: 8 + 4 + 8 + 4 = 24 ≠ 0."],
+    s: ["Raiz r ⇒ fator (x − r). Raízes −2, −1 e 2 ⇒ (x + 2)(x + 1)(x − 2).", "(x + 2)(x − 2) = x² − 4.", "(x² − 4)(x + 1) = x³ + x² − 4x − 4."] },
+  { l: 0, q: "Com P(x) = x² − 2x + 1, calcule P(i).", f: ["-2i"],
+    s: ["P(i) = i² − 2i + 1.", "Como i² = −1: P(i) = −1 − 2i + 1.", "P(i) = −2i."] },
+  { l: 0, q: "Com P(x) = x² − 2x + 1, calcule P(1 + i).", f: ["-1"],
+    s: ["Repare que P(x) = x² − 2x + 1 = (x − 1)².", "P(1 + i) = (1 + i − 1)² = i².", "i² = −1."] },
+  { l: 0, q: "Para que valor real de m o polinômio P(x) = (m² − 1)x³ + (m + 1)x² − x + 4 é do 2º grau?", f: ["1"],
+    s: ["Para ser do 2º grau: coeficiente de x³ igual a 0 e coeficiente de x² diferente de 0.", "m² − 1 = 0 ⇒ m = 1 ou m = −1.", "m + 1 ≠ 0 ⇒ m ≠ −1.", "Sobra m = 1, e P(x) = 2x² − x + 4."] },
+  { l: 0, q: "Para que valor real de m o polinômio P(x) = (m² − 1)x³ + (m + 1)x² − x + 4 é do 1º grau?", f: ["-1"],
+    s: ["Para ser do 1º grau: coeficientes de x³ e de x² iguais a 0 (o de x já é −1 ≠ 0).", "m² − 1 = 0 ⇒ m = ±1. m + 1 = 0 ⇒ m = −1.", "O valor que atende as duas condições é m = −1, e P(x) = −x + 4."] },
+  { l: 0, q: "Para que valor de a a expressão (a² − 1)x⁴ + (a² − a − 2)x³ + ax² + x é um polinômio do 2º grau?", o: ["−1", "1", "2", "0"],
+    ow: [null, "Com a = 1, o coeficiente de x³ fica 1 − 1 − 2 = −2 ≠ 0: o grau seria 3.", "Com a = 2, o coeficiente de x⁴ fica 4 − 1 = 3 ≠ 0: o grau seria 4.", "Com a = 0, o coeficiente de x⁴ fica −1: o grau seria 4 (e o x² sumiria)."],
+    s: ["Os coeficientes de x⁴ e x³ precisam ser 0, e o de x² precisa ser diferente de 0.", "a² − 1 = 0 ⇒ a = 1 ou a = −1.", "a² − a − 2 = 0 ⇒ (a − 2)(a + 1) = 0 ⇒ a = 2 ou a = −1.", "O valor comum é a = −1, e o coeficiente de x² fica a = −1 ≠ 0."] },
+  { l: 0, q: "Se P(x) = 2x³ − kx² + 3x − 2k, para que valor de k temos P(2) = 4?", f: ["3"],
+    s: ["P(2) = 2·8 − k·4 + 3·2 − 2k = 16 − 4k + 6 − 2k = 22 − 6k.", "22 − 6k = 4 ⇒ 6k = 18 ⇒ k = 3."] },
+  { l: 0, q: "Sabendo que P(−1) = 0, calcule a em P(x) = −2x³ − 4x² − 3x + 2a.", f: ["-1/2"],
+    s: ["P(−1) = −2(−1)³ − 4(−1)² − 3(−1) + 2a.", "= −2(−1) − 4(1) + 3 + 2a = 2 − 4 + 3 + 2a = 1 + 2a.", "1 + 2a = 0 ⇒ a = −1/2 (−0.5)."] },
+  { l: 0, q: "Sabendo que −3 é raiz de P(x) = x³ + 4x² − ax + 1, calcule a.", f: ["-10/3"],
+    s: ["−3 é raiz ⇒ P(−3) = 0.", "P(−3) = (−3)³ + 4(−3)² − a(−3) + 1 = −27 + 36 + 3a + 1 = 10 + 3a.", "10 + 3a = 0 ⇒ a = −10/3 ≈ −3.33.", "O gabarito da lista traz −10/2, mas a conta correta dá −10/3."] },
+  { l: 0, q: "Determine o polinômio do 1º grau P(x) = ax + b tal que P(5) = 13 e P(3) = 7.", f: ["3", "-2"], lab: ["a =", "b ="],
+    s: ["P(5) = 5a + b = 13 e P(3) = 3a + b = 7.", "Subtraindo as equações: 2a = 6 ⇒ a = 3.", "3·3 + b = 7 ⇒ b = −2. P(x) = 3x − 2."] },
+  { l: 0, q: "P(x) = x³ + (a − 2)x² + (b − 4)x − 3 admite as raízes 1 e −1. Calcule a e b.", f: ["5", "3"], lab: ["a =", "b ="],
+    s: ["P(1) = 1 + (a − 2) + (b − 4) − 3 = a + b − 8. Como 1 é raiz: a + b = 8.", "P(−1) = −1 + (a − 2) − (b − 4) − 3 = a − b − 2. Como −1 é raiz: a − b = 2.", "Somando: 2a = 10 ⇒ a = 5, e então b = 3."] },
+  { l: 0, q: "Em P(x) = 2x³ − 6x² + mx + n, temos P(2) = 0 e P(−1) = −6. Calcule m e n.", f: ["2", "4"], lab: ["m =", "n ="],
+    s: ["P(2) = 16 − 24 + 2m + n = −8 + 2m + n = 0 ⇒ 2m + n = 8.", "P(−1) = −2 − 6 − m + n = −8 − m + n = −6 ⇒ −m + n = 2.", "Subtraindo a 2ª da 1ª: 3m = 6 ⇒ m = 2. Então n = 2 + m = 4."] },
+  { l: 0, q: "Ache a, b e c para que P(x) = (a + b − 1)x³ + (b + c − 3)x² + (c − 1)x seja identicamente nulo.", f: ["-1", "2", "1"], lab: ["a =", "b =", "c ="],
+    s: ["Identicamente nulo: todos os coeficientes valem 0.", "Coeficiente de x: c − 1 = 0 ⇒ c = 1.", "Coeficiente de x²: b + c − 3 = 0 ⇒ b = 2.", "Coeficiente de x³: a + b − 1 = 0 ⇒ a = −1."] },
+  { l: 0, q: "Sendo x³ + 1 ≡ (x + 1)(x² + ax + b) para todo x real, determine a e b.", f: ["-1", "1"], lab: ["a =", "b ="],
+    s: ["Desenvolva: (x + 1)(x² + ax + b) = x³ + (a + 1)x² + (a + b)x + b.", "Compare com x³ + 0x² + 0x + 1: a + 1 = 0, a + b = 0 e b = 1.", "a = −1 e b = 1 (confere: a + b = 0)."] },
+  { l: 0, q: "Ache m, n e p para que P₁(x) = mx² + px² + 2mx − nx + 4 e P₂(x) = 3x² + 5x + 2p + 2 sejam idênticos.", f: ["2", "-1", "1"], lab: ["m =", "n =", "p ="],
+    s: ["Agrupe P₁: (m + p)x² + (2m − n)x + 4.", "Compare com P₂ termo a termo: m + p = 3; 2m − n = 5; 4 = 2p + 2.", "Da última: p = 1. Então m = 3 − 1 = 2 e n = 2·2 − 5 = −1."] },
+  { l: 0, q: "Seja P(x + 1) = 3x² − x + 5. Calcule P(2) e P(−3).", f: ["7", "57"], lab: ["P(2) =", "P(−3) ="],
+    s: ["Para P(2), escolha x com x + 1 = 2, ou seja, x = 1: P(2) = 3·1 − 1 + 5 = 7.", "Para P(−3), x + 1 = −3 ⇒ x = −4: P(−3) = 3·16 − (−4) + 5 = 48 + 4 + 5 = 57."] },
+  { l: 0, q: "Dado P(x) = 2x³ − x² + x + 3, calcule [P(2) − 2P(−1)] ÷ P(1/2).", f: ["38/7"],
+    s: ["P(2) = 16 − 4 + 2 + 3 = 17.", "P(−1) = −2 − 1 − 1 + 3 = −1, então 2P(−1) = −2.", "P(1/2) = 2·(1/8) − 1/4 + 1/2 + 3 = 1/4 − 1/4 + 1/2 + 3 = 7/2.", "[17 − (−2)] ÷ 7/2 = 19 · 2/7 = 38/7 ≈ 5.43."] },
+  { l: 0, q: "P(x) = ax² + bx + c tem P(1) = 0, P(2) = 7 e P(−1) = 4. Ache a, b e c.", f: ["3", "-2", "-1"], lab: ["a =", "b =", "c ="],
+    s: ["P(1): a + b + c = 0. P(2): 4a + 2b + c = 7. P(−1): a − b + c = 4.", "Subtraindo a 3ª da 1ª: 2b = −4 ⇒ b = −2. Então a + c = 2.", "Na 2ª: 4a − 4 + c = 7 ⇒ 4a + c = 11. Com a + c = 2: 3a = 9 ⇒ a = 3 e c = −1.", "P(x) = 3x² − 2x − 1 (e P(0) = −1)."] },
+  { l: 0, q: "Seja P(x + 1) = 3x² − x + 5. Escreva P(x) = ax² + bx + c.", f: ["3", "-7", "9"], lab: ["a =", "b =", "c ="],
+    s: ["Chame t = x + 1, ou seja, x = t − 1: P(t) = 3(t − 1)² − (t − 1) + 5.", "3(t² − 2t + 1) − t + 1 + 5 = 3t² − 6t + 3 − t + 6 = 3t² − 7t + 9.", "Trocando t por x: P(x) = 3x² − 7x + 9. Conferindo: P(2) = 12 − 14 + 9 = 7, igual à questão anterior."] },
+  { l: 0, q: "Num polinômio P(x) do 3º grau, o coeficiente de x³ é 1. Se P(1) = P(2) = 0 e P(3) = 30, calcule P(−1).", f: ["66"],
+    s: ["1 e 2 são raízes: P(x) = (x − 1)(x − 2)(x − r), em que r é a terceira raiz.", "P(3) = (3 − 1)(3 − 2)(3 − r) = 2·1·(3 − r) = 30 ⇒ 3 − r = 15 ⇒ r = −12.", "P(x) = (x − 1)(x − 2)(x + 12).", "P(−1) = (−2)(−3)(11) = 66."] },
+  { l: 0, q: "Se (−x − 14)/(x² + 3x − 4) ≡ A/(x − 1) + B/(x + 4), quanto vale A + B?", f: ["-1"],
+    s: ["x² + 3x − 4 = (x − 1)(x + 4). Somando as frações: A(x + 4) + B(x − 1) = −x − 14 para todo x.", "x = 1: 5A = −15 ⇒ A = −3.", "x = −4: −5B = 4 − 14 = −10 ⇒ B = 2.", "A + B = −1."] },
+  { l: 0, q: "Calcule k para que p(x) = kx² + kx + 1 satisfaça p(x) − x = p(x − 1).", f: ["1/2"],
+    s: ["p(x − 1) = k(x − 1)² + k(x − 1) + 1 = kx² − 2kx + k + kx − k + 1 = kx² − kx + 1.", "p(x) − x = kx² + kx + 1 − x = kx² + (k − 1)x + 1.", "Igualando os coeficientes de x: k − 1 = −k ⇒ 2k = 1 ⇒ k = 1/2."] },
+  { l: 0, q: "Determine A, B e C sabendo que (5 − 3x)/(x³ − 5x² + 6x) ≡ A/x + B/(x − 2) + C/(x − 3).", f: ["5/6", "1/2", "-4/3"], lab: ["A =", "B =", "C ="],
+    s: ["Fatore o denominador: x³ − 5x² + 6x = x(x² − 5x + 6) = x(x − 2)(x − 3).", "Multiplicando tudo por ele: 5 − 3x = A(x − 2)(x − 3) + Bx(x − 3) + Cx(x − 2).", "x = 0: 5 = A·(−2)(−3) = 6A ⇒ A = 5/6.", "x = 2: 5 − 6 = B·2·(−1) ⇒ −1 = −2B ⇒ B = 1/2.", "x = 3: 5 − 9 = C·3·1 ⇒ C = −4/3."] },
 
-  /* ---------- Pleno ---------- */
-  { l: 1, q: "Com Z₁ = 5 + 2i e Z₂ = 3 − 4i, calcule Z₁ ÷ Z₂.", f: ["7/25+26/25i"], e: "Multiplique pelo conjugado de Z₂: (5 + 2i)(3 + 4i) ÷ 25 = (15 + 20i + 6i − 8) ÷ 25 = (7 + 26i)/25 = 0.28 + 1.04i." },
-  { l: 1, q: "Dividindo 13 por 2 + 3i, o resultado é", o: ["2 − 3i", "3 − 2i", "2 + 3i", "3 + 2i"], e: "13(2 − 3i) ÷ (4 + 9) = 13(2 − 3i) ÷ 13 = 2 − 3i." },
-  { l: 1, q: "Encontre 1/Z para Z = 1 + 2i.", f: ["1/5-2/5i"], e: "(1 − 2i) ÷ (1 + 4) = 1/5 − 2/5·i = 0.2 − 0.4i." },
-  { l: 1, q: "Escreva 1/(3 − i) na forma a + bi.", f: ["3/10+1/10i"], e: "(3 + i) ÷ (9 + 1) = 3/10 + 1/10·i = 0.3 + 0.1i." },
-  { l: 1, q: "Em Z = (5 − i)/(2i), multiplique a parte real pelo coeficiente da parte imaginária. Qual é o produto?", f: ["1.25"], e: "Multiplique em cima e embaixo por −i: (5 − i)(−i) ÷ 2 = (−5i + i²) ÷ 2 = −1/2 − 5/2·i. Produto: (−1/2)(−5/2) = 5/4 = 1.25." },
-  { l: 1, q: "Calcule 3/i.", f: ["-3i"], e: "3/i = 3i/i² = 3i/(−1) = −3i." },
-  { l: 1, q: "Calcule (7 + 2i)/(3 − 7i).", f: ["7/58+55/58i"], e: "(7 + 2i)(3 + 7i) ÷ (9 + 49) = (21 + 49i + 6i − 14) ÷ 58 = (7 + 55i)/58." },
-  { l: 1, q: "Calcule ((1 + i)/(1 − i))^{15}.", f: ["-i"], e: "(1 + i)/(1 − i) = (1 + i)² ÷ 2 = 2i ÷ 2 = i. Então i^{15} = i³ = −i." },
-  { l: 1, q: "Ache a e b em a + bi = (4 + 3i)/(5 − 2i).", f: ["14/29", "23/29"], lab: ["a =", "b ="], e: "(4 + 3i)(5 + 2i) ÷ 29 = (20 + 8i + 15i − 6) ÷ 29 = (14 + 23i)/29." },
-  { l: 1, q: "Para que valor de b o número Z = (−9 + bi)/(2 + 3i) é imaginário puro?", f: ["6"], e: "Multiplicando por 2 − 3i, o numerador fica (−18 + 3b) + (27 + 2b)i. Parte real zero ⇒ b = 6." },
-  { l: 1, q: "Para que valor de a o número Z = (a − i)/(1 − 3i) é imaginário puro?", f: ["-3"], e: "Multiplicando por 1 + 3i: ((a + 3) + (3a − 1)i)/10. Parte real zero ⇒ a = −3." },
-  { l: 1, q: "Para que valor de b o quociente (3 − 2bi)/(4 − 3i) é real?", f: ["9/8"], e: "Multiplicando por 4 + 3i: ((12 + 6b) + (9 − 8b)i)/25. Parte imaginária zero ⇒ b = 9/8 = 1.125." },
-  { l: 1, q: "Determine i^{−133}.", f: ["-i"], e: "i^{−133} = 1/i^{133}. Como 133 = 4·33 + 1, i^{133} = i, e 1/i = −i." },
-  { l: 1, q: "Calcule o inverso de 2i.", f: ["-1/2i"], e: "1/(2i) = i/(2i²) = −i/2 = −0.5i." },
-  { l: 1, q: "Sendo Z = (1 − i)/(1 + i), calcule Z^{1993}.", f: ["-i"], e: "Z = (1 − i)² ÷ 2 = −2i ÷ 2 = −i. (−i)^{1993} = −(i^{1993}), e 1993 = 4·498 + 1 ⇒ resultado −i." },
-  { l: 1, q: "Para que valor de n o número Z = (n + 6i)/(2 − i) fica na bissetriz dos quadrantes ímpares (parte real igual à parte imaginária)?", f: ["18"], e: "Multiplicando por 2 + i: ((2n − 6) + (n + 12)i)/5. Igualando: 2n − 6 = n + 12 ⇒ n = 18." },
-  { l: 1, q: "Calcule o módulo e o argumento, em graus, de Z = 1 + i√3.", f: ["2", "60"], lab: ["|Z| =", "θ em graus ="], e: "|Z| = √(1 + 3) = 2. cos θ = 1/2 e sen θ = √3/2 ⇒ θ = 60°." },
-  { l: 1, q: "Calcule o módulo e o argumento, em graus, de Z = −3.", f: ["3", "180"], lab: ["|Z| =", "θ em graus ="], e: "Z fica no semieixo real negativo: |Z| = 3 e θ = 180°." },
-  { l: 1, q: "Calcule o módulo e o argumento, em graus, de Z = 1/(1 + i).", f: ["√2/2", "315"], lab: ["|Z| =", "θ em graus ="], e: "Z = (1 − i)/2 = 1/2 − 1/2·i. |Z| = √(1/4 + 1/4) = √2/2 ≈ 0.71. Fica no 4º quadrante com ângulo de referência 45° ⇒ θ = 315°." },
-  { l: 1, q: "O argumento de Z = 2 + 2√3·i é", o: ["60°", "30°", "45°", "75°"], e: "|Z| = √(4 + 12) = 4. cos θ = 2/4 = 1/2 e sen θ = 2√3/4 = √3/2 ⇒ θ = 60°." },
-  { l: 1, q: "Na forma trigonométrica, Z = −√3 − 3i é", o: ["2√3(cos 240° + i sen 240°)", "2√3(cos 210° + i sen 210°)", "2√3(cos 225° + i sen 225°)", "2√3(cos 300° + i sen 300°)"], e: "|Z| = √(3 + 9) = 2√3. cos θ = −1/2 e sen θ = −√3/2: 3º quadrante ⇒ θ = 240°." },
-  { l: 1, q: "Na forma trigonométrica, Z = √3 + i é", o: ["2(cos 30° + i sen 30°)", "2(cos 60° + i sen 60°)", "√3(cos 30° + i sen 30°)", "4(cos 30° + i sen 30°)"], e: "|Z| = √(3 + 1) = 2. cos θ = √3/2 e sen θ = 1/2 ⇒ θ = 30°." },
-  { l: 1, q: "Na forma trigonométrica, Z = 1 − i é", o: ["√2(cos 7π/4 + i sen 7π/4)", "√2(cos 3π/4 + i sen 3π/4)", "2(cos 7π/4 + i sen 7π/4)", "√2(cos 5π/4 + i sen 5π/4)"], e: "|Z| = √2. cos θ = √2/2 e sen θ = −√2/2: 4º quadrante ⇒ θ = 7π/4 (315°)." },
-  { l: 1, q: "Escreva Z = 2(cos π/6 + i sen π/6) na forma algébrica.", f: ["√3+i"], e: "cos π/6 = √3/2 e sen π/6 = 1/2 ⇒ Z = √3 + i." },
-  { l: 1, q: "Escreva Z = 6(cos 5π/4 + i sen 5π/4) na forma algébrica.", f: ["-3√2-3√2i"], e: "cos 5π/4 = sen 5π/4 = −√2/2 ⇒ Z = −3√2 − 3√2·i (≈ −4.24 − 4.24i)." },
-  { l: 1, q: "Calcule 2i³ ÷ [(i − 1)(2i − 1)].", f: ["3/5+1/5i"], e: "2i³ = −2i e (i − 1)(2i − 1) = −1 − 3i. Então −2i/(−1 − 3i) = 2i(1 − 3i)/10 = (6 + 2i)/10 = 3/5 + 1/5·i." },
+  /* ================= Nível 2 · Lista 2 ================= */
+  { l: 1, q: "Determine o resto da divisão de P(x) = x⁴ − 2x³ + x − 1 por x − 2.", f: ["1"],
+    s: ["Teorema do resto: o resto da divisão por (x − a) é P(a). Aqui a = 2.", "P(2) = 16 − 16 + 2 − 1 = 1."] },
+  { l: 1, q: "Calcule o resto da divisão de P(x) = 2x³ − x² + 5x − 3 por x − 4.", f: ["129"],
+    s: ["Resto = P(4).", "P(4) = 2·64 − 16 + 20 − 3 = 128 − 16 + 20 − 3 = 129."] },
+  { l: 1, q: "Calcule o resto da divisão de P(x) = 2x³ − 4x² + x − 1 por x − 1.", f: ["-2"],
+    s: ["Resto = P(1).", "P(1) = 2 − 4 + 1 − 1 = −2."] },
+  { l: 1, q: "Calcule o resto da divisão de P(x) = x⁴ + 2x² − x − 5 por x + 3.", f: ["97"],
+    s: ["x + 3 = x − (−3), então o resto é P(−3).", "(−3)⁴ = 81; 2·(−3)² = 18; −(−3) = +3.", "P(−3) = 81 + 18 + 3 − 5 = 97.", "O gabarito da lista traz 98, mas a conta correta dá 97."] },
+  { l: 1, q: "4x⁴ + 3x³ − 7x² + 2x − 2 é divisível por x − 1?", o: ["Sim, porque P(1) = 0", "Não, porque P(1) = −2", "Não, porque P(−1) ≠ 0", "Sim, porque P(−1) = 0"],
+    ow: [null, "−2 é o termo independente, ou seja, P(0). O teste para x − 1 é P(1).", "P(−1) testa a divisão por x + 1, não por x − 1.", "P(−1) = 4 − 3 − 7 − 2 − 2 = −10, e o teste para x − 1 é P(1)."],
+    s: ["D'Alembert: P(x) é divisível por (x − a) se e somente se P(a) = 0.", "P(1) = 4 + 3 − 7 + 2 − 2 = 0.", "Logo é divisível por x − 1."] },
+  { l: 1, q: "P(x) = x² − 3x + 2 é divisível por x + 3?", o: ["Não, o resto é 20", "Sim, o resto é 0", "Não, o resto é 2", "Não, o resto é −20"],
+    ow: [null, "As raízes de x² − 3x + 2 são 1 e 2; −3 não é raiz.", "2 é P(3). Mas x + 3 = x − (−3), então o teste é P(−3).", "Cuidado com os sinais: (−3)² = 9 e −3·(−3) = +9, então P(−3) = 9 + 9 + 2 = 20."],
+    s: ["O resto da divisão por x + 3 é P(−3).", "P(−3) = (−3)² − 3(−3) + 2 = 9 + 9 + 2 = 20.", "Resto 20 ≠ 0: não é divisível. (x² − 3x + 2 = (x − 1)(x − 2).)"] },
+  { l: 1, q: "Calcule a para que P(x) = x³ + (a − 1)x + 10 seja divisível por x − 5.", f: ["-26"],
+    s: ["Divisível por x − 5 ⇔ P(5) = 0.", "P(5) = 125 + 5(a − 1) + 10 = 125 + 5a − 5 + 10 = 130 + 5a.", "130 + 5a = 0 ⇒ a = −26."] },
+  { l: 1, q: "Determine a para que P(x) = 2x³ + 5x² − ax + 2 seja divisível por x − 2.", f: ["19"],
+    s: ["Divisível por x − 2 ⇔ P(2) = 0.", "P(2) = 16 + 20 − 2a + 2 = 38 − 2a.", "38 − 2a = 0 ⇒ a = 19."] },
+  { l: 1, q: "O resto da divisão de P(x) = x³ + ax² − x + a por x − 1 é 4. Calcule a.", f: ["2"],
+    s: ["Resto = P(1) = 1 + a − 1 + a = 2a.", "2a = 4 ⇒ a = 2."] },
+  { l: 1, q: "Calcule a para que o resto da divisão de P(x) = ax³ − 2x + 1 por x − 3 seja 4.", f: ["1/3"],
+    s: ["Resto = P(3) = 27a − 6 + 1 = 27a − 5.", "27a − 5 = 4 ⇒ 27a = 9 ⇒ a = 1/3."] },
+  { l: 1, q: "A divisão de P(x) por x² + 1 tem quociente x − 2 e resto 1. O polinômio P(x) é", o: ["x³ − 2x² + x − 1", "x³ − 2x² + x − 2", "x² + x + 1", "x³ − 2x² + x + 1"],
+    ow: [null, "Esse é só D·Q; faltou somar o resto 1.", "O grau não bate: D tem grau 2 e Q grau 1, então P tem grau 3.", "(x² + 1)(x − 2) termina em −2; somando 1 dá −1, não +1."],
+    s: ["P(x) = D(x)·Q(x) + R(x).", "(x² + 1)(x − 2) = x³ − 2x² + x − 2.", "Somando o resto 1: P(x) = x³ − 2x² + x − 1."] },
+  { l: 1, q: "O resto da divisão de p(x) = x³ − 2x² + x − 1 por q(x) = x² − x + 1 é r(x). Quanto vale r(1)?", o: ["−1", "1", "0", "−2"],
+    ow: [null, "r(x) = −x, então r(1) = −1: atenção ao sinal.", "q(x) não divide p(x): o resto é −x, não zero.", "Revise a última subtração: (−x² − 1) − (−x² + x − 1) = −x."],
+    s: ["Método da chave: x³ ÷ x² = x, e x·(x² − x + 1) = x³ − x² + x.", "(x³ − 2x² + x − 1) − (x³ − x² + x) = −x² − 1.", "−x² ÷ x² = −1, e −1·(x² − x + 1) = −x² + x − 1.", "(−x² − 1) − (−x² + x − 1) = −x. O resto é r(x) = −x (grau menor que 2).", "r(1) = −1."] },
+  { l: 1, q: "Dividindo p(x) por 2x − 1, obtém-se quociente x² − x e resto m. Se p(−1) = 0, quanto vale m?", f: ["6"],
+    s: ["p(x) = (2x − 1)(x² − x) + m.", "p(−1) = (2·(−1) − 1)((−1)² − (−1)) + m = (−3)(2) + m = −6 + m.", "−6 + m = 0 ⇒ m = 6."] },
+  { l: 1, q: "Qual é o resto da divisão de x⁵ − 2x⁴ + x² + 1 por 2x + 1?", f: ["35/32"],
+    s: ["A raiz do divisor 2x + 1 é x = −1/2, e o resto é P(−1/2).", "(−1/2)⁵ = −1/32; −2·(−1/2)⁴ = −2/16 = −1/8; (−1/2)² = 1/4.", "P(−1/2) = −1/32 − 4/32 + 8/32 + 32/32 = 35/32 ≈ 1.09."] },
+  { l: 1, q: "O resto da divisão de P(x) = xⁿ + aⁿ por Q(x) = x + a, sendo n par, é", o: ["2aⁿ", "0", "aⁿ", "−aⁿ"],
+    ow: [null, "Daria 0 se n fosse ímpar, porque aí (−a)ⁿ = −aⁿ.", "Faltou somar os dois termos: (−a)ⁿ + aⁿ.", "Com n par, (−a)ⁿ é positivo e igual a aⁿ."],
+    s: ["O resto da divisão por x + a é P(−a).", "P(−a) = (−a)ⁿ + aⁿ. Como n é par, (−a)ⁿ = aⁿ.", "Resto = aⁿ + aⁿ = 2aⁿ."] },
+  { l: 1, q: "Use Briot-Ruffini para dividir x³ + 8 por x + 2. Digite os coeficientes do quociente e o resto.", f: ["1", "-2", "4", "0"], lab: ["coeficiente de x² =", "coeficiente de x =", "termo independente =", "resto ="],
+    s: ["Complete os coeficientes com zeros: 1, 0, 0, 8. A raiz do divisor x + 2 é −2.", "Desce o 1.", "1·(−2) + 0 = −2.", "(−2)·(−2) + 0 = 4.", "4·(−2) + 8 = 0 → este é o resto.", "Quociente x² − 2x + 4, resto 0."] },
+  { l: 1, q: "Na divisão de P(x) = x³ + x² − 10x + 8 por x − 1, obtém-se o quociente Q(x). Quais são as raízes de Q(x) = 0?", f: ["-4", "2"], set: true,
+    s: ["Briot-Ruffini com a raiz 1 e coeficientes 1, 1, −10, 8.", "Desce 1; 1·1 + 1 = 2; 2·1 − 10 = −8; −8·1 + 8 = 0 (resto).", "Q(x) = x² + 2x − 8. Δ = 4 + 32 = 36.", "x = (−2 ± 6)/2 ⇒ x = 2 ou x = −4."] },
+  { l: 1, q: "Determine o quociente e o resto da divisão de x³ + 2x² − 3x − 4 por 2x − 1.", f: ["1/2", "5/4", "-7/8", "-39/8"], lab: ["coeficiente de x² =", "coeficiente de x =", "termo independente =", "resto ="],
+    s: ["2x − 1 = 2(x − 1/2). Faça Briot-Ruffini com a raiz 1/2 e depois divida o quociente por 2.", "Coeficientes 1, 2, −3, −4. Desce 1.", "1·(1/2) + 2 = 5/2.", "(5/2)·(1/2) − 3 = 5/4 − 3 = −7/4.", "(−7/4)·(1/2) − 4 = −7/8 − 4 = −39/8 → resto.", "Quociente de x − 1/2: x² + (5/2)x − 7/4. Dividindo por 2: (1/2)x² + (5/4)x − 7/8. O resto continua −39/8."] },
+  { l: 1, q: "Divida P(x) = x⁴ − 3x³ + 4x² + x − 1 por D(x) = x² − 2x + 4. Escreva Q(x) = ax² + bx + c e R(x) = dx + e.", f: ["1", "-1", "-2", "1", "7"], lab: ["a =", "b =", "c =", "d =", "e ="],
+    s: ["x⁴ ÷ x² = x². x²·D = x⁴ − 2x³ + 4x². Subtraindo: −x³ + 0x² + x − 1.", "−x³ ÷ x² = −x. −x·D = −x³ + 2x² − 4x. Subtraindo: −2x² + 5x − 1.", "−2x² ÷ x² = −2. −2·D = −2x² + 4x − 8. Subtraindo: x + 7.", "Q(x) = x² − x − 2 e R(x) = x + 7 (grau 1 < 2, a divisão para aqui)."] },
+  { l: 1, q: "Se P(x) = x³ + ax² − bx + 8 é divisível por (x + 2)(x − 1), quanto valem a e b?", f: ["-3", "6"], lab: ["a =", "b ="],
+    s: ["Divisível por (x + 2)(x − 1) ⇔ P(−2) = 0 e P(1) = 0.", "P(1) = 1 + a − b + 8 = 0 ⇒ a − b = −9.", "P(−2) = −8 + 4a + 2b + 8 = 0 ⇒ 4a + 2b = 0 ⇒ b = −2a.", "a + 2a = −9 ⇒ a = −3 e b = 6."] },
+  { l: 1, q: "Calcule os valores reais de m para que o resto da divisão de P(x) = x³ + 3x² + 5x + m por x − m seja m³.", f: ["0", "-2"], set: true,
+    s: ["Resto = P(m) = m³ + 3m² + 5m + m = m³ + 3m² + 6m.", "m³ + 3m² + 6m = m³ ⇒ 3m² + 6m = 0.", "3m(m + 2) = 0 ⇒ m = 0 ou m = −2."] },
+  { l: 1, q: "Determine b e c para que P(x) = x⁴ + x² + bx + c seja divisível por x − 2 e deixe resto 4 na divisão por x + 2.", f: ["-1", "-18"], lab: ["b =", "c ="],
+    s: ["P(2) = 16 + 4 + 2b + c = 0 ⇒ 2b + c = −20.", "P(−2) = 16 + 4 − 2b + c = 4 ⇒ −2b + c = −16.", "Somando: 2c = −36 ⇒ c = −18. Então 2b = −20 + 18 ⇒ b = −1."] },
+  { l: 1, q: "Determine o polinômio do 2º grau P(x) = ax² + bx + c que deixa restos 4, 9 e 18 na divisão por x, x − 1 e x − 2.", f: ["2", "3", "4"], lab: ["a =", "b =", "c ="],
+    s: ["Pelo teorema do resto: P(0) = 4, P(1) = 9 e P(2) = 18.", "P(0) = c = 4.", "P(1) = a + b + 4 = 9 ⇒ a + b = 5. P(2) = 4a + 2b + 4 = 18 ⇒ 2a + b = 7.", "Subtraindo: a = 2 e b = 3. P(x) = 2x² + 3x + 4."] },
+  { l: 1, q: "Determine m e n de modo que P(x) = 2x⁴ − x³ + mx² − nx + 2 seja divisível por (x − 2)(x + 1).", f: ["-6", "1"], lab: ["m =", "n ="],
+    s: ["P(2) = 32 − 8 + 4m − 2n + 2 = 26 + 4m − 2n = 0 ⇒ 2m − n = −13.", "P(−1) = 2 + 1 + m + n + 2 = 5 + m + n = 0 ⇒ m + n = −5.", "Somando: 3m = −18 ⇒ m = −6, e n = −5 − (−6) = 1."] },
+  { l: 1, q: "O polinômio P(x) = x⁴ − 4x³ + mx² + 4x + n é divisível por (x − 1)(x − 2). Calcule 5m + 2n.", f: ["7"],
+    s: ["P(1) = 1 − 4 + m + 4 + n = 0 ⇒ m + n = −1.", "P(2) = 16 − 32 + 4m + 8 + n = 0 ⇒ 4m + n = 8.", "Subtraindo: 3m = 9 ⇒ m = 3 e n = −4.", "5m + 2n = 15 − 8 = 7."] },
+  { l: 1, q: "Dado P(x) = 4x⁴ − 5x² − 3bx + a, calcule a e b para que P(x) seja divisível por x² − 1.", f: ["1", "0"], lab: ["a =", "b ="],
+    s: ["x² − 1 = (x − 1)(x + 1), então P(1) = 0 e P(−1) = 0.", "P(1) = 4 − 5 − 3b + a = 0 ⇒ a − 3b = 1.", "P(−1) = 4 − 5 + 3b + a = 0 ⇒ a + 3b = 1.", "Somando: 2a = 2 ⇒ a = 1, e então b = 0."] },
+  { l: 1, q: "Determine o polinômio do 3º grau que se anula para x = 1 e que, dividido por x + 1, x − 2 e x + 2, deixa resto 6. Escreva P(x) = ax³ + bx² + cx + d.", f: ["1", "1", "-4", "2"], lab: ["a =", "b =", "c =", "d ="],
+    s: ["Resto 6 nas três divisões ⇒ P(−1) = P(2) = P(−2) = 6. Então P(x) − 6 tem raízes −1, 2 e −2.", "P(x) − 6 = k(x + 1)(x − 2)(x + 2), ou seja, P(x) = k(x + 1)(x² − 4) + 6.", "P(1) = 0: k·2·(−3) + 6 = 0 ⇒ k = 1.", "P(x) = (x + 1)(x² − 4) + 6 = x³ + x² − 4x − 4 + 6 = x³ + x² − 4x + 2."] },
+  { l: 1, q: "O polinômio P(x) = 2x³ − ax² + bx + 2 é divisível por 2x² + 5x − 2. Calcule a − b.", f: ["4"],
+    s: ["O quociente tem grau 1 e começa com x (2x³ ÷ 2x² = x): P(x) = (2x² + 5x − 2)(x + k).", "Termo independente: −2·k = 2 ⇒ k = −1.", "(2x² + 5x − 2)(x − 1) = 2x³ − 2x² + 5x² − 5x − 2x + 2 = 2x³ + 3x² − 7x + 2.", "Comparando: −a = 3 ⇒ a = −3 e b = −7. Então a − b = −3 + 7 = 4.", "O gabarito da lista traz a = −7 e b = 7, mas a multiplicação acima mostra a = −3 e b = −7."] },
+  { l: 1, q: "No polinômio P(x) de grau 3, o coeficiente de x³ é 2, e P(x) é divisível por x² − 5x + 6 e por x² − 4x + 4. O termo independente é", o: ["−24", "24", "−6", "0"],
+    ow: [null, "O sinal: 2·(−2)²·(−3) = 2·4·(−3) = −24.", "−6 é o produto 2·(−3) sem o fator (−2)² = 4.", "0 só se 0 fosse raiz, e as raízes são 2 e 3."],
+    s: ["x² − 5x + 6 = (x − 2)(x − 3) e x² − 4x + 4 = (x − 2)².", "Para ser divisível pelos dois, P precisa de (x − 2)² e de (x − 3). Com grau 3: P(x) = 2(x − 2)²(x − 3).", "Termo independente = P(0) = 2·(−2)²·(−3) = 2·4·(−3) = −24."] },
 
-  /* ---------- Sênior ---------- */
-  { l: 2, q: "Para que valor de a a expressão (a² − 1)x⁴ + (a² − a − 2)x³ + ax² + x é um polinômio do 2º grau?", o: ["−1", "1", "2", "0"], e: "É preciso a² − 1 = 0 (a = ±1) e a² − a − 2 = 0 (a = 2 ou a = −1). O valor comum é a = −1, e o coeficiente de x² fica −1 ≠ 0." },
-  { l: 2, q: "Se P(x) tem grau 4, qual é o grau de [P(x)]³ + [P(x)]² + 3P(x)?", o: ["12", "20", "24", "4"], e: "O termo de maior grau vem de [P(x)]³: 3 · 4 = 12." },
-  { l: 2, q: "p(x) e q(x) têm graus n e m. Qual é o grau de 2(x − 1)³·p(x)·q⁴(x)?", o: ["3 + n + 4m", "12nm", "3nm⁴", "3 + n + m⁴"], e: "No produto, os graus se somam: 3 + n + 4m." },
-  { l: 2, q: "Qual polinômio tem raízes −2, −1 e 2?", o: ["x³ + x² − 4x − 4", "x³ − x² − 4x + 4", "x³ − x² − 4x − 4", "x³ + x² + 4x + 4"], e: "(x + 2)(x + 1)(x − 2) = (x² − 4)(x + 1) = x³ + x² − 4x − 4." },
-  { l: 2, q: "Qual é a soma das raízes de P(x) = −2(x + 2)(x − 3)(x + 5)?", f: ["-4"], e: "As raízes são −2, 3 e −5. Soma: −4." },
-  { l: 2, q: "Ache a, b e c para que P(x) = (a + b − 1)x³ + (b + c − 3)x² + (c − 1)x seja identicamente nulo.", f: ["-1", "2", "1"], lab: ["a =", "b =", "c ="], e: "Todos os coeficientes valem zero: c = 1, então b = 2, então a = −1." },
-  { l: 2, q: "Com P(x) = 2x³ − x² + x + 3, calcule [P(2) − 2P(−1)] ÷ P(1/2).", f: ["38/7"], e: "P(2) = 17, P(−1) = −1 e P(1/2) = 7/2. (17 + 2) ÷ 7/2 = 38/7 ≈ 5.43." },
-  { l: 2, q: "Com P(x) = x² − 2x + 1, calcule P(1 + i).", f: ["-1"], e: "P(x) = (x − 1)², então P(1 + i) = i² = −1." },
-  { l: 2, q: "Com P(x) = x² − 2x + 1, calcule P(2 − i).", f: ["-2i"], e: "P(x) = (x − 1)², então P(2 − i) = (1 − i)² = 1 − 2i + i² = −2i." },
-  { l: 2, q: "Sabendo que −3 é raiz de P(x) = x³ + 4x² − ax + 1, calcule a.", f: ["-10/3"], e: "P(−3) = −27 + 36 + 3a + 1 = 10 + 3a = 0 ⇒ a = −10/3 ≈ −3.33." },
-  { l: 2, q: "P(x) = x³ + (a − 2)x² + (b − 4)x − 3 tem raízes 1 e −1. Ache a e b.", f: ["5", "3"], lab: ["a =", "b ="], e: "P(1) = a + b − 8 = 0 e P(−1) = a − b − 2 = 0. Somando: 2a = 10 ⇒ a = 5 e b = 3." },
-  { l: 2, q: "Em P(x) = 2x³ − 6x² + mx + n, P(2) = 0 e P(−1) = −6. Ache m e n.", f: ["2", "4"], lab: ["m =", "n ="], e: "P(2) = −8 + 2m + n = 0 e P(−1) = −8 − m + n = −6. Então 2m + n = 8 e n − m = 2 ⇒ m = 2 e n = 4." },
-  { l: 2, q: "P(x) = ax + b é do 1º grau, com P(5) = 13 e P(3) = 7. Ache a e b.", f: ["3", "-2"], lab: ["a =", "b ="], e: "5a + b = 13 e 3a + b = 7. Subtraindo: 2a = 6 ⇒ a = 3 e b = −2. P(x) = 3x − 2." },
-  { l: 2, q: "P(x) é do 2º grau, com P(1) = 0, P(2) = 7 e P(−1) = 4. Quanto vale P(0)?", f: ["-1"], e: "Com P(x) = ax² + bx + c: a + b + c = 0, 4a + 2b + c = 7 e a − b + c = 4. Resulta a = 3, b = −2 e c = −1. P(0) = c = −1." },
-  { l: 2, q: "Seja P(x + 1) = 3x² − x + 5. Calcule P(2) e P(−3).", f: ["7", "57"], lab: ["P(2) =", "P(−3) ="], e: "P(2): x + 1 = 2 ⇒ x = 1 ⇒ 3 − 1 + 5 = 7. P(−3): x = −4 ⇒ 48 + 4 + 5 = 57." },
-  { l: 2, q: "Sendo x³ + 1 ≡ (x + 1)(x² + ax + b), ache a e b.", f: ["-1", "1"], lab: ["a =", "b ="], e: "(x + 1)(x² + ax + b) = x³ + (a + 1)x² + (a + b)x + b. Comparando: a + 1 = 0 e b = 1 ⇒ a = −1." },
-  { l: 2, q: "Se (−x − 14)/(x² + 3x − 4) ≡ A/(x − 1) + B/(x + 4), quanto vale A + B?", f: ["-1"], e: "A(x + 4) + B(x − 1) = −x − 14. Com x = 1: 5A = −15 ⇒ A = −3. Com x = −4: −5B = −10 ⇒ B = 2. A + B = −1." },
-  { l: 2, q: "Qual é o resto da divisão de P(x) = x⁴ − 2x³ + x − 1 por x − 2?", f: ["1"], e: "Teorema do resto: P(2) = 16 − 16 + 2 − 1 = 1." },
-  { l: 2, q: "Ache a para que P(x) = x³ + (a − 1)x + 10 seja divisível por x − 5.", f: ["-26"], e: "D'Alembert: P(5) = 0 ⇒ 125 + 5(a − 1) + 10 = 0 ⇒ 5a = −130 ⇒ a = −26." },
-  { l: 2, q: "Qual é o resto da divisão de x⁵ − 2x⁴ + x² + 1 por 2x + 1?", f: ["35/32"], e: "A raiz do divisor é −1/2. P(−1/2) = −1/32 − 1/8 + 1/4 + 1 = 35/32 ≈ 1.09." },
-  { l: 2, q: "O resto da divisão de P(x) = x³ + ax² − x + a por x − 1 é 4. Ache a.", f: ["2"], e: "P(1) = 1 + a − 1 + a = 2a = 4 ⇒ a = 2." },
-  { l: 2, q: "Use Briot-Ruffini para dividir x³ + 8 por x + 2. Digite os coeficientes do quociente e o resto.", f: ["1", "-2", "4", "0"], lab: ["coeficiente de x² =", "coeficiente de x =", "termo independente =", "resto ="], e: "Coeficientes 1, 0, 0, 8 e raiz −2: desce 1; 1·(−2) + 0 = −2; (−2)(−2) + 0 = 4; 4·(−2) + 8 = 0. Quociente x² − 2x + 4, resto 0." },
-  { l: 2, q: "Dividindo P(x) = x³ + x² − 10x + 8 por x − 1, obtém-se Q(x). Quais são as raízes de Q(x) = 0?", f: ["-4", "2"], set: true, e: "Briot-Ruffini com 1 dá 1, 2, −8 e resto 0. Q(x) = x² + 2x − 8 = (x + 4)(x − 2)." },
-  { l: 2, q: "P(x) = x³ + ax² − bx + 8 é divisível por (x + 2)(x − 1). Ache a e b.", f: ["-3", "6"], lab: ["a =", "b ="], e: "P(1) = 9 + a − b = 0 e P(−2) = 4a + 2b = 0 ⇒ b = −2a ⇒ 9 + 3a = 0 ⇒ a = −3 e b = 6." },
-  { l: 2, q: "Ache a para que o resto da divisão de ax³ − 2x + 1 por x − 3 seja 4.", f: ["1/3"], e: "P(3) = 27a − 6 + 1 = 4 ⇒ 27a = 9 ⇒ a = 1/3." },
-  { l: 2, q: "P(x) = ax² + bx + c deixa restos 4, 9 e 18 na divisão por x, x − 1 e x − 2. Ache a, b e c.", f: ["2", "3", "4"], lab: ["a =", "b =", "c ="], e: "P(0) = c = 4; P(1) = a + b + 4 = 9; P(2) = 4a + 2b + 4 = 18. Então a + b = 5 e 2a + b = 7 ⇒ a = 2 e b = 3." },
-  { l: 2, q: "Para que valor de a o número 1 − i é raiz de P(x) = x² − 2x + a?", f: ["2"], e: "(1 − i)² − 2(1 − i) + a = −2i − 2 + 2i + a = a − 2 = 0 ⇒ a = 2." },
-  { l: 2, q: "P(x) = 2x³ − ax² + bx + 2 é divisível por 2x² + 5x − 2. Calcule a − b.", f: ["4"], e: "O quociente é da forma x + k, e o termo independente dá −2k = 2 ⇒ k = −1. (2x² + 5x − 2)(x − 1) = 2x³ + 3x² − 7x + 2 ⇒ a = −3, b = −7 e a − b = 4." },
+  /* ================= Nível 3 · Lista 3, primeira parte ================= */
+  { l: 2, q: "Determine o número de raízes nulas do polinômio P(x) = −2x⁵ + 6x³ − 3x².", f: ["2"],
+    s: ["O termo independente é 0, então zero é raiz.", "Coloque a menor potência em evidência: P(x) = x²(−2x³ + 6x − 3).", "O fator x² mostra que zero é raiz dupla: 2 raízes nulas (o menor expoente é 2)."] },
+  { l: 2, q: "Qual é o grau de P(x) = 4x²(x² − 16)(x² + 9)³?", f: ["10"],
+    s: ["O grau de um produto é a soma dos graus.", "x² tem grau 2; (x² − 16) tem grau 2; (x² + 9)³ tem grau 3·2 = 6.", "2 + 2 + 6 = 10."] },
+  { l: 2, q: "Considerando (x − 2)²(x − 1)³(x² + 3x − 4) = 0, qual é a multiplicidade da raiz 1?", f: ["4"],
+    s: ["Fatore x² + 3x − 4: raízes 1 e −4, então x² + 3x − 4 = (x − 1)(x + 4).", "A equação fica (x − 2)²(x − 1)³(x − 1)(x + 4) = (x − 2)²(x − 1)⁴(x + 4).", "O fator (x − 1) aparece 4 vezes: multiplicidade 4."] },
+  { l: 2, q: "Qual é a multiplicidade da raiz −1 na equação x³ + x² − 3x − 3 = 0?", f: ["1"],
+    s: ["Agrupe: x²(x + 1) − 3(x + 1) = (x + 1)(x² − 3).", "x² − 3 = 0 dá ±√3, que não é −1.", "(x + 1) aparece uma vez: −1 é raiz simples (multiplicidade 1)."] },
+  { l: 2, q: "Resolva x³ − 7x² + 12x = 0.", f: ["0", "3", "4"], set: true,
+    s: ["Coloque x em evidência: x(x² − 7x + 12) = 0.", "x = 0 ou x² − 7x + 12 = 0.", "x² − 7x + 12 = (x − 3)(x − 4) ⇒ x = 3 ou x = 4.", "S = {0, 3, 4}."] },
+  { l: 2, q: "Resolva x³ − 4x² + 3x = 0.", f: ["0", "1", "3"], set: true,
+    s: ["x(x² − 4x + 3) = 0.", "x² − 4x + 3 = (x − 1)(x − 3).", "S = {0, 1, 3}."] },
+  { l: 2, q: "Resolva x³ + 3x² = x + 3.", f: ["-3", "1", "-1"], set: true,
+    s: ["Passe tudo para um lado: x³ + 3x² − x − 3 = 0.", "Agrupe: x²(x + 3) − 1(x + 3) = (x + 3)(x² − 1).", "x + 3 = 0 ⇒ x = −3; x² − 1 = 0 ⇒ x = ±1.", "S = {−3, −1, 1}."] },
+  { l: 2, q: "Resolva x³ + x² − 4x − 4 = 0.", f: ["-1", "2", "-2"], set: true,
+    s: ["Agrupe: x²(x + 1) − 4(x + 1) = (x + 1)(x² − 4).", "x + 1 = 0 ⇒ x = −1; x² − 4 = 0 ⇒ x = ±2.", "S = {−1, −2, 2}."] },
+  { l: 2, q: "Resolva x⁴ − 5x² + 4 = 0.", f: ["1", "-1", "2", "-2"], set: true,
+    s: ["Equação biquadrada: troque y = x². Fica y² − 5y + 4 = 0.", "(y − 1)(y − 4) = 0 ⇒ y = 1 ou y = 4.", "x² = 1 ⇒ x = ±1; x² = 4 ⇒ x = ±2.", "S = {±1, ±2}."] },
+  { l: 2, q: "Resolva x³ − 6x² + 10x = 0.", f: ["0", "3+i", "3-i"], set: true,
+    s: ["x(x² − 6x + 10) = 0 ⇒ x = 0 ou x² − 6x + 10 = 0.", "Δ = 36 − 40 = −4, e √(−4) = 2i.", "x = (6 ± 2i)/2 = 3 ± i.", "S = {0, 3 + i, 3 − i}."] },
+  { l: 2, q: "Resolva x³ + 2x² + 25x = −50.", f: ["-2", "5i", "-5i"], set: true,
+    s: ["x³ + 2x² + 25x + 50 = 0.", "Agrupe: x²(x + 2) + 25(x + 2) = (x + 2)(x² + 25).", "x = −2 ou x² = −25 ⇒ x = ±5i.", "S = {−2, 5i, −5i}."] },
+  { l: 2, q: "Determine a equação x³ + bx² + cx + d = 0 com S = {3, 5}, sendo 3 raiz de multiplicidade 2.", f: ["-11", "39", "-45"], lab: ["b =", "c =", "d ="],
+    s: ["3 dupla e 5 simples: (x − 3)²(x − 5) = 0.", "(x − 3)² = x² − 6x + 9.", "(x² − 6x + 9)(x − 5) = x³ − 5x² − 6x² + 30x + 9x − 45 = x³ − 11x² + 39x − 45."] },
+  { l: 2, q: "Determine as outras raízes de P(x) = x³ + 2x² − 5x − 6, sabendo que 2 é raiz.", f: ["-1", "-3"], set: true,
+    s: ["Abaixe o grau com Briot-Ruffini usando a raiz 2 e os coeficientes 1, 2, −5, −6.", "Desce 1; 1·2 + 2 = 4; 4·2 − 5 = 3; 3·2 − 6 = 0 (resto zero, confirma a raiz).", "Quociente x² + 4x + 3 = (x + 1)(x + 3).", "Outras raízes: −1 e −3."] },
+  { l: 2, q: "Sabendo que 2 é raiz da equação x³ + 2x² − 5x + c = 0, calcule c.", f: ["-6"],
+    s: ["2 é raiz ⇒ P(2) = 0.", "8 + 8 − 10 + c = 0 ⇒ 6 + c = 0 ⇒ c = −6.", "Com c = −6 a equação é a mesma da questão anterior: raízes 2, −1 e −3."] },
+  { l: 2, q: "Uma das raízes da equação 2x³ − 4x² − 2x + 4 = 0 é 1. Resolva a equação.", f: ["1", "-1", "2"], set: true,
+    s: ["Briot-Ruffini com a raiz 1: coeficientes 2, −4, −2, 4 → 2, −2, −4, resto 0.", "Quociente 2x² − 2x − 4 = 2(x² − x − 2) = 2(x − 2)(x + 1).", "S = {1, −1, 2}."] },
+  { l: 2, q: "Determine as raízes de P(x) = x⁴ − x³ − 2x² + 6x − 4, sabendo que 1 + i é uma delas. Digite as outras três.", f: ["1-i", "1", "-2"], set: true,
+    s: ["Coeficientes reais ⇒ o conjugado 1 − i também é raiz.", "(x − (1 + i))(x − (1 − i)) = (x − 1)² − i² = x² − 2x + 2.", "Dividindo P(x) por x² − 2x + 2 obtém-se x² + x − 2.", "x² + x − 2 = (x + 2)(x − 1). Outras raízes: 1 − i, 1 e −2."] },
+  { l: 2, q: "Resolva x³ − 2x² + 9x − 18 = 0, sabendo que uma raiz é da forma bi.", f: ["2", "3i", "-3i"], set: true,
+    s: ["Agrupe: x²(x − 2) + 9(x − 2) = (x − 2)(x² + 9).", "x − 2 = 0 ⇒ x = 2. x² + 9 = 0 ⇒ x = ±3i (a raiz da forma bi é 3i).", "S = {2, 3i, −3i}."] },
+  { l: 2, q: "Determine as raízes de x⁴ − x³ − 11x² = x + 12, sendo −i uma delas.", f: ["i", "-i", "4", "-3"], set: true,
+    s: ["Escreva x⁴ − x³ − 11x² − x − 12 = 0.", "−i é raiz e os coeficientes são reais ⇒ i também é. (x − i)(x + i) = x² + 1.", "Dividindo por x² + 1: x⁴ − x³ − 11x² − x − 12 = (x² + 1)(x² − x − 12).", "x² − x − 12 = (x − 4)(x + 3). S = {i, −i, 4, −3}."] },
+  { l: 2, q: "Uma das raízes da equação x⁴ − 9x³ + 30x² − 42x + 20 = 0 é 3 + i. Calcule as outras.", f: ["3-i", "1", "2"], set: true,
+    s: ["Coeficientes reais ⇒ 3 − i também é raiz.", "(x − 3 − i)(x − 3 + i) = (x − 3)² − i² = x² − 6x + 10.", "Dividindo: x⁴ − 9x³ + 30x² − 42x + 20 = (x² − 6x + 10)(x² − 3x + 2).", "x² − 3x + 2 = (x − 1)(x − 2). Outras raízes: 3 − i, 1 e 2."] },
+  { l: 2, q: "O polinômio P(x) tem coeficientes reais, é divisível por x² + 4 e P(1 − i) = 0. Qual é o menor grau que P(x) pode ter?", o: ["4", "2", "3", "5"],
+    ow: [null, "x² + 4 sozinho já tem grau 2, e ainda faltam as raízes 1 ± i.", "As raízes complexas vêm em pares conjugados: não dá para ter grau ímpar só com elas.", "É possível com grau 4; não é preciso uma raiz a mais."],
+    s: ["x² + 4 = 0 ⇒ x = ±2i: duas raízes.", "1 − i é raiz e os coeficientes são reais ⇒ 1 + i também é.", "No mínimo 4 raízes ⇒ grau mínimo 4: P(x) = (x² + 4)(x² − 2x + 2)."] },
+  { l: 2, q: "Qual é o menor grau que pode ter uma equação algébrica de coeficientes reais com raízes 2, i e 1 + i?", o: ["5", "3", "4", "6"],
+    ow: [null, "Esquece os conjugados: com coeficientes reais, −i e 1 − i também são raízes.", "Contou só um dos conjugados; são dois pares complexos mais o 2.", "Dá para ter grau 5; 6 teria uma raiz sobrando."],
+    s: ["Coeficientes reais ⇒ raízes complexas vêm com o conjugado.", "i traz −i; 1 + i traz 1 − i; 2 é real e vem sozinho.", "Raízes: 2, i, −i, 1 + i, 1 − i ⇒ grau mínimo 5."] },
+  { l: 2, q: "Entre os números abaixo, qual não pode ser raiz de P(x) = 3x⁴ + bx³ + cx² + dx − 4, com coeficientes inteiros?", o: ["3/4", "2/3", "4", "1"],
+    ow: [null, "2/3: p = 2 divide 4 e q = 3 divide 3, então é candidata.", "4 = 4/1: p = 4 divide 4 e q = 1 divide 3, então é candidata.", "1 = 1/1: é candidata (1 divide 4 e 1 divide 3)."],
+    s: ["Teorema das raízes racionais: se p/q (fração irredutível) é raiz, p divide a₀ = −4 e q divide aₙ = 3.", "p ∈ {±1, ±2, ±4} e q ∈ {1, 3}.", "Em 3/4, q = 4 não divide 3: não pode ser raiz."] },
+  { l: 2, q: "Quais são as raízes inteiras do polinômio P(x) = x³ − x² − 4?", f: ["2"],
+    s: ["Candidatas inteiras: divisores de −4: ±1, ±2, ±4.", "P(1) = −4; P(−1) = −6; P(2) = 8 − 4 − 4 = 0 ✓; P(−2) = −16; P(±4) ≠ 0.", "Dividindo por x − 2: x² + x + 2, com Δ = 1 − 8 < 0 (raízes não reais).", "Única raiz inteira: 2. Assim P(x) = (x − 2)(x² + x + 2)."] },
+  { l: 2, q: "Determine as raízes do polinômio P(x) = 4x³ + 3x² − 25x + 6.", f: ["2", "1/4", "-3"], set: true,
+    s: ["Candidatas p/q: p divide 6 e q divide 4.", "Testando x = 2: 32 + 12 − 50 + 6 = 0 ✓.", "Briot-Ruffini com 2: 4, 11, −3, resto 0. Quociente 4x² + 11x − 3.", "Δ = 121 + 48 = 169 ⇒ x = (−11 ± 13)/8 ⇒ x = 1/4 ou x = −3.", "S = {2, 1/4, −3}."] },
+  { l: 2, q: "Determine as raízes do polinômio P(x) = 2x³ − x² − 2x + 1.", f: ["1/2", "1", "-1"], set: true,
+    s: ["Agrupe: x²(2x − 1) − 1(2x − 1) = (2x − 1)(x² − 1).", "2x − 1 = 0 ⇒ x = 1/2; x² − 1 = 0 ⇒ x = ±1.", "S = {1/2, 1, −1}."] },
+  { l: 2, q: "Resolva 2x³ − 7x² + 7x − 2 = 0.", f: ["1", "2", "1/2"], set: true,
+    s: ["Soma dos coeficientes: 2 − 7 + 7 − 2 = 0 ⇒ x = 1 é raiz.", "Briot-Ruffini com 1: 2, −5, 2, resto 0. Quociente 2x² − 5x + 2.", "Δ = 25 − 16 = 9 ⇒ x = (5 ± 3)/4 ⇒ x = 2 ou x = 1/2.", "S = {1, 2, 1/2}."] },
+  { l: 2, q: "Resolva x⁵ + 5x⁴ + 6x³ − 2x² − 7x − 3 = 0, sabendo que −1 é raiz tripla. Digite as outras duas raízes.", f: ["1", "-3"], set: true,
+    s: ["Aplique Briot-Ruffini três vezes com a raiz −1.", "1ª: 1, 5, 6, −2, −7, −3 → 1, 4, 2, −4, −3, resto 0.", "2ª: 1, 4, 2, −4, −3 → 1, 3, −1, −3, resto 0.", "3ª: 1, 3, −1, −3 → 1, 2, −3, resto 0. Sobra x² + 2x − 3 = (x + 3)(x − 1).", "Outras raízes: 1 e −3."] },
+  { l: 2, q: "O número 3 é raiz dupla de x⁴ − 7x³ + 13x² + 3x − 18 = 0. Determine as outras duas raízes.", f: ["-1", "2"], set: true,
+    s: ["Briot-Ruffini com 3: 1, −7, 13, 3, −18 → 1, −4, 1, 6, resto 0.", "De novo com 3: 1, −4, 1, 6 → 1, −1, −2, resto 0.", "Sobra x² − x − 2 = (x − 2)(x + 1).", "Outras raízes: 2 e −1."] },
+  { l: 2, q: "Os números 1 e −1 são raízes de multiplicidade 2 de P(x) = (x − 1)·q(x). Se P(x) tem grau 4 e coeficiente líder 1, então q(x) é", o: ["x³ + x² − x − 1", "x³ − 3x² + 3x − 1", "x³ + 3x² + 3x + 1", "x³ − 3x² + 3x + 1"],
+    ow: [null, "Esse é (x − 1)³: daria 1 como raiz tripla e nenhum −1.", "Esse é (x + 1)³: daria −1 triplo em q, e P teria 1 só simples.", "Esse polinômio nem tem 1 ou −1 como raiz."],
+    s: ["P(x) = (x − 1)²(x + 1)².", "Como P(x) = (x − 1)·q(x), q(x) = (x − 1)(x + 1)².", "(x + 1)² = x² + 2x + 1, e (x − 1)(x² + 2x + 1) = x³ + 2x² + x − x² − 2x − 1 = x³ + x² − x − 1."] },
+  { l: 2, q: "Um polinômio p(x) de grau 3 é divisível por x + 2, deixa resto 3 na divisão por x − 1 e tem 0 como raiz de multiplicidade 2. p(x) é", o: ["x³ + 2x²", "2x³ + x²", "x³ + 2x", "3x³"],
+    ow: [null, "2x³ + x² = x²(2x + 1): a raiz não nula é −1/2, não −2.", "x³ + 2x = x(x² + 2): zero é só raiz simples.", "3x³ tem zero como raiz tripla e não é divisível por x + 2."],
+    s: ["0 raiz dupla e −2 raiz (divisível por x + 2) ⇒ p(x) = kx²(x + 2).", "Resto 3 na divisão por x − 1 ⇒ p(1) = k·1·3 = 3 ⇒ k = 1.", "p(x) = x²(x + 2) = x³ + 2x²."] },
+  { l: 2, q: "Um polinômio de coeficientes reais tem termo independente nulo, é divisível por x² − 1 e tem 2 − i como raiz de multiplicidade 3. Seu grau n satisfaz", o: ["n ≥ 9", "n ≥ 6", "n ≥ 8", "n ≥ 5"],
+    ow: [null, "Contou só 2 − i (3 vezes) e o 2 + i (3 vezes); faltaram 0, 1 e −1.", "Faltou uma das raízes: 0, 1 e −1 somam 3, e 2 ± i somam 6.", "Esqueceu que o conjugado 2 + i também tem multiplicidade 3."],
+    s: ["Termo independente nulo ⇒ 0 é raiz (1 raiz).", "Divisível por x² − 1 ⇒ 1 e −1 são raízes (2 raízes).", "2 − i tripla e coeficientes reais ⇒ 2 + i também tripla (6 raízes).", "Total mínimo: 1 + 2 + 6 = 9 ⇒ n ≥ 9."] },
 
-  /* ---------- Tech Lead ---------- */
-  { l: 3, q: "Quantas raízes nulas tem P(x) = −2x⁵ + 6x³ − 3x²?", f: ["2"], e: "O menor expoente de x é 2: P(x) = x²(−2x³ + 6x − 3). Zero é raiz dupla." },
-  { l: 3, q: "Qual é o grau de P(x) = 4x²(x² − 16)(x² + 9)³?", f: ["10"], e: "Somando os graus dos fatores: 2 + 2 + 3·2 = 10." },
-  { l: 3, q: "Ache as outras raízes de P(x) = x³ + 2x² − 5x − 6, sabendo que 2 é raiz.", f: ["-1", "-3"], set: true, e: "Briot-Ruffini com 2 dá 1, 4, 3 e resto 0. x² + 4x + 3 = (x + 1)(x + 3)." },
-  { l: 3, q: "1 + i é raiz de P(x) = x⁴ − x³ − 2x² + 6x − 4. Ache as outras três raízes.", f: ["1-i", "1", "-2"], set: true, e: "Coeficientes reais ⇒ 1 − i também é raiz. (x − 1 − i)(x − 1 + i) = x² − 2x + 2. Dividindo: x² + x − 2 = (x − 1)(x + 2)." },
-  { l: 3, q: "Ache as raízes de P(x) = 4x³ + 3x² − 25x + 6.", f: ["2", "1/4", "-3"], set: true, e: "Candidatas racionais p/q com p dividindo 6 e q dividindo 4. P(2) = 32 + 12 − 50 + 6 = 0. Dividindo por x − 2: 4x² + 11x − 3 = (4x − 1)(x + 3)." },
-  { l: 3, q: "Qual destes números não pode ser raiz de P(x) = 3x⁴ + bx³ + cx² + dx − 4, com coeficientes inteiros?", o: ["3/4", "2/3", "4", "1"], e: "Uma raiz racional p/q exige p dividindo 4 e q dividindo 3. Em 3/4, q = 4 não divide 3." },
-  { l: 3, q: "P(x) tem coeficientes reais, é divisível por x² + 4 e P(1 − i) = 0. Qual é o menor grau possível?", o: ["4", "3", "5", "2"], e: "x² + 4 traz ±2i, e 1 − i traz o conjugado 1 + i. São 4 raízes: grau mínimo 4." },
-  { l: 3, q: "2 é raiz dupla de ax³ + bx + 16 = 0. Ache a e b.", f: ["1", "-12"], lab: ["a =", "b ="], e: "Dividindo duas vezes por x − 2 com Briot-Ruffini, os dois restos precisam ser zero: 8a + 2b + 16 = 0 e 12a + b = 0 ⇒ a = 1 e b = −12." },
-  { l: 3, q: "1 é raiz dupla de x³ + ax² − 2x + b = 0. Quanto vale a + b?", f: ["1"], e: "P(1) = 1 + a − 2 + b = 0 ⇒ a + b = 1. A segunda condição dá a = −1/2 e b = 3/2." },
-  { l: 3, q: "−1 é raiz tripla de x⁵ + 5x⁴ + 6x³ − 2x² − 7x − 3 = 0. Ache as outras duas raízes.", f: ["1", "-3"], set: true, e: "Três divisões por x + 1 deixam x² + 2x − 3 = (x − 1)(x + 3)." },
-  { l: 3, q: "3 é raiz dupla de x⁴ − 7x³ + 13x² + 3x − 18 = 0. Ache as outras duas raízes.", f: ["-1", "2"], set: true, e: "Dividindo duas vezes por x − 3 sobra x² − x − 2 = (x + 1)(x − 2)." },
-  { l: 3, q: "2 é raiz de x³ + 2x² − 5x + c = 0. Quanto vale c?", f: ["-6"], e: "8 + 8 − 10 + c = 0 ⇒ c = −6. As raízes ficam 2, −1 e −3." },
-  { l: 3, q: "Ache m e n para que 2 seja raiz dupla de x³ + mx² − 8x + n = 0.", f: ["-1", "12"], lab: ["m =", "n ="], e: "Chame a terceira raiz de r. Girard: 2·2 + 2r + 2r = −8 ⇒ r = −3. Soma: 2 + 2 − 3 = −m ⇒ m = −1. Produto: 2·2·(−3) = −n ⇒ n = 12." },
-  { l: 3, q: "2, 4 e −3 são raízes de x³ + ax² + bx + c = 0. Ache a, b e c.", f: ["-3", "-10", "24"], lab: ["a =", "b =", "c ="], e: "Girard: soma 3 = −a; soma dos produtos dois a dois 8 − 6 − 12 = −10 = b; produto −24 = −c ⇒ c = 24." },
-  { l: 3, q: "3 + i é raiz de x⁴ − 9x³ + 30x² − 42x + 20 = 0. Ache as outras três raízes.", f: ["3-i", "1", "2"], set: true, e: "3 − i também é raiz, e (x − 3 − i)(x − 3 + i) = x² − 6x + 10. Dividindo: x² − 3x + 2 = (x − 1)(x − 2)." },
-  { l: 3, q: "Resolva x³ − 2x² + 9x − 18 = 0, sabendo que uma raiz é da forma bi.", f: ["2", "3i", "-3i"], set: true, e: "Agrupando: x²(x − 2) + 9(x − 2) = (x − 2)(x² + 9)." },
-  { l: 3, q: "x³ + mx² + 2x + n = 0, com m e n reais, admite 1 + i como raiz. Ache m e n.", f: ["-2", "0"], lab: ["m =", "n ="], e: "Raízes 1 + i, 1 − i e r. Produtos dois a dois: 2 + 2r = 2 ⇒ r = 0. Soma: 2 = −m ⇒ m = −2. Produto: 0 = −n ⇒ n = 0." },
-  { l: 3, q: "Resolva x³ − 9x² + 23x − 15 = 0, sabendo que as raízes estão em PA.", f: ["1", "3", "5"], set: true, e: "Raízes a − r, a e a + r: soma 3a = 9 ⇒ a = 3 é raiz. Dividindo: x² − 6x + 5 = (x − 1)(x − 5)." },
-  { l: 3, q: "Resolva 64x³ − 56x² + 14x − 1 = 0, sabendo que as raízes estão em PG.", f: ["1/8", "1/4", "1/2"], set: true, e: "Raízes a/q, a e aq: produto a³ = 1/64 ⇒ a = 1/4. Dividindo por x − 1/4: 16x² − 10x + 1 = 0 ⇒ x = 1/8 ou x = 1/2." },
-  { l: 3, q: "As raízes de x³ − 6x² + kx + 64 = 0 estão em PG. Calcule k.", f: ["-24"], e: "O produto das raízes é a³ = −64 ⇒ a = −4 é raiz. P(−4) = −64 − 96 − 4k + 64 = 0 ⇒ k = −24." },
-  { l: 3, q: "Para que valor de p a equação x³ − px² + 3x − 1 = 0 tem raiz tripla?", f: ["3"], e: "Raiz tripla r com r³ = 1 ⇒ r = 1, e (x − 1)³ = x³ − 3x² + 3x − 1 ⇒ p = 3." },
-  { l: 3, q: "a, b e c são raízes de 2x³ − 3x² + 5x + 1 = 0. Calcule a²b² + a²c² + b²c².", f: ["31/4"], e: "Girard: a + b + c = 3/2, ab + ac + bc = 5/2 e abc = −1/2. A expressão é (ab + ac + bc)² − 2abc(a + b + c) = 25/4 + 3/2 = 31/4 = 7.75." },
-  { l: 3, q: "a, b e c são raízes de x³ − 2x² + 3x − 4 = 0. Calcule 1/a + 1/b + 1/c.", f: ["3/4"], e: "1/a + 1/b + 1/c = (ab + ac + bc)/abc = 3/4 = 0.75." },
-  { l: 3, q: "a, b e c são raízes de x³ − 4x² + 5x + 3 = 0. Calcule a/(bc) + b/(ac) + c/(ab).", f: ["-2"], e: "A expressão é (a² + b² + c²)/abc. a² + b² + c² = 4² − 2·5 = 6 e abc = −3 ⇒ 6/(−3) = −2." },
-  { l: 3, q: "a, b e c são raízes de 2x³ − 30x² + 15x − 3 = 0. Calcule log[1/(ab) + 1/(bc) + 1/(ac)].", f: ["1"], e: "A soma é (a + b + c)/abc = 15 ÷ 3/2 = 10, e log 10 = 1." },
-  { l: 3, q: "Qual é o menor grau de uma equação de coeficientes reais com raízes 2, i e 1 + i?", o: ["5", "3", "4", "6"], e: "Os conjugados −i e 1 − i também precisam ser raízes: 2, ±i e 1 ± i ⇒ grau 5." },
-  { l: 3, q: "Resolva x³ − 3x² − 4x + 12 = 0, sabendo que duas raízes são simétricas.", f: ["2", "-2", "3"], set: true, e: "Raízes r, −r e s: a soma dá s = 3. Dividindo por x − 3: x² − 4 ⇒ ±2." },
-  { l: 3, q: "Qual é a multiplicidade da raiz 1 em (x − 2)²(x − 1)³(x² + 3x − 4) = 0?", f: ["4"], e: "x² + 3x − 4 = (x − 1)(x + 4). O fator x − 1 aparece 3 + 1 = 4 vezes." },
-  { l: 3, q: "Resolva x³ − 10x² + 31x − 30 = 0, sabendo que uma raiz é a diferença das outras duas.", f: ["2", "3", "5"], set: true, e: "Se a = b − c, a soma a + b + c = 2b = 10 ⇒ b = 5. Dividindo por x − 5: x² − 5x + 6 = (x − 2)(x − 3)." },
-  { l: 3, q: "Um polinômio p(x) de grau 3 é divisível por x + 2, deixa resto 3 na divisão por x − 1 e tem 0 como raiz dupla. p(x) é", o: ["x³ + 2x²", "2x³ + x²", "x³ + 2x", "3x³"], e: "0 raiz dupla e −2 raiz ⇒ p(x) = kx²(x + 2). p(1) = 3k = 3 ⇒ k = 1." }
+  /* ================= Nível 4 · Lista 3, segunda parte ================= */
+  { l: 3, q: "Determine p de modo que a equação x³ − px² + 3x − 1 = 0 admita raiz tripla.", f: ["3"],
+    s: ["Raiz tripla r: x³ − px² + 3x − 1 = (x − r)³.", "Girard: r·r·r = −(−1)/1 = 1 ⇒ r = 1.", "(x − 1)³ = x³ − 3x² + 3x − 1 ⇒ p = 3."] },
+  { l: 3, q: "Os números 1 e 2 + i são raízes de x³ + ax² + bx − c = 0, com a, b e c reais. Calcule c.", f: ["5"],
+    s: ["Coeficientes reais ⇒ 2 − i também é raiz. As raízes são 1, 2 + i e 2 − i.", "Girard: produto das raízes = −(termo independente)/1 = −(−c) = c.", "Produto: 1·(2 + i)(2 − i) = 1·(4 − i²) = 5 ⇒ c = 5."] },
+  { l: 3, q: "Encontre a, b e c, sabendo que 2, 4 e −3 são raízes de x³ + ax² + bx + c = 0.", f: ["-3", "-10", "24"], lab: ["a =", "b =", "c ="],
+    s: ["Girard (coeficiente líder 1): soma = −a; soma dos produtos dois a dois = b; produto = −c.", "Soma: 2 + 4 − 3 = 3 ⇒ a = −3.", "Produtos dois a dois: 2·4 + 2·(−3) + 4·(−3) = 8 − 6 − 12 = −10 ⇒ b = −10.", "Produto: 2·4·(−3) = −24 ⇒ c = 24."] },
+  { l: 3, q: "A equação x³ + mx² + 2x + n = 0, com m e n reais, admite 1 + i como raiz. Calcule m e n.", f: ["-2", "0"], lab: ["m =", "n ="],
+    s: ["Raízes: 1 + i, 1 − i (conjugada) e uma real r.", "Produtos dois a dois = 2: (1 + i)(1 − i) + r(1 + i) + r(1 − i) = 2 + 2r = 2 ⇒ r = 0.", "Soma = −m: (1 + i) + (1 − i) + 0 = 2 ⇒ m = −2.", "Produto = −n: 2·0 = 0 ⇒ n = 0."] },
+  { l: 3, q: "Sabendo que 1 é raiz dupla de x³ + ax² − 2x + b = 0, determine a + b.", f: ["1"],
+    s: ["Briot-Ruffini com 1: coeficientes 1, a, −2, b → 1, a + 1, a − 1, resto a + b − 1.", "1ª condição: a + b − 1 = 0 ⇒ a + b = 1.", "(De novo com 1: 1, a + 2, resto 2a + 1 = 0 ⇒ a = −1/2 e b = 3/2, o que confirma a + b = 1.)"] },
+  { l: 3, q: "O número 2 é raiz dupla da equação ax³ + bx + 16 = 0. Calcule a e b.", f: ["1", "-12"], lab: ["a =", "b ="],
+    s: ["Coeficientes a, 0, b, 16. Briot-Ruffini com 2: a, 2a, 4a + b, resto 8a + 2b + 16.", "De novo com 2 (sobre a, 2a, 4a + b): a, 4a, resto 12a + b.", "Os dois restos são zero: 8a + 2b + 16 = 0 e 12a + b = 0 ⇒ b = −12a.", "8a − 24a + 16 = 0 ⇒ a = 1 e b = −12."] },
+  { l: 3, q: "Calcule m e n de modo que 2 seja raiz dupla da equação x³ + mx² − 8x + n = 0.", f: ["-1", "12"], lab: ["m =", "n ="],
+    s: ["Raízes: 2, 2 e r.", "Girard, produtos dois a dois = −8: 2·2 + 2r + 2r = −8 ⇒ 4r = −12 ⇒ r = −3.", "Soma = −m: 2 + 2 − 3 = 1 ⇒ m = −1.", "Produto = −n: 2·2·(−3) = −12 ⇒ n = 12."] },
+  { l: 3, q: "Resolva √(x + √(x − 1)) = √7.", f: ["5"],
+    s: ["Elevando ao quadrado: x + √(x − 1) = 7 ⇒ √(x − 1) = 7 − x (exige 7 − x ≥ 0).", "De novo ao quadrado: x − 1 = 49 − 14x + x² ⇒ x² − 15x + 50 = 0.", "x = 5 ou x = 10. Teste: em x = 10, 7 − x = −3 < 0, não serve.", "x = 5: √(5 + 2) = √7 ✓. S = {5}."] },
+  { l: 3, q: "Resolva x + √(3x − 11) = 7.", f: ["5"],
+    s: ["Isole a raiz: √(3x − 11) = 7 − x (exige x ≤ 7).", "Ao quadrado: 3x − 11 = 49 − 14x + x² ⇒ x² − 17x + 60 = 0.", "x = 5 ou x = 12. x = 12 não serve (7 − 12 < 0).", "x = 5: 5 + √4 = 7 ✓. S = {5}."] },
+  { l: 3, q: "Resolva x³ − 3x² − 4x + 12 = 0, sabendo que duas de suas raízes são simétricas.", f: ["2", "-2", "3"], set: true,
+    s: ["Raízes r, −r e s. Girard: r + (−r) + s = 3 ⇒ s = 3.", "Briot-Ruffini com 3: 1, −3, −4, 12 → 1, 0, −4, resto 0. Quociente x² − 4.", "x² − 4 = 0 ⇒ x = ±2. S = {−2, 2, 3}."] },
+  { l: 3, q: "Resolva x³ − 3x² − 6x + 8 = 0, sabendo que suas raízes estão em PA.", f: ["-2", "1", "4"], set: true,
+    s: ["Raízes em PA: a − r, a, a + r. Soma 3a = 3 ⇒ a = 1 é raiz.", "Briot-Ruffini com 1: 1, −3, −6, 8 → 1, −2, −8, resto 0.", "x² − 2x − 8 = (x − 4)(x + 2).", "S = {−2, 1, 4} (PA de razão 3)."] },
+  { l: 3, q: "Resolva x³ − 9x² + 23x − 15 = 0, sabendo que suas raízes estão em PA.", f: ["1", "3", "5"], set: true,
+    s: ["Raízes a − r, a, a + r. Soma 3a = 9 ⇒ a = 3.", "Briot-Ruffini com 3: 1, −9, 23, −15 → 1, −6, 5, resto 0.", "x² − 6x + 5 = (x − 1)(x − 5).", "S = {1, 3, 5}."] },
+  { l: 3, q: "Resolva x³ − 9x² + 24x − 20 = 0, sabendo que duas de suas raízes são iguais.", f: ["2", "5"], lab: ["raiz dupla =", "raiz simples ="],
+    s: ["Raízes r, r e s. Girard: 2r + s = 9; r² + 2rs = 24; r²s = 20.", "De 2r + s = 9: s = 9 − 2r. Em r² + 2r(9 − 2r) = 24: −3r² + 18r − 24 = 0 ⇒ r² − 6r + 8 = 0 ⇒ r = 2 ou r = 4.", "r = 2 ⇒ s = 5 e r²s = 20 ✓. (r = 4 ⇒ s = 1 e r²s = 16 ✗.)", "S = {2, 5}, com 2 raiz dupla."] },
+  { l: 3, q: "Resolva x³ − 10x² + 31x − 30 = 0, sabendo que uma das raízes é igual à diferença das outras duas.", f: ["2", "3", "5"], set: true,
+    s: ["Raízes a, b, c com a = b − c, ou seja, a + c = b.", "Girard: a + b + c = 10 ⇒ b + b = 10 ⇒ b = 5.", "Briot-Ruffini com 5: 1, −10, 31, −30 → 1, −5, 6, resto 0.", "x² − 5x + 6 = (x − 2)(x − 3). S = {2, 3, 5} (e 2 = 5 − 3)."] },
+  { l: 3, q: "Sendo a, b e c as raízes de x³ − 2x² + 3x − 4 = 0, calcule 1/a + 1/b + 1/c.", f: ["3/4"],
+    s: ["Girard: a + b + c = 2; ab + ac + bc = 3; abc = 4.", "1/a + 1/b + 1/c = (bc + ac + ab)/(abc).", "= 3/4 = 0.75."] },
+  { l: 3, q: "Sendo a, b e c as raízes de x³ − 4x² + 5x + 3 = 0, calcule a/(bc) + b/(ac) + c/(ab).", f: ["-2"],
+    s: ["Girard: a + b + c = 4; ab + ac + bc = 5; abc = −3.", "Com denominador comum abc: a/(bc) + b/(ac) + c/(ab) = (a² + b² + c²)/(abc).", "a² + b² + c² = (a + b + c)² − 2(ab + ac + bc) = 16 − 10 = 6.", "6/(−3) = −2."] },
+  { l: 3, q: "Sendo a, b e c as raízes de 2x³ − 30x² + 15x − 3 = 0, calcule log[1/(ab) + 1/(bc) + 1/(ac)].", f: ["1"],
+    s: ["Girard (divida por 2): a + b + c = 30/2 = 15; abc = 3/2.", "1/(ab) + 1/(bc) + 1/(ac) = (c + a + b)/(abc) = 15 ÷ 3/2 = 10.", "log 10 = 1."] },
+  { l: 3, q: "Sendo a, b e c as raízes de 2x³ − 3x² + 5x + 1 = 0, calcule E = a²b² + a²c² + b²c².", f: ["31/4"],
+    s: ["Girard: a + b + c = 3/2; ab + ac + bc = 5/2; abc = −1/2.", "(ab + ac + bc)² = a²b² + a²c² + b²c² + 2abc(a + b + c).", "E = (5/2)² − 2·(−1/2)·(3/2) = 25/4 + 3/2 = 25/4 + 6/4 = 31/4 = 7.75."] },
+  { l: 3, q: "Resolva 64x³ − 56x² + 14x − 1 = 0, sabendo que suas raízes estão em PG.", f: ["1/8", "1/4", "1/2"], set: true,
+    s: ["Raízes em PG: a/q, a, aq. Produto = a³ = −(−1)/64 = 1/64 ⇒ a = 1/4.", "Briot-Ruffini com 1/4: 64, −56, 14, −1 → 64, −40, 4, resto 0.", "64x² − 40x + 4 = 0 ⇒ 16x² − 10x + 1 = 0 ⇒ x = (10 ± 6)/32.", "x = 1/2 ou x = 1/8. S = {1/8, 1/4, 1/2} (razão 2)."] },
+  { l: 3, q: "As raízes da equação x³ − 6x² + kx + 64 = 0 estão em PG. Calcule k.", f: ["-24"],
+    s: ["Raízes a/q, a, aq: produto a³ = −64 ⇒ a = −4 é raiz.", "P(−4) = −64 − 6·16 − 4k + 64 = −96 − 4k = 0.", "k = −24."] },
+  { l: 3, q: "As raízes de x² + bx + 12 = 0 são, cada uma, 7 unidades maiores que as raízes de x² + βx + 12 = 0. Calcule β.", f: ["7"],
+    s: ["Sejam r e s as raízes de x² + βx + 12: r + s = −β e rs = 12.", "As raízes da outra são r + 7 e s + 7, com produto 12: (r + 7)(s + 7) = rs + 7(r + s) + 49 = 12.", "12 + 7(r + s) + 49 = 12 ⇒ r + s = −7.", "β = −(r + s) = 7."] },
+  { l: 3, q: "Dado f = | x  x  x ; x + 1  −2  x − 1 ; x  0  1 | (determinante 3×3, linhas separadas por ;), determine as raízes de f.", f: ["0", "√3", "-√3"], set: true,
+    s: ["Pela 1ª linha: f = x·(−2·1 − (x − 1)·0) − x·((x + 1)·1 − (x − 1)·x) + x·((x + 1)·0 − (−2)·x).", "= −2x − x(x + 1 − x² + x) + 2x² = −2x − x(−x² + 2x + 1) + 2x².", "= −2x + x³ − 2x² − x + 2x² = x³ − 3x.", "x(x² − 3) = 0 ⇒ x = 0 ou x = ±√3."] },
+  { l: 3, q: "Sabendo que −2 é raiz de f(x) = | x  −1  1 ; 1  x  0 ; 0  k  x |, com k real, determine k.", f: ["10"],
+    s: ["Pela 1ª linha: f(x) = x·(x·x − 0·k) − (−1)·(1·x − 0·0) + 1·(1·k − x·0).", "f(x) = x³ + x + k.", "f(−2) = −8 − 2 + k = 0 ⇒ k = 10."] },
+  { l: 3, q: "Com k = 10, f(x) = x³ + x + 10 tem −2 como raiz. Determine as demais raízes.", f: ["1+2i", "1-2i"], set: true,
+    s: ["Briot-Ruffini com −2: coeficientes 1, 0, 1, 10 → 1, −2, 5, resto 0.", "Quociente x² − 2x + 5. Δ = 4 − 20 = −16 ⇒ √Δ = 4i.", "x = (2 ± 4i)/2 = 1 ± 2i."] },
+  { l: 3, q: "Se m é raiz da equação x⁶ − (m + 1)x⁵ + 32 = 0, determine o resto da divisão do polinômio por x − 1.", f: ["30"],
+    s: ["m é raiz: m⁶ − (m + 1)m⁵ + 32 = 0 ⇒ m⁶ − m⁶ − m⁵ + 32 = 0 ⇒ m⁵ = 32 ⇒ m = 2.", "O polinômio é P(x) = x⁶ − 3x⁵ + 32.", "Resto da divisão por x − 1 = P(1) = 1 − 3 + 32 = 30.", "O gabarito da lista traz resto 0, mas P(1) = 30."] },
+  { l: 3, q: "Resolva x⁴ − 2x² − 3x − 2 = 0.", f: ["-1", "2", "-1/2+√3/2i", "-1/2-√3/2i"], set: true,
+    s: ["Candidatas racionais: ±1, ±2. P(−1) = 1 − 2 + 3 − 2 = 0 ✓; P(2) = 16 − 8 − 6 − 2 = 0 ✓.", "Dividindo por (x + 1)(x − 2) = x² − x − 2: quociente x² + x + 1.", "x² + x + 1 = 0: Δ = 1 − 4 = −3 ⇒ x = (−1 ± i√3)/2.", "S = {−1, 2, −1/2 + (√3/2)i, −1/2 − (√3/2)i}."] },
+  { l: 3, q: "Resolva x³ + 4x² + 2x − 4 = 0.", f: ["-2", "-1+√3", "-1-√3"], set: true,
+    s: ["Candidatas: ±1, ±2, ±4. P(−2) = −8 + 16 − 4 − 4 = 0 ✓.", "Briot-Ruffini com −2: 1, 4, 2, −4 → 1, 2, −2, resto 0.", "x² + 2x − 2 = 0: Δ = 4 + 8 = 12 ⇒ x = (−2 ± 2√3)/2 = −1 ± √3.", "S = {−2, −1 + √3, −1 − √3}."] },
+  { l: 3, q: "Resolva x⁴ + 2x³ − 2x² + 2x − 3 = 0.", f: ["1", "-3", "i", "-i"], set: true,
+    s: ["Soma dos coeficientes: 1 + 2 − 2 + 2 − 3 = 0 ⇒ x = 1 é raiz.", "Briot-Ruffini com 1: 1, 3, 1, 3, resto 0. Quociente x³ + 3x² + x + 3.", "Agrupe: x²(x + 3) + (x + 3) = (x + 3)(x² + 1).", "S = {1, −3, i, −i}."] },
+  { l: 3, q: "Resolva 2x⁴ − 3x³ − 13x² + 37x − 15 = 0.", f: ["-3", "1/2", "2+i", "2-i"], set: true,
+    s: ["Candidatas p/q: p divide 15, q divide 2. P(−3) = 162 + 81 − 117 − 111 − 15 = 0 ✓.", "Briot-Ruffini com −3: 2, −3, −13, 37, −15 → 2, −9, 14, −5, resto 0.", "Com 1/2 em 2x³ − 9x² + 14x − 5: 2, −8, 10, resto 0 ✓. Sobra 2x² − 8x + 10 = 2(x² − 4x + 5).", "x² − 4x + 5 = 0: Δ = −4 ⇒ x = 2 ± i. S = {−3, 1/2, 2 + i, 2 − i}."] }
 ];
 const MQ = MAT_RAW.map((r, id) => ({ id, ...r }));
 
@@ -1585,7 +1799,7 @@ const matExpoTxt = (k) => String(Math.round(matExpo(k) * 1000) / 1000);
 const matFormula = (k) => `${matForca(k).toFixed(1).replace(/\.0$/, "")}<sup>${matExpoTxt(k)}</sup>`;
 
 /* ---------- recordes da DLC (por conta, neste aparelho) ---------- */
-const MAT_KEY = "masmorra-dlc-matematica";
+const MAT_KEY = "masmorra-dlc-polinomios";
 function matRecordes() {
   try { const d = JSON.parse(localStorage.getItem(MAT_KEY)); return (d && d[USER.name.toLowerCase()]) || {}; } catch (e) { return {}; }
 }
@@ -1603,10 +1817,8 @@ function matSalvaRecorde(lvl, r) {
 
 /* ---------- regras ---------- */
 function matComecar(lvl) {
-  S = { screen: "mat-ring", m: {
-    lvl, hp: MAT_HP, k: 0, combo: 0, score: 0, hits: 0, tries: 0, missed: [], ko: false,
-    deck: shuffle(MQ.filter((q) => q.l === lvl).map((q) => q.id)), total: MQ.filter((q) => q.l === lvl).length, cur: null
-  } };
+  const ids = MQ.filter((q) => q.l === lvl).map((q) => q.id); /* ordem fixa: da mais fácil para a mais difícil */
+  S = { screen: "mat-ring", m: { lvl, hp: MAT_HP, k: 0, combo: 0, score: 0, hits: 0, tries: 0, log: [], ko: false, continuar: false, deck: ids, total: ids.length, cur: null } };
   matSacar();
   render();
 }
@@ -1624,43 +1836,49 @@ async function matResponder(escolha) {
     ok = c.order[escolha] === 0;
   } else {
     c.vals = escolha;
-    if (escolha.some((v) => !String(v).trim())) { c.err = q.f.length > 1 ? "Preencha todos os campos." : "Digite uma resposta."; render(); return; }
+    if (escolha.some((v) => !String(v).trim())) { c.err = q.f.length > 1 ? "Preencha todos os campos." : "Digite uma resposta."; c.errAt = escolha.findIndex((v) => !String(v).trim()); render(); return; }
     const ruim = escolha.findIndex((v) => !matLer(v));
-    if (ruim >= 0) { c.err = `Não entendi “${escolha[ruim]}”. Escreva números como 1.5, 3/4, 2-3i ou 2√7.`; c.errAt = ruim; render(); return; }
+    if (ruim >= 0) { c.err = `Não entendi “${escolha[ruim]}”. Escreva números como 1.5, 3/4, -2, 2√7 ou 1+2i.`; c.errAt = ruim; render(); return; }
     ok = matConfere(q, escolha);
   }
   c.err = ""; c.done = true; c.ok = ok;
   m.tries++;
-  const antes = m.hp;
+  const antes = m.hp, jaCaiu = m.ko;
   c.hpAntes = antes;
   if (ok) {
     m.k++; m.hits++;
     c.k = m.k;
-    c.dmg = matGolpe(m.k);
+    c.dmg = jaCaiu ? 0 : matGolpe(m.k);
     m.hp = Math.max(0, m.hp - c.dmg);
     c.pts = 10 * m.k * (m.lvl + 1) + Math.round(Math.min(c.dmg, antes));
-    if (m.hp <= 0) { m.ko = true; c.bonus = 250 * (m.lvl + 1); c.pts += c.bonus; }
+    if (!jaCaiu && m.hp <= 0) { m.ko = true; c.bonus = 250 * (m.lvl + 1); c.pts += c.bonus; }
     m.score += c.pts;
     m.combo = Math.max(m.combo, m.k);
   } else {
     c.lost = m.k;
     m.k = 0;
-    m.missed.push({ id: c.id, given: q.o ? q.o[c.order[escolha]] : escolha.join(" ; ") });
   }
+  m.log.push({ id: c.id, ok, given: q.o ? q.o[c.order[escolha]] : escolha.slice() });
   busy = true;
   render();
-  try { await (ok ? matSoco(c, antes) : matErro(c)); } finally { busy = false; }
+  try { await (jaCaiu ? wait(150) : ok ? matSoco(c, antes) : matErro(c)); } finally { busy = false; }
+  $app.querySelectorAll("[data-act='mat-next'], [data-act='mat-cont']").forEach((b) => { b.disabled = false; });
   const nb = document.getElementById("matNext");
-  if (nb) { nb.disabled = false; nb.focus({ preventScroll: true }); }
+  if (nb) nb.focus({ preventScroll: true });
 }
 function matProxima() {
   const m = S.m;
   if (busy || !m.cur || !m.cur.done) return;
-  if (m.ko || !m.deck.length) {
+  if (!m.deck.length || (m.ko && !m.continuar)) {
     m.newBest = matSalvaRecorde(m.lvl, { score: m.score, ko: m.ko, combo: m.combo });
     S.screen = "mat-end";
   } else matSacar();
   render();
+}
+function matContinuar() {
+  if (busy || !S.m.cur || !S.m.cur.done) return;
+  S.m.continuar = true;
+  matProxima();
 }
 
 /* ---------- animações ---------- */
@@ -1754,39 +1972,72 @@ function vMatBanner() {
     <div class="dlc-txt">
       <span class="eyebrow"><span class="dlc-tag">DLC</span> Ringue da Matemática</span>
       <h2>Soque o boneco de palha com contas</h2>
-      <p class="muted">Números complexos e polinômios em quatro níveis, sem relógio. Cada acerto é um soco, e a sequência de acertos faz o golpe crescer até o nocaute.</p>
+      <p class="muted">Polinômios em quatro níveis, das Listas 1, 2 e 3, sem relógio e com a resolução completa de cada pergunta. Cada acerto é um soco, e a sequência de acertos faz o golpe crescer até o nocaute.</p>
       <div class="row"><button class="btn" data-act="mat-home">Entrar no ringue</button>${kos ? `<span class="chip">${kos} de 4 nocautes</span>` : ""}</div>
     </div>
   </section>`;
 }
 
+/* ---------- explicações ---------- */
+const matCerta = (q) => q.o ? mfmt(q.o[0])
+  : q.set ? `{ ${q.f.map(matMostra).join(" ; ")} }`
+  : q.f.map((v, i) => `${q.lab ? esc(q.lab[i]) + " " : ""}${matMostra(v)}`).join(" · ");
+const matDada = (q, given) => q.o ? mfmt(given)
+  : given.map((v, i) => `${q.lab ? esc(q.lab[i]) + " " : ""}${esc(String(v).trim())}`).join(q.lab ? " · " : " ; ");
+const matPassos = (q) => `<div class="passos"><span class="eyebrow">Resolução passo a passo</span><ol>${q.s.map((p) => `<li>${mfmt(p)}</li>`).join("")}</ol></div>`;
+function matAlternativas(q, dada) {
+  if (!q.o) return "";
+  const outras = q.o.map((t, i) => ({ t, w: q.ow[i] })).slice(1).filter((x) => x.t !== dada);
+  const marcada = dada != null && dada !== q.o[0] ? `<p class="porque"><b>Por que “${mfmt(dada)}” está errada:</b> ${mfmt(q.ow[q.o.indexOf(dada)])}</p>` : "";
+  return `${marcada}
+    <details class="outras"><summary>${marcada ? "Por que as outras alternativas também estão erradas" : "Por que as outras alternativas estão erradas"}</summary>
+      <ul>${outras.map((x) => `<li><b>${mfmt(x.t)}</b>: ${mfmt(x.w)}</li>`).join("")}</ul>
+    </details>`;
+}
+/* bloco completo de estudo: o que foi respondido, a resposta certa, a resolução e as alternativas */
+function matEstudo(q, ok, given) {
+  return `
+    <p class="linha-resp">${q.o ? "Você marcou" : "Sua resposta"}: <b class="${ok ? "certo" : "errado"}">${matDada(q, given)}</b></p>
+    ${ok ? "" : `<p class="linha-resp">Resposta certa: <b class="certo">${matCerta(q)}</b></p>`}
+    ${q.o ? matAlternativas(q, given) : ""}
+    ${matPassos(q)}`;
+}
+
+/* ---------- telas ---------- */
 function vMatHome() {
   const rec = matRecordes();
-  const linhas = [1, 2, 3, 4, 5, 6].map((k) => {
+  let acum = 0, koEm = 0;
+  const linhas = [];
+  for (let k = 1; k <= 30 && !koEm; k++) {
     const d = matGolpe(k);
-    return `<tr><td class="num">${k}º</td><td class="num">${matFormula(k)}</td><td class="num">${d >= MAT_HP ? `${matNum(d)} <b>nocaute</b>` : matNum(d)}</td></tr>`;
-  }).join("");
+    acum += d;
+    if (acum >= MAT_HP) koEm = k;
+    if ([1, 2, 5, 10, 15, 18, 19].includes(k) || koEm) {
+      linhas.push(`<tr><td class="num">${k}º</td><td class="num">${matFormula(k)}</td><td class="num">${matNum(d)}</td><td class="num">${koEm ? `${matNum(acum)} <b>nocaute</b>` : matNum(acum)}</td></tr>`);
+    }
+  }
   return `
   <section class="title">
     <span class="eyebrow"><span class="dlc-tag">DLC</span> Masmorra do Deploy</span>
     <h1>Ringue da <span>Matemática</span></h1>
-    <p class="lead">Um boneco de palha com ${MAT_HP} de vida, pendurado como saco de pancadas. Responda certo para socar. Não tem relógio: pense, calcule e escreva a resposta.</p>
+    <p class="lead">Polinômios em quatro níveis, baseados nas Listas 1, 2 e 3. Um boneco de palha com ${MAT_HP} de vida, pendurado como saco de pancadas: cada resposta certa é um soco. Não tem relógio, e toda pergunta, certa ou errada, mostra a resolução completa.</p>
   </section>
   <section class="mat-rules">
     <div class="panel">
       <h3>Sequência é tudo</h3>
-      <p class="muted">Todo golpe começa em 1. O expoente começa em 1.001 e dobra a cada acerto seguido, e a força do soco sobe 0.1 por golpe. Errar devolve você ao golpe 1.</p>
-      <table class="golpes"><thead><tr><th>Golpe</th><th>Conta</th><th>Dano</th></tr></thead><tbody>${linhas}</tbody></table>
+      <p class="muted">Todo golpe começa em 1. O expoente começa em 1.001 e, a cada acerto seguido, soma 1/10 dele mesmo. A força do soco sobe 0.1 por golpe. Errar devolve você ao golpe 1.</p>
+      <table class="golpes"><thead><tr><th>Golpe</th><th>Conta</th><th>Dano</th><th>Total</th></tr></thead><tbody>${linhas.join("")}</tbody></table>
+      <p class="muted">Com ${koEm} acertos seguidos o boneco cai. Sequências menores também tiram vida, só que bem menos.</p>
     </div>
     <div class="panel">
       <h3>Como responder</h3>
-      <p class="muted">Algumas perguntas são de marcar. A maioria pede a conta: digite o resultado. Use <b>ponto</b> no lugar da vírgula decimal.</p>
+      <p class="muted">As perguntas seguem a ordem da lista, da mais fácil para a mais difícil. Algumas são de marcar; a maioria pede a conta e a resposta digitada. Use <b>ponto</b> no lugar da vírgula decimal.</p>
       <ul class="exemplos">
-        <li><code>1.25</code> ou <code>5/4</code></li>
-        <li><code>2-3i</code>, <code>-i</code>, <code>1/2i</code></li>
-        <li><code>2√7</code> ou <code>5.29</code></li>
+        <li><code>0.5</code> ou <code>1/2</code>, <code>-10/3</code></li>
+        <li><code>2√3</code>, <code>-1+√3</code></li>
+        <li><code>3-i</code>, <code>2i</code>, <code>-1/2+√3/2i</code></li>
       </ul>
-      <p class="muted">Pontos por acerto: 10 × golpe × nível, mais o dano causado. O nocaute dá bônus.</p>
+      <p class="muted">Pontos por acerto: 10 × golpe × nível, mais o dano causado. O nocaute dá bônus. Depois do nocaute você pode continuar estudando as perguntas que faltam.</p>
     </div>
   </section>
   <section style="display:flex;flex-direction:column;gap:12px">
@@ -1796,11 +2047,10 @@ function vMatHome() {
         const r = rec[i], qt = MQ.filter((q) => q.l === i).length;
         return `
         <button class="card mat-card" style="--dom:${n.cor}" data-act="mat-go" data-v="${i}">
-          <span class="band"><span>Nível ${i + 1}</span><span>${qt} perguntas</span></span>
+          <span class="band"><span>${esc(n.fonte)}</span><span>${qt} perguntas</span></span>
           <span class="skill">${n.nome}</span>
           <span class="desc"><b>${esc(n.tema)}.</b> ${esc(n.txt)}</span>
           <span class="tags">${r ? `<span class="tag">${r.ko ? "Nocaute ✓" : "Sem nocaute"}</span><span class="tag">Recorde ${r.best}</span><span class="tag">Maior sequência ${r.combo}</span>` : `<span class="tag">Ainda não jogado</span>`}</span>
-          <span class="src">${esc(n.fonte)}</span>
         </button>`;
       }).join("")}
     </div>
@@ -1808,12 +2058,30 @@ function vMatHome() {
   <div class="row"><button class="btn ghost" data-act="home">Voltar à masmorra</button></div>`;
 }
 
+function vMatIntro() {
+  const i = S.lvl, n = MAT_NIVEIS[i], qt = MQ.filter((q) => q.l === i).length;
+  return `
+  <section class="title">
+    <span class="eyebrow"><span class="dlc-tag">DLC</span> ${esc(n.fonte)}</span>
+    <h1>${n.nome}: <span>${esc(n.tema)}</span></h1>
+    <p class="lead">${esc(n.txt)} São ${qt} perguntas, da mais fácil para a mais difícil.</p>
+  </section>
+  <section class="panel resumo" style="--dom:${n.cor}">
+    <h2>Resumo da matéria</h2>
+    <ul>${n.resumo.map((t) => `<li>${mfmt(t)}</li>`).join("")}</ul>
+  </section>
+  <div class="row">
+    <button class="btn" data-act="mat-start" data-v="${i}">Começar o ${n.nome}</button>
+    <button class="btn ghost" data-act="mat-home">Voltar</button>
+  </div>`;
+}
+
 function vMatCombo(m) {
   const prox = m.k + 1;
   if (m.ko) return `
   <div class="combo hot">
     <div><span class="eyebrow">Sequência</span><b class="num">×${m.k}</b></div>
-    <div><span class="eyebrow">Boneco</span><b class="num">Nocaute</b></div>
+    <div><span class="eyebrow">Boneco</span><b class="num">Nocaute</b><span class="muted">${m.continuar ? "Modo estudo: sem dano" : ""}</span></div>
   </div>`;
   return `
   <div class="combo${m.k ? " hot" : ""}">
@@ -1838,7 +2106,7 @@ function vMatRing() {
           ${q.f.map((_, i) => {
             const rot = q.lab ? q.lab[i] : q.f.length > 1 ? `${i + 1}ª raiz` : "Resposta";
             return `<label class="ans${c.errAt === i && c.err ? " bad" : ""}"><span>${esc(rot)}</span>
-              <input name="r${i}" inputmode="text" spellcheck="false" autocapitalize="none" enterkeyhint="${i === q.f.length - 1 ? "done" : "next"}" value="${esc(c.vals[i] || "")}" ${c.done ? "disabled" : ""} placeholder="${i === 0 ? "ex.: 1.5 · 3/4 · 2-3i" : ""}"></label>`;
+              <input name="r${i}" inputmode="text" spellcheck="false" autocapitalize="none" enterkeyhint="${i === q.f.length - 1 ? "done" : "next"}" value="${esc(c.vals[i] || "")}" ${c.done ? "disabled" : ""} placeholder="${i === 0 ? "ex.: 1.5 · 3/4 · 2√3" : ""}"></label>`;
           }).join("")}
         </div>
         ${q.set ? `<p class="set-note">Em qualquer ordem.</p>` : ""}
@@ -1849,15 +2117,19 @@ function vMatRing() {
         <p class="err" role="alert">${esc(c.err || "")}</p>
         <button class="btn punch" type="submit">Socar</button>`}
       </form>`;
-  const resposta = q.o ? mfmt(q.o[0]) : (q.set ? `{ ${q.f.map(matMostra).join(" ; ")} }` : q.f.map((v, i) => `${q.lab ? esc(q.lab[i]) + " " : ""}${matMostra(v)}`).join(" · "));
+  const ultimo = m.log[m.log.length - 1];
+  const fim = !m.deck.length, acabouDeCair = m.ko && !m.continuar;
+  const titulo = c.ok
+    ? (c.dmg ? `Certo! Golpe ${c.k}: ${matNum(c.dmg)} de dano · +${c.pts} pontos` : `Certo! Sequência ×${c.k} · +${c.pts} pontos`)
+    : c.lost ? `Errou · a sequência de ${c.lost} acabou` : "Errou";
   return `
   <header class="hud">
-    <div class="lvl"><span class="eyebrow"><span class="dlc-tag">DLC</span> Nível ${m.lvl + 1} · ${esc(n.tema)}</span><h2>${n.nome}</h2></div>
+    <div class="lvl"><span class="eyebrow"><span class="dlc-tag">DLC</span> ${esc(n.fonte)} · ${esc(n.tema)}</span><h2>${n.nome}</h2></div>
     <div class="wallet"><span><b>${m.score}</b> pontos</span><span>Acertos ${m.hits}/${m.tries}</span><span>Maior sequência ${m.combo}</span></div>
   </header>
   <section class="ring" style="--dom:${n.cor}">
     <div class="panel ring-side">
-      <div class="ringbox"><div class="bag${m.ko && !busy ? " down" : ""}">${MAT_SACO}</div></div>
+      <div class="ringbox"><div class="bag${m.ko && !(busy && c.bonus) ? " down" : ""}">${MAT_SACO}</div></div>
       <div class="ring-info">
         <div class="row between"><span class="eyebrow">Boneco de palha</span><span class="mat-hpnum hpnum">${matNum(hpVis)} / ${MAT_HP}</span></div>
         <div class="bar mat-hp" role="progressbar" aria-label="Vida do boneco" aria-valuemin="0" aria-valuemax="${MAT_HP}" aria-valuenow="${Math.round(m.hp)}"><i style="width:${(hpVis / MAT_HP) * 100}%"></i></div>
@@ -1871,12 +2143,14 @@ function vMatRing() {
         ${corpo}
         ${c.done ? `
         <div class="feedback ${c.ok ? "ok" : "bad"}">
-          <strong>${c.ok ? `Golpe ${c.k}: ${matNum(c.dmg)} de dano · +${c.pts} pontos` : c.lost ? `Errou · a sequência de ${c.lost} acabou` : "Errou"}</strong>
+          <strong>${titulo}</strong>
           ${c.ok && c.bonus ? `<p><b>Nocaute!</b> Bônus de ${c.bonus} pontos.</p>` : ""}
-          ${!c.ok ? `<p>Resposta certa: <b>${resposta}</b></p>` : ""}
-          <p>${mfmt(q.e)}</p>
+          ${matEstudo(q, c.ok, ultimo.given)}
         </div>
-        <button class="btn" data-act="mat-next" id="matNext" ${busy ? "disabled" : ""}>${m.ko || !m.deck.length ? "Ver resultado" : "Próxima pergunta"}</button>` : ""}
+        <div class="row mat-acoes">
+          ${acabouDeCair && !fim ? `<button class="btn ghost" data-act="mat-cont" ${busy ? "disabled" : ""}>Continuar estudando (${m.deck.length} restantes)</button>` : ""}
+          <button class="btn" data-act="mat-next" id="matNext" ${busy ? "disabled" : ""}>${fim || acabouDeCair ? "Ver resultado" : "Próxima pergunta"}</button>
+        </div>` : ""}
       </div>
     </div>
   </section>
@@ -1886,17 +2160,18 @@ function vMatRing() {
 function vMatEnd() {
   const m = S.m, n = MAT_NIVEIS[m.lvl], rec = matRecordes()[m.lvl] || {};
   const pct = m.tries ? Math.round((m.hits / m.tries) * 100) : 0;
+  const erros = m.log.filter((x) => !x.ok).length;
   return `
   <section class="title end">
-    <span class="eyebrow"><span class="dlc-tag">DLC</span> Nível ${m.lvl + 1} · ${n.nome}</span>
+    <span class="eyebrow"><span class="dlc-tag">DLC</span> ${n.nome} · ${esc(n.tema)}</span>
     <h1>${m.ko ? "Nocaute!" : "O boneco aguentou"}</h1>
     <p class="lead">${m.ko
-      ? `O boneco de palha caiu depois de ${m.tries} perguntas. Maior sequência: ${m.combo} acertos seguidos.`
-      : `As perguntas do nível acabaram com o boneco em ${matNum(m.hp)} de vida. Sequências mais longas batem muito mais forte: tente de novo.`}</p>
+      ? `O boneco de palha caiu. Você respondeu ${m.tries} de ${m.total} perguntas, com maior sequência de ${m.combo} acertos.`
+      : `As perguntas do nível acabaram com o boneco em ${matNum(m.hp)} de vida. Sequências longas batem muito mais forte: tente de novo.`}</p>
     <p class="wallet"><span>Pontuação <b>${m.score}</b></span><span>${m.newBest ? "Novo recorde neste nível!" : `Recorde do nível: ${rec.best || m.score}`}</span></p>
     <div class="row">
-      <button class="btn" data-act="mat-go" data-v="${m.lvl}">Tentar de novo</button>
-      ${m.lvl < MAT_NIVEIS.length - 1 ? `<button class="btn ghost" data-act="mat-go" data-v="${m.lvl + 1}">Nível ${m.lvl + 2}: ${MAT_NIVEIS[m.lvl + 1].nome}</button>` : ""}
+      <button class="btn" data-act="mat-start" data-v="${m.lvl}">Tentar de novo</button>
+      ${m.lvl < MAT_NIVEIS.length - 1 ? `<button class="btn ghost" data-act="mat-go" data-v="${m.lvl + 1}">Ir para o ${MAT_NIVEIS[m.lvl + 1].nome}</button>` : ""}
       <button class="btn ghost" data-act="mat-home">Outros níveis</button>
     </div>
   </section>
@@ -1905,20 +2180,27 @@ function vMatEnd() {
     <div class="panel stat"><span class="eyebrow">Maior sequência</span><span class="big">×${m.combo}</span><span class="hpnum">Golpe mais forte: ${matNum(m.combo ? matGolpe(m.combo) : 0)}</span></div>
     <div class="panel stat"><span class="eyebrow">Vida do boneco</span><span class="big">${matNum(m.hp)}</span><div class="bar"><i style="width:${(m.hp / MAT_HP) * 100}%"></i></div><span class="hpnum">de ${MAT_HP}</span></div>
   </section>
-  ${m.missed.length ? `
   <section class="review">
-    <h2 style="font-size:24px">Para revisar</h2>
-    ${m.missed.map((x) => {
+    <h2 style="font-size:24px">Revisão completa</h2>
+    <p class="muted">Todas as ${m.tries} perguntas respondidas, na ordem do nível, com a resolução passo a passo. ${erros ? `${erros === 1 ? "O erro aparece aberto" : `Os ${erros} erros aparecem abertos`}; toque num acerto para revisar também.` : "Você não errou nenhuma: toque em qualquer pergunta para revisar a resolução."}</p>
+    ${m.log.map((x, i) => {
       const q = MQ[x.id];
-      const certa = q.o ? mfmt(q.o[0]) : (q.set ? `{ ${q.f.map(matMostra).join(" ; ")} }` : q.f.map((v, i) => `${q.lab ? esc(q.lab[i]) + " " : ""}${matMostra(v)}`).join(" · "));
-      return `<div class="panel miss" style="--dom:${n.cor}">
-        <p><b>${mfmt(q.q)}</b></p>
-        <p class="you">Sua resposta: ${q.o ? mfmt(x.given) : esc(x.given)}</p>
-        <p class="ans">Correta: ${certa}</p>
-        <p class="exp">${mfmt(q.e)}</p>
-      </div>`;
+      return `<details class="panel rev ${x.ok ? "rev-ok" : "rev-bad"}" ${x.ok ? "" : "open"}>
+        <summary><span class="marca">${x.ok ? "✓" : "✗"}</span><span><span class="eyebrow">Pergunta ${i + 1} · ${x.ok ? "acertou" : "errou"}</span>${mfmt(q.q)}</span></summary>
+        <div class="rev-corpo">${matEstudo(q, x.ok, x.given)}</div>
+      </details>`;
     }).join("")}
-  </section>` : ""}`;
+    ${m.deck.length ? `
+    <h3 style="font-size:20px;margin-top:8px">Perguntas que ficaram sem resposta (${m.deck.length})</h3>
+    <p class="muted">O nocaute encerrou o nível antes delas. A resolução também está aqui para você estudar.</p>
+    ${m.deck.map((id, i) => {
+      const q = MQ[id];
+      return `<details class="panel rev">
+        <summary><span class="marca">·</span><span><span class="eyebrow">Pergunta ${m.tries + i + 1} · não respondida</span>${mfmt(q.q)}</span></summary>
+        <div class="rev-corpo"><p class="linha-resp">Resposta: <b class="certo">${matCerta(q)}</b></p>${q.o ? matAlternativas(q, null) : ""}${matPassos(q)}</div>
+      </details>`;
+    }).join("")}` : ""}
+  </section>`;
 }
 
 function matTecla(sim) {
@@ -1937,7 +2219,7 @@ document.addEventListener("focusin", (e) => { if (e.target.matches && e.target.m
 /* ================= render ================= */
 function render() {
   if (!USER && S.screen !== "login") S = { screen: "login" };
-  const views = { login: vLogin, start: vStart, intro: vIntro, battle: vBattle, clear: vClear, shop: vShop, end: vEnd, "mat-home": vMatHome, "mat-ring": vMatRing, "mat-end": vMatEnd };
+  const views = { login: vLogin, start: vStart, intro: vIntro, battle: vBattle, clear: vClear, shop: vShop, end: vEnd, "mat-home": vMatHome, "mat-intro": vMatIntro, "mat-ring": vMatRing, "mat-end": vMatEnd };
   const prevScreen = $app.dataset.screen;
   $app.innerHTML = (views[S.screen] || vStart)();
   $app.dataset.screen = S.screen;
@@ -1993,7 +2275,9 @@ document.addEventListener("click", (e) => {
     case "home": S = { screen: "start" }; render(); break;
     case "logout": logout(); break;
     case "mat-home": S = { screen: "mat-home" }; render(); break;
-    case "mat-go": matComecar(+v); break;
+    case "mat-go": S = { screen: "mat-intro", lvl: +v }; render(); break;
+    case "mat-start": matComecar(+v); break;
+    case "mat-cont": matContinuar(); break;
     case "mat-mc": matResponder(+v); break;
     case "mat-next": matProxima(); break;
     case "mat-key": matTecla(v); break;
