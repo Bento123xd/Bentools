@@ -9,7 +9,7 @@ Os instaladores ficam nas [Releases do repositório](https://github.com/Bento123
 - **Linux** (Debian, Ubuntu, Mint, 64 bits): `masmorra-do-deploy_<versão>_amd64.deb`
 
   ```bash
-  sudo apt install ./masmorra-do-deploy_1.0.0_amd64.deb
+  sudo apt install ./masmorra-do-deploy_1.1.0_amd64.deb
   ```
 
 - **Windows 10 e 11** (64 bits): `Masmorra-do-Deploy-Setup-<versão>.exe`. O instalador não tem assinatura digital; se o SmartScreen avisar, clique em “Mais informações” e “Executar assim mesmo”.
@@ -37,6 +37,35 @@ Também dá para jogar no navegador abrindo `index.html`.
   - Carta de ataque: Hotfix em Produção (4 de dano direto).
   - Melhorias: Certificações (+1 de dano por área) e Servidor Redundante (+1 de uptime máximo).
 - No fim, a tela de resultado mostra o acerto por área e revisa as perguntas que você errou.
+
+## DLC: Ringue da Matemática
+
+Modo extra, aberto pela tela inicial, com 113 perguntas de Números Complexos e Polinômios baseadas nas listas do curso Técnico em Desenvolvimento de Sistemas (IFRS Canoas, 4º ano). Cada nível tem um tema:
+
+| Nível | Tema | Perguntas |
+|---|---|---|
+| Júnior | Complexos na forma algébrica: unidade imaginária, potências de i, igualdade, conjugado, módulo e operações | 29 |
+| Pleno | Divisão de complexos, argumento e forma trigonométrica | 26 |
+| Sênior | Polinômios: grau, valor numérico, identidade, teorema do resto, D'Alembert e Briot-Ruffini | 28 |
+| Tech Lead | Equações algébricas: multiplicidade, raízes conjugadas, raízes racionais, PA, PG e Girard | 30 |
+
+- Não há limite de tempo. O alvo é um boneco de palha pendurado como saco de pancadas, com 1000 de vida. Cada acerto é um soco de boxe.
+- O dano cresce com a sequência de acertos. O golpe nº k vale `(1 + 0.1·(k − 1)) ^ (1.001 · 2^(k − 1))`:
+
+  | Golpe | Conta | Dano |
+  |---|---|---|
+  | 1º | 1^1.001 | 1 |
+  | 2º | 1.1^2.002 | 1.21 |
+  | 3º | 1.2^4.004 | 2.08 |
+  | 4º | 1.3^8.008 | 8.17 |
+  | 5º | 1.4^16.016 | 218.97 |
+  | 6º | 1.5^32.032 | 437 074 (nocaute) |
+
+  Errar volta ao golpe 1. Para ajustar a curva, mude `MAT_FORCA_PASSO` e `MAT_EXP_INICIAL` em `index.html`.
+- Pontos por acerto: `10 × golpe × nível + dano causado`. O nocaute dá bônus de 250 × nível.
+- Parte das perguntas é de marcar; a maioria pede a conta e a resposta digitada. Use ponto como separador decimal (a vírgula também é aceita). O leitor entende frações (`3/4`), raízes (`2√7`, `√2/2`), complexos (`2-3i`, `-i`, `1/2i`) e um `x =` no começo. Valores decimais são aceitos com 2 casas (`5.29` para `2√7`). Quando há várias raízes, a ordem não importa.
+- O nível termina no nocaute ou quando as perguntas acabam. Os recordes da DLC (pontos, nocaute e maior sequência por nível) ficam salvos por conta no próprio aparelho.
+- As perguntas ficam em `MAT_RAW`. Os gabaritos das listas têm alguns erros, que foram corrigidos no jogo: Lista 1 de Complexos, 4 (o certo é 3/2 ± i/2), 7 (√−100 ÷ 2 = 5i, não 10i) e 61h (−3√2 − 3√2i); Polinômios Lista 1, 8 (a = −10/3); Polinômios Lista 2, 18 (a = −3 e b = −7). A questão 21 da Lista 3 ficou de fora porque não tem solução: com x = 2i a parte real nunca zera.
 
 ## Desenvolvimento do app para computador
 

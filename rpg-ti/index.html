@@ -346,6 +346,94 @@ button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
   .card .power b { font-size: 30px; }
   .hand .card .skill { font-size: 16px; }
 }
+
+/* DLC: Ringue da Matemática */
+:root { --burlap: #c9a46b; --burlap-2: #b38d55; --burlap-dark: #6f5230; --straw: #ecd27a; --leather: #4a3020; --glove: #d9434f; --glove-dark: #9a2833; --dlc: #c7a8ff; }
+.dlc-tag { display: inline-block; font-family: var(--f-display); font-weight: 800; font-size: 11px; letter-spacing: .08em; padding: 1px 7px; border-radius: 5px; background: var(--dlc); color: #1a1230; margin-right: 6px; vertical-align: 1px; }
+.dlc-banner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: center; border-color: var(--dlc); background: linear-gradient(120deg, rgba(199,168,255,.10), transparent 60%), var(--panel); }
+.dlc-banner h2 { font-size: clamp(22px, 3.4vw, 28px); }
+.dlc-txt { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.mini-bag { width: 86px; }
+.mini-bag svg { width: 100%; height: auto; display: block; }
+.bag-svg .chain ellipse { fill: none; stroke: #8b95a5; stroke-width: 3; }
+.bag-svg .chain line { stroke: #8b95a5; stroke-width: 3; }
+.bag-svg .cap { fill: var(--leather); }
+.bag-svg .sack { fill: var(--burlap); stroke: var(--burlap-dark); stroke-width: 3; }
+.bag-svg .seam { stroke: var(--burlap-dark); stroke-width: 2; stroke-dasharray: 6 6; fill: none; }
+.bag-svg .band { fill: var(--burlap-2); stroke: var(--burlap-dark); stroke-width: 2; }
+.bag-svg .face path { stroke: #3a2614; stroke-width: 4; stroke-linecap: round; fill: none; }
+.bag-svg .tuft path { stroke: var(--straw); stroke-width: 4; stroke-linecap: round; fill: none; }
+.mat-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.mat-rules .panel { display: flex; flex-direction: column; gap: 10px; }
+.mat-rules h3 { font-size: 19px; }
+.golpes { border-collapse: collapse; width: 100%; font-size: 15px; }
+.golpes th { text-align: left; font-family: var(--f-display); font-weight: 600; font-size: 13px; color: var(--muted); padding: 4px 8px 6px 0; border-bottom: 1px solid var(--line); }
+.golpes td { padding: 5px 8px 5px 0; border-bottom: 1px dashed var(--line); }
+.golpes b { color: var(--gold); font-family: var(--f-display); }
+.exemplos { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.mat-levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 14px; }
+.mat-card { min-height: 0; }
+.mat-card .desc { display: block !important; }
+.mat-card .src { padding: 0 14px; font-size: 12px; color: var(--paper-muted); font-family: var(--f-display); font-weight: 600; }
+.mat-card .tags { min-height: 0; }
+.ring { display: grid; grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.ring-side { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 12px; }
+.ringbox { position: relative; height: 300px; display: grid; justify-items: center; overflow: visible;
+  background: radial-gradient(ellipse at 50% 100%, rgba(240,199,94,.10), transparent 60%); border-radius: 10px; }
+.bag { width: 150px; transform-origin: 50% 0; will-change: transform; transition: filter .1s; }
+.bag svg { width: 100%; height: auto; display: block; }
+.bag.hit { filter: brightness(1.5) saturate(.7); }
+.bag.down { animation: tombo .7s cubic-bezier(.3,.7,.4,1) forwards; }
+@keyframes tombo { 40% { transform: translateY(18px) rotate(-6deg); } to { transform: translateY(10px) rotate(16deg); filter: grayscale(.7) brightness(.7); } }
+.ring-info { display: flex; flex-direction: column; gap: 10px; }
+.mat-hp i { background: linear-gradient(90deg, var(--straw), var(--burlap)); }
+.combo { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: end; border-top: 1px dashed var(--line); padding-top: 10px; }
+.combo > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.combo sup, .golpes sup { font-size: .62em; }
+.combo b { font-family: var(--f-display); font-size: 28px; font-weight: 800; line-height: 1.05; overflow-wrap: anywhere; }
+.combo > div + div b { font-size: 20px; }
+.combo.hot b { color: var(--gold); }
+.combo .muted { font-size: 13px; }
+.combo.broken { animation: quebra .5s steps(2) 2; }
+@keyframes quebra { 50% { color: var(--bad); } }
+.glove { position: absolute; left: 0; width: 92px; pointer-events: none; z-index: 6; filter: drop-shadow(0 6px 8px rgba(0,0,0,.5)); }
+.glove svg { width: 100%; display: block; }
+.glove .fist { fill: var(--glove); }
+.glove .thumb { fill: var(--glove-dark); }
+.glove .cuff { fill: #f1e9d6; }
+.glove .shine { stroke: rgba(255,255,255,.55); stroke-width: 4; stroke-linecap: round; fill: none; }
+.straw { position: absolute; width: 3px; height: 14px; border-radius: 2px; background: var(--straw); pointer-events: none; z-index: 5; }
+.ko-stamp { position: absolute; z-index: 7; pointer-events: none; font-family: var(--f-display); font-weight: 800; font-size: 34px; letter-spacing: .06em;
+  color: var(--bad); border: 5px solid var(--bad); border-radius: 10px; padding: 2px 14px; background: rgba(14,19,27,.75); white-space: nowrap; }
+.mat-q { width: 100%; }
+.mat-q .band { background: var(--dom); }
+.mat-form { display: flex; flex-direction: column; gap: 12px; }
+.ans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; }
+.ans { display: flex; flex-direction: column; gap: 5px; font-family: var(--f-display); font-weight: 600; font-size: 14px; color: var(--paper-muted); }
+.ans input { font: 600 18px/1.3 var(--f-mono); color: var(--paper-ink); background: #fffaf0; border: 2px solid #d6caaf; border-radius: 9px; padding: 10px 12px; width: 100%; }
+.ans input:focus { outline: none; border-color: var(--paper-ink); }
+.ans input:disabled { opacity: .75; }
+.ans input::placeholder { color: #a89a7e; font-weight: 500; font-size: 15px; }
+.ans.bad input { border-color: var(--bad); }
+.set-note { font-size: 13px; color: var(--paper-muted); margin-top: -4px; }
+.keys { display: flex; gap: 6px; flex-wrap: wrap; }
+.key { min-width: 44px; height: 40px; border-radius: 8px; border: 1px solid #c9bda3; background: var(--paper-2); color: var(--paper-ink); font: 700 18px var(--f-mono); }
+.key:active { transform: translateY(1px); }
+.mat-q .err { color: #b8404a; }
+.btn.punch { align-self: flex-end; background: var(--glove); color: #fff; box-shadow: 0 4px 0 var(--glove-dark); }
+@media (max-width: 760px) {
+  .ring { grid-template-columns: 1fr; }
+  .ring-side { position: sticky; top: 0; z-index: 4; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 10px 12px; border-radius: 0 0 var(--r) var(--r); }
+  .ringbox { height: 150px; }
+  .bag { width: 80px; }
+  .glove { width: 56px; }
+  .combo { grid-template-columns: auto minmax(0, 1fr); gap: 10px; padding-top: 6px; }
+  .combo b { font-size: 22px; }
+  .combo > div + div b { font-size: 16px; }
+  .ko-stamp { font-size: 22px; border-width: 3px; }
+  .dlc-banner { grid-template-columns: 64px minmax(0, 1fr); gap: 14px; }
+  .mini-bag { width: 64px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
@@ -950,7 +1038,7 @@ const weakChip = (b) => b.fraco ? domChip(b.fraco, `Fraqueza: ${DOM[b.fraco].nom
 
 const nomeNivel = (c) => (c == null || c < 0) ? "Estagiário(a)" : NIVEIS[c].nome;
 const RELEASES = "https://github.com/Bento123xd/Bentools/releases";
-const VERSAO = "1.0.0";
+const VERSAO = "1.1.0";
 function vDownloads() {
   const base = `${RELEASES}/download/rpg-ti-v${VERSAO}`;
   return `
@@ -1031,6 +1119,7 @@ function vStart() {
     <p class="lead">Suba de Júnior a Tech Lead enfrentando quatro chefes. Cada carta é um ataque de Infra, Dev ou Redes: jogue, responda à pergunta técnica e cause dano. A cada nível as perguntas ficam mais difíceis, o tempo encurta e nenhuma pergunta se repete na jornada.</p>
   </section>
   ${vProfile()}
+  ${vMatBanner()}
   <section class="rules">
     <div class="panel"><h3>Cartas escondem perguntas</h3><p>A carta mostra só a área e o dano. A pergunta aparece quando você joga.</p></div>
     <div class="panel"><h3>Ataque a fraqueza</h3><p>Cada chefe tem uma área fraca. Cartas dessa área causam dano dobrado.</p></div>
@@ -1276,10 +1365,579 @@ function vEnd() {
   </section>` : ""}`;
 }
 
+/* ================= DLC: Ringue da Matemática =================
+ * Treino sem relógio contra um boneco de palha (saco de pancadas) com 1000 de vida.
+ * Cada acerto é um soco. Golpe nº k da sequência: dano = força^expoente, com
+ *   força    = 1 + 0.1·(k − 1)          → o 1º golpe é 1^1.001 = 1
+ *   expoente = 1.001 · 2^(k − 1)        → dobra a cada acerto seguido
+ * Errar zera a sequência. As perguntas vêm das listas de Números Complexos e Polinômios.
+ */
+const MAT_HP = 1000;
+const MAT_FORCA_PASSO = 0.1, MAT_EXP_INICIAL = 1.001;
+const matForca = (k) => 1 + MAT_FORCA_PASSO * (k - 1);
+const matExpo = (k) => MAT_EXP_INICIAL * 2 ** (k - 1);
+const matGolpe = (k) => matForca(k) ** matExpo(k);
+
+const MAT_NIVEIS = [
+  { nome: "Júnior", cor: "#7fc8d8", tema: "Complexos na forma algébrica", txt: "Unidade imaginária, potências de i, igualdade, conjugado, módulo e operações.", fonte: "Números Complexos · Lista 1, partes 1 a 9" },
+  { nome: "Pleno", cor: "#9ed3a9", tema: "Divisão e forma trigonométrica", txt: "Divisão de complexos, inverso, argumento e as formas polar e algébrica.", fonte: "Números Complexos · Lista 1, partes 10 a 12" },
+  { nome: "Sênior", cor: "#f0a07a", tema: "Polinômios e divisão", txt: "Grau, valor numérico, identidade, teorema do resto, D'Alembert e Briot-Ruffini.", fonte: "Polinômios · Listas 1 e 2" },
+  { nome: "Tech Lead", cor: "#c7a8ff", tema: "Equações algébricas", txt: "Multiplicidade, raízes complexas conjugadas, raízes racionais, PA, PG e relações de Girard.", fonte: "Polinômios · Lista 3" }
+];
+
+/* Formato: { l: nível, q: enunciado, e: explicação } e então
+ *   o: [correta, erradas…]              → pergunta de marcar
+ *   f: [respostas], lab?: [rótulos], set?: true (qualquer ordem) → pergunta de calcular e digitar
+ * As respostas usam o mesmo leitor que o jogador: 1.5, 3/4, 2-3i, 2√7, -1/2i… */
+const MAT_RAW = [
+  /* ---------- Júnior ---------- */
+  { l: 0, q: "Resolva x² + 25 = 0 em ℂ. Digite as duas raízes.", f: ["5i", "-5i"], set: true, e: "x² = −25 ⇒ x = ±√(−25) = ±5i." },
+  { l: 0, q: "Resolva x² − 4x + 5 = 0.", f: ["2+i", "2-i"], set: true, e: "Δ = 16 − 20 = −4 e √Δ = 2i ⇒ x = (4 ± 2i)/2 = 2 ± i." },
+  { l: 0, q: "Resolva x² − 6x + 13 = 0.", f: ["3+2i", "3-2i"], set: true, e: "Δ = 36 − 52 = −16 e √Δ = 4i ⇒ x = (6 ± 4i)/2 = 3 ± 2i." },
+  { l: 0, q: "Resolva 2x² − 6x + 5 = 0.", f: ["3/2+1/2i", "3/2-1/2i"], set: true, e: "Δ = 36 − 40 = −4 e √Δ = 2i ⇒ x = (6 ± 2i)/4 = 1.5 ± 0.5i." },
+  { l: 0, q: "Resolva x⁴ + 13x² + 36 = 0. São quatro raízes.", f: ["2i", "-2i", "3i", "-3i"], set: true, e: "Com y = x²: y² + 13y + 36 = 0 ⇒ y = −4 ou y = −9 ⇒ x = ±2i ou x = ±3i." },
+  { l: 0, q: "Quanto vale √(−100) ÷ 2?", f: ["5i"], e: "√(−100) = 10i, e 10i ÷ 2 = 5i." },
+  { l: 0, q: "Calcule (3 + 3i)².", f: ["18i"], e: "9 + 18i + 9i² = 9 + 18i − 9 = 18i." },
+  { l: 0, q: "O valor de i^{35} é", o: ["−i", "i", "−1", "1"], e: "35 = 4·8 + 3, então i^{35} = i³ = −i." },
+  { l: 0, q: "Calcule √(i^{15} + i^{56} + i^{81}).", f: ["1"], e: "i^{15} = i³ = −i, i^{56} = 1 e i^{81} = i. A soma dá 1, e √1 = 1." },
+  { l: 0, q: "Calcule (i^{25} + i^{18}) ÷ i^{22}.", f: ["1-i"], e: "i^{25} = i, i^{18} = −1 e i^{22} = −1 ⇒ (i − 1) ÷ (−1) = 1 − i." },
+  { l: 0, q: "Calcule i^{600} − i^{285}.", f: ["1-i"], e: "600 é múltiplo de 4 ⇒ i^{600} = 1. 285 = 4·71 + 1 ⇒ i^{285} = i. Resultado: 1 − i." },
+  { l: 0, q: "Para que valor de k o número Z = (2k − 6) + 2i é imaginário puro?", f: ["3"], e: "Imaginário puro: parte real zero e parte imaginária diferente de zero. 2k − 6 = 0 ⇒ k = 3." },
+  { l: 0, q: "Para que valor de m o número Z = 2 + (3m − 1)i é real?", f: ["1/3"], e: "Real: parte imaginária zero. 3m − 1 = 0 ⇒ m = 1/3 (≈ 0.33)." },
+  { l: 0, q: "Dado Z = (5x − 10) + (2x + 4)i, ache x para Z ser real e para Z ser imaginário puro.", f: ["-2", "2"], lab: ["Z real: x =", "Z imaginário puro: x ="], e: "Real: 2x + 4 = 0 ⇒ x = −2. Imaginário puro: 5x − 10 = 0 ⇒ x = 2 (e a parte imaginária fica 8 ≠ 0)." },
+  { l: 0, q: "Ache x e y reais tais que x + y − 5i = 1 + (x − y)i.", f: ["-2", "3"], lab: ["x =", "y ="], e: "Partes reais: x + y = 1. Imaginárias: x − y = −5. Somando: 2x = −4 ⇒ x = −2 e y = 3." },
+  { l: 0, q: "Ache x e y reais tais que x + y + (2x − y)i = 8 + 10i.", f: ["6", "2"], lab: ["x =", "y ="], e: "x + y = 8 e 2x − y = 10. Somando: 3x = 18 ⇒ x = 6 e y = 2." },
+  { l: 0, q: "Z₁ = m − 1 + (m + n)i é igual a Z₂ = 5 + 2i. Quanto vale n²?", o: ["16", "25", "4", "9"], e: "m − 1 = 5 ⇒ m = 6. m + n = 2 ⇒ n = −4 ⇒ n² = 16." },
+  { l: 0, q: "Qual é o conjugado de Z = −5 + 8i?", f: ["-5-8i"], e: "O conjugado troca o sinal da parte imaginária: Z̄ = −5 − 8i." },
+  { l: 0, q: "Calcule o módulo de Z = 3 − 4i.", f: ["5"], e: "|Z| = √(3² + 4²) = √25 = 5." },
+  { l: 0, q: "Calcule o módulo de Z = √3 − 5i. Pode escrever com √ ou em decimal.", f: ["2√7"], e: "|Z| = √(3 + 25) = √28 = 2√7 ≈ 5.29." },
+  { l: 0, q: "Se Z = √10 + 2√2·i, então |Z| é", o: ["3√2", "2√10", "8√2", "3√3"], e: "|Z| = √(10 + 8) = √18 = 3√2." },
+  { l: 0, q: "Com Z₁ = 5 + 2i e Z₂ = 3 − 4i, calcule Z₁ · Z₂.", f: ["23-14i"], e: "15 − 20i + 6i − 8i² = 15 − 14i + 8 = 23 − 14i." },
+  { l: 0, q: "Com Z₁ = 5 + 2i, calcule (Z₁)².", f: ["21+20i"], e: "25 + 20i + 4i² = 25 + 20i − 4 = 21 + 20i." },
+  { l: 0, q: "Com Z₁ = 2 − i e Z₂ = −3 + 2i, calcule 2Z₁ − 3Z₂.", f: ["13-8i"], e: "2Z₁ = 4 − 2i e 3Z₂ = −9 + 6i. Então 4 − 2i + 9 − 6i = 13 − 8i." },
+  { l: 0, q: "Ache Z ∈ ℂ tal que 5Z + 2Z̄ = 14 + 9i.", f: ["2+3i"], e: "Com Z = a + bi: 5a + 5bi + 2a − 2bi = 7a + 3bi = 14 + 9i ⇒ a = 2 e b = 3." },
+  { l: 0, q: "Desenvolva (1 + i)^{10}.", f: ["32i"], e: "(1 + i)² = 2i, então (1 + i)^{10} = (2i)⁵ = 32·i⁵ = 32i." },
+  { l: 0, q: "Em f(Z) = Z² − Z + 1, calcule f(1 − i).", f: ["-i"], e: "(1 − i)² = −2i. Então −2i − (1 − i) + 1 = −2i − 1 + i + 1 = −i." },
+  { l: 0, q: "Para que valor de b o produto (2 + bi)(3 + i) é imaginário puro?", f: ["6"], e: "(2 + bi)(3 + i) = (6 − b) + (2 + 3b)i. Parte real zero ⇒ b = 6 (a parte imaginária fica 20 ≠ 0)." },
+  { l: 0, q: "Quanto vale S = i + i² + i³ + … + i^{100}?", o: ["0", "i", "1", "−1"], e: "A cada 4 potências seguidas a soma é i − 1 − i + 1 = 0. São 100 termos, 25 blocos de 4: S = 0." },
+
+  /* ---------- Pleno ---------- */
+  { l: 1, q: "Com Z₁ = 5 + 2i e Z₂ = 3 − 4i, calcule Z₁ ÷ Z₂.", f: ["7/25+26/25i"], e: "Multiplique pelo conjugado de Z₂: (5 + 2i)(3 + 4i) ÷ 25 = (15 + 20i + 6i − 8) ÷ 25 = (7 + 26i)/25 = 0.28 + 1.04i." },
+  { l: 1, q: "Dividindo 13 por 2 + 3i, o resultado é", o: ["2 − 3i", "3 − 2i", "2 + 3i", "3 + 2i"], e: "13(2 − 3i) ÷ (4 + 9) = 13(2 − 3i) ÷ 13 = 2 − 3i." },
+  { l: 1, q: "Encontre 1/Z para Z = 1 + 2i.", f: ["1/5-2/5i"], e: "(1 − 2i) ÷ (1 + 4) = 1/5 − 2/5·i = 0.2 − 0.4i." },
+  { l: 1, q: "Escreva 1/(3 − i) na forma a + bi.", f: ["3/10+1/10i"], e: "(3 + i) ÷ (9 + 1) = 3/10 + 1/10·i = 0.3 + 0.1i." },
+  { l: 1, q: "Em Z = (5 − i)/(2i), multiplique a parte real pelo coeficiente da parte imaginária. Qual é o produto?", f: ["1.25"], e: "Multiplique em cima e embaixo por −i: (5 − i)(−i) ÷ 2 = (−5i + i²) ÷ 2 = −1/2 − 5/2·i. Produto: (−1/2)(−5/2) = 5/4 = 1.25." },
+  { l: 1, q: "Calcule 3/i.", f: ["-3i"], e: "3/i = 3i/i² = 3i/(−1) = −3i." },
+  { l: 1, q: "Calcule (7 + 2i)/(3 − 7i).", f: ["7/58+55/58i"], e: "(7 + 2i)(3 + 7i) ÷ (9 + 49) = (21 + 49i + 6i − 14) ÷ 58 = (7 + 55i)/58." },
+  { l: 1, q: "Calcule ((1 + i)/(1 − i))^{15}.", f: ["-i"], e: "(1 + i)/(1 − i) = (1 + i)² ÷ 2 = 2i ÷ 2 = i. Então i^{15} = i³ = −i." },
+  { l: 1, q: "Ache a e b em a + bi = (4 + 3i)/(5 − 2i).", f: ["14/29", "23/29"], lab: ["a =", "b ="], e: "(4 + 3i)(5 + 2i) ÷ 29 = (20 + 8i + 15i − 6) ÷ 29 = (14 + 23i)/29." },
+  { l: 1, q: "Para que valor de b o número Z = (−9 + bi)/(2 + 3i) é imaginário puro?", f: ["6"], e: "Multiplicando por 2 − 3i, o numerador fica (−18 + 3b) + (27 + 2b)i. Parte real zero ⇒ b = 6." },
+  { l: 1, q: "Para que valor de a o número Z = (a − i)/(1 − 3i) é imaginário puro?", f: ["-3"], e: "Multiplicando por 1 + 3i: ((a + 3) + (3a − 1)i)/10. Parte real zero ⇒ a = −3." },
+  { l: 1, q: "Para que valor de b o quociente (3 − 2bi)/(4 − 3i) é real?", f: ["9/8"], e: "Multiplicando por 4 + 3i: ((12 + 6b) + (9 − 8b)i)/25. Parte imaginária zero ⇒ b = 9/8 = 1.125." },
+  { l: 1, q: "Determine i^{−133}.", f: ["-i"], e: "i^{−133} = 1/i^{133}. Como 133 = 4·33 + 1, i^{133} = i, e 1/i = −i." },
+  { l: 1, q: "Calcule o inverso de 2i.", f: ["-1/2i"], e: "1/(2i) = i/(2i²) = −i/2 = −0.5i." },
+  { l: 1, q: "Sendo Z = (1 − i)/(1 + i), calcule Z^{1993}.", f: ["-i"], e: "Z = (1 − i)² ÷ 2 = −2i ÷ 2 = −i. (−i)^{1993} = −(i^{1993}), e 1993 = 4·498 + 1 ⇒ resultado −i." },
+  { l: 1, q: "Para que valor de n o número Z = (n + 6i)/(2 − i) fica na bissetriz dos quadrantes ímpares (parte real igual à parte imaginária)?", f: ["18"], e: "Multiplicando por 2 + i: ((2n − 6) + (n + 12)i)/5. Igualando: 2n − 6 = n + 12 ⇒ n = 18." },
+  { l: 1, q: "Calcule o módulo e o argumento, em graus, de Z = 1 + i√3.", f: ["2", "60"], lab: ["|Z| =", "θ em graus ="], e: "|Z| = √(1 + 3) = 2. cos θ = 1/2 e sen θ = √3/2 ⇒ θ = 60°." },
+  { l: 1, q: "Calcule o módulo e o argumento, em graus, de Z = −3.", f: ["3", "180"], lab: ["|Z| =", "θ em graus ="], e: "Z fica no semieixo real negativo: |Z| = 3 e θ = 180°." },
+  { l: 1, q: "Calcule o módulo e o argumento, em graus, de Z = 1/(1 + i).", f: ["√2/2", "315"], lab: ["|Z| =", "θ em graus ="], e: "Z = (1 − i)/2 = 1/2 − 1/2·i. |Z| = √(1/4 + 1/4) = √2/2 ≈ 0.71. Fica no 4º quadrante com ângulo de referência 45° ⇒ θ = 315°." },
+  { l: 1, q: "O argumento de Z = 2 + 2√3·i é", o: ["60°", "30°", "45°", "75°"], e: "|Z| = √(4 + 12) = 4. cos θ = 2/4 = 1/2 e sen θ = 2√3/4 = √3/2 ⇒ θ = 60°." },
+  { l: 1, q: "Na forma trigonométrica, Z = −√3 − 3i é", o: ["2√3(cos 240° + i sen 240°)", "2√3(cos 210° + i sen 210°)", "2√3(cos 225° + i sen 225°)", "2√3(cos 300° + i sen 300°)"], e: "|Z| = √(3 + 9) = 2√3. cos θ = −1/2 e sen θ = −√3/2: 3º quadrante ⇒ θ = 240°." },
+  { l: 1, q: "Na forma trigonométrica, Z = √3 + i é", o: ["2(cos 30° + i sen 30°)", "2(cos 60° + i sen 60°)", "√3(cos 30° + i sen 30°)", "4(cos 30° + i sen 30°)"], e: "|Z| = √(3 + 1) = 2. cos θ = √3/2 e sen θ = 1/2 ⇒ θ = 30°." },
+  { l: 1, q: "Na forma trigonométrica, Z = 1 − i é", o: ["√2(cos 7π/4 + i sen 7π/4)", "√2(cos 3π/4 + i sen 3π/4)", "2(cos 7π/4 + i sen 7π/4)", "√2(cos 5π/4 + i sen 5π/4)"], e: "|Z| = √2. cos θ = √2/2 e sen θ = −√2/2: 4º quadrante ⇒ θ = 7π/4 (315°)." },
+  { l: 1, q: "Escreva Z = 2(cos π/6 + i sen π/6) na forma algébrica.", f: ["√3+i"], e: "cos π/6 = √3/2 e sen π/6 = 1/2 ⇒ Z = √3 + i." },
+  { l: 1, q: "Escreva Z = 6(cos 5π/4 + i sen 5π/4) na forma algébrica.", f: ["-3√2-3√2i"], e: "cos 5π/4 = sen 5π/4 = −√2/2 ⇒ Z = −3√2 − 3√2·i (≈ −4.24 − 4.24i)." },
+  { l: 1, q: "Calcule 2i³ ÷ [(i − 1)(2i − 1)].", f: ["3/5+1/5i"], e: "2i³ = −2i e (i − 1)(2i − 1) = −1 − 3i. Então −2i/(−1 − 3i) = 2i(1 − 3i)/10 = (6 + 2i)/10 = 3/5 + 1/5·i." },
+
+  /* ---------- Sênior ---------- */
+  { l: 2, q: "Para que valor de a a expressão (a² − 1)x⁴ + (a² − a − 2)x³ + ax² + x é um polinômio do 2º grau?", o: ["−1", "1", "2", "0"], e: "É preciso a² − 1 = 0 (a = ±1) e a² − a − 2 = 0 (a = 2 ou a = −1). O valor comum é a = −1, e o coeficiente de x² fica −1 ≠ 0." },
+  { l: 2, q: "Se P(x) tem grau 4, qual é o grau de [P(x)]³ + [P(x)]² + 3P(x)?", o: ["12", "20", "24", "4"], e: "O termo de maior grau vem de [P(x)]³: 3 · 4 = 12." },
+  { l: 2, q: "p(x) e q(x) têm graus n e m. Qual é o grau de 2(x − 1)³·p(x)·q⁴(x)?", o: ["3 + n + 4m", "12nm", "3nm⁴", "3 + n + m⁴"], e: "No produto, os graus se somam: 3 + n + 4m." },
+  { l: 2, q: "Qual polinômio tem raízes −2, −1 e 2?", o: ["x³ + x² − 4x − 4", "x³ − x² − 4x + 4", "x³ − x² − 4x − 4", "x³ + x² + 4x + 4"], e: "(x + 2)(x + 1)(x − 2) = (x² − 4)(x + 1) = x³ + x² − 4x − 4." },
+  { l: 2, q: "Qual é a soma das raízes de P(x) = −2(x + 2)(x − 3)(x + 5)?", f: ["-4"], e: "As raízes são −2, 3 e −5. Soma: −4." },
+  { l: 2, q: "Ache a, b e c para que P(x) = (a + b − 1)x³ + (b + c − 3)x² + (c − 1)x seja identicamente nulo.", f: ["-1", "2", "1"], lab: ["a =", "b =", "c ="], e: "Todos os coeficientes valem zero: c = 1, então b = 2, então a = −1." },
+  { l: 2, q: "Com P(x) = 2x³ − x² + x + 3, calcule [P(2) − 2P(−1)] ÷ P(1/2).", f: ["38/7"], e: "P(2) = 17, P(−1) = −1 e P(1/2) = 7/2. (17 + 2) ÷ 7/2 = 38/7 ≈ 5.43." },
+  { l: 2, q: "Com P(x) = x² − 2x + 1, calcule P(1 + i).", f: ["-1"], e: "P(x) = (x − 1)², então P(1 + i) = i² = −1." },
+  { l: 2, q: "Com P(x) = x² − 2x + 1, calcule P(2 − i).", f: ["-2i"], e: "P(x) = (x − 1)², então P(2 − i) = (1 − i)² = 1 − 2i + i² = −2i." },
+  { l: 2, q: "Sabendo que −3 é raiz de P(x) = x³ + 4x² − ax + 1, calcule a.", f: ["-10/3"], e: "P(−3) = −27 + 36 + 3a + 1 = 10 + 3a = 0 ⇒ a = −10/3 ≈ −3.33." },
+  { l: 2, q: "P(x) = x³ + (a − 2)x² + (b − 4)x − 3 tem raízes 1 e −1. Ache a e b.", f: ["5", "3"], lab: ["a =", "b ="], e: "P(1) = a + b − 8 = 0 e P(−1) = a − b − 2 = 0. Somando: 2a = 10 ⇒ a = 5 e b = 3." },
+  { l: 2, q: "Em P(x) = 2x³ − 6x² + mx + n, P(2) = 0 e P(−1) = −6. Ache m e n.", f: ["2", "4"], lab: ["m =", "n ="], e: "P(2) = −8 + 2m + n = 0 e P(−1) = −8 − m + n = −6. Então 2m + n = 8 e n − m = 2 ⇒ m = 2 e n = 4." },
+  { l: 2, q: "P(x) = ax + b é do 1º grau, com P(5) = 13 e P(3) = 7. Ache a e b.", f: ["3", "-2"], lab: ["a =", "b ="], e: "5a + b = 13 e 3a + b = 7. Subtraindo: 2a = 6 ⇒ a = 3 e b = −2. P(x) = 3x − 2." },
+  { l: 2, q: "P(x) é do 2º grau, com P(1) = 0, P(2) = 7 e P(−1) = 4. Quanto vale P(0)?", f: ["-1"], e: "Com P(x) = ax² + bx + c: a + b + c = 0, 4a + 2b + c = 7 e a − b + c = 4. Resulta a = 3, b = −2 e c = −1. P(0) = c = −1." },
+  { l: 2, q: "Seja P(x + 1) = 3x² − x + 5. Calcule P(2) e P(−3).", f: ["7", "57"], lab: ["P(2) =", "P(−3) ="], e: "P(2): x + 1 = 2 ⇒ x = 1 ⇒ 3 − 1 + 5 = 7. P(−3): x = −4 ⇒ 48 + 4 + 5 = 57." },
+  { l: 2, q: "Sendo x³ + 1 ≡ (x + 1)(x² + ax + b), ache a e b.", f: ["-1", "1"], lab: ["a =", "b ="], e: "(x + 1)(x² + ax + b) = x³ + (a + 1)x² + (a + b)x + b. Comparando: a + 1 = 0 e b = 1 ⇒ a = −1." },
+  { l: 2, q: "Se (−x − 14)/(x² + 3x − 4) ≡ A/(x − 1) + B/(x + 4), quanto vale A + B?", f: ["-1"], e: "A(x + 4) + B(x − 1) = −x − 14. Com x = 1: 5A = −15 ⇒ A = −3. Com x = −4: −5B = −10 ⇒ B = 2. A + B = −1." },
+  { l: 2, q: "Qual é o resto da divisão de P(x) = x⁴ − 2x³ + x − 1 por x − 2?", f: ["1"], e: "Teorema do resto: P(2) = 16 − 16 + 2 − 1 = 1." },
+  { l: 2, q: "Ache a para que P(x) = x³ + (a − 1)x + 10 seja divisível por x − 5.", f: ["-26"], e: "D'Alembert: P(5) = 0 ⇒ 125 + 5(a − 1) + 10 = 0 ⇒ 5a = −130 ⇒ a = −26." },
+  { l: 2, q: "Qual é o resto da divisão de x⁵ − 2x⁴ + x² + 1 por 2x + 1?", f: ["35/32"], e: "A raiz do divisor é −1/2. P(−1/2) = −1/32 − 1/8 + 1/4 + 1 = 35/32 ≈ 1.09." },
+  { l: 2, q: "O resto da divisão de P(x) = x³ + ax² − x + a por x − 1 é 4. Ache a.", f: ["2"], e: "P(1) = 1 + a − 1 + a = 2a = 4 ⇒ a = 2." },
+  { l: 2, q: "Use Briot-Ruffini para dividir x³ + 8 por x + 2. Digite os coeficientes do quociente e o resto.", f: ["1", "-2", "4", "0"], lab: ["coeficiente de x² =", "coeficiente de x =", "termo independente =", "resto ="], e: "Coeficientes 1, 0, 0, 8 e raiz −2: desce 1; 1·(−2) + 0 = −2; (−2)(−2) + 0 = 4; 4·(−2) + 8 = 0. Quociente x² − 2x + 4, resto 0." },
+  { l: 2, q: "Dividindo P(x) = x³ + x² − 10x + 8 por x − 1, obtém-se Q(x). Quais são as raízes de Q(x) = 0?", f: ["-4", "2"], set: true, e: "Briot-Ruffini com 1 dá 1, 2, −8 e resto 0. Q(x) = x² + 2x − 8 = (x + 4)(x − 2)." },
+  { l: 2, q: "P(x) = x³ + ax² − bx + 8 é divisível por (x + 2)(x − 1). Ache a e b.", f: ["-3", "6"], lab: ["a =", "b ="], e: "P(1) = 9 + a − b = 0 e P(−2) = 4a + 2b = 0 ⇒ b = −2a ⇒ 9 + 3a = 0 ⇒ a = −3 e b = 6." },
+  { l: 2, q: "Ache a para que o resto da divisão de ax³ − 2x + 1 por x − 3 seja 4.", f: ["1/3"], e: "P(3) = 27a − 6 + 1 = 4 ⇒ 27a = 9 ⇒ a = 1/3." },
+  { l: 2, q: "P(x) = ax² + bx + c deixa restos 4, 9 e 18 na divisão por x, x − 1 e x − 2. Ache a, b e c.", f: ["2", "3", "4"], lab: ["a =", "b =", "c ="], e: "P(0) = c = 4; P(1) = a + b + 4 = 9; P(2) = 4a + 2b + 4 = 18. Então a + b = 5 e 2a + b = 7 ⇒ a = 2 e b = 3." },
+  { l: 2, q: "Para que valor de a o número 1 − i é raiz de P(x) = x² − 2x + a?", f: ["2"], e: "(1 − i)² − 2(1 − i) + a = −2i − 2 + 2i + a = a − 2 = 0 ⇒ a = 2." },
+  { l: 2, q: "P(x) = 2x³ − ax² + bx + 2 é divisível por 2x² + 5x − 2. Calcule a − b.", f: ["4"], e: "O quociente é da forma x + k, e o termo independente dá −2k = 2 ⇒ k = −1. (2x² + 5x − 2)(x − 1) = 2x³ + 3x² − 7x + 2 ⇒ a = −3, b = −7 e a − b = 4." },
+
+  /* ---------- Tech Lead ---------- */
+  { l: 3, q: "Quantas raízes nulas tem P(x) = −2x⁵ + 6x³ − 3x²?", f: ["2"], e: "O menor expoente de x é 2: P(x) = x²(−2x³ + 6x − 3). Zero é raiz dupla." },
+  { l: 3, q: "Qual é o grau de P(x) = 4x²(x² − 16)(x² + 9)³?", f: ["10"], e: "Somando os graus dos fatores: 2 + 2 + 3·2 = 10." },
+  { l: 3, q: "Ache as outras raízes de P(x) = x³ + 2x² − 5x − 6, sabendo que 2 é raiz.", f: ["-1", "-3"], set: true, e: "Briot-Ruffini com 2 dá 1, 4, 3 e resto 0. x² + 4x + 3 = (x + 1)(x + 3)." },
+  { l: 3, q: "1 + i é raiz de P(x) = x⁴ − x³ − 2x² + 6x − 4. Ache as outras três raízes.", f: ["1-i", "1", "-2"], set: true, e: "Coeficientes reais ⇒ 1 − i também é raiz. (x − 1 − i)(x − 1 + i) = x² − 2x + 2. Dividindo: x² + x − 2 = (x − 1)(x + 2)." },
+  { l: 3, q: "Ache as raízes de P(x) = 4x³ + 3x² − 25x + 6.", f: ["2", "1/4", "-3"], set: true, e: "Candidatas racionais p/q com p dividindo 6 e q dividindo 4. P(2) = 32 + 12 − 50 + 6 = 0. Dividindo por x − 2: 4x² + 11x − 3 = (4x − 1)(x + 3)." },
+  { l: 3, q: "Qual destes números não pode ser raiz de P(x) = 3x⁴ + bx³ + cx² + dx − 4, com coeficientes inteiros?", o: ["3/4", "2/3", "4", "1"], e: "Uma raiz racional p/q exige p dividindo 4 e q dividindo 3. Em 3/4, q = 4 não divide 3." },
+  { l: 3, q: "P(x) tem coeficientes reais, é divisível por x² + 4 e P(1 − i) = 0. Qual é o menor grau possível?", o: ["4", "3", "5", "2"], e: "x² + 4 traz ±2i, e 1 − i traz o conjugado 1 + i. São 4 raízes: grau mínimo 4." },
+  { l: 3, q: "2 é raiz dupla de ax³ + bx + 16 = 0. Ache a e b.", f: ["1", "-12"], lab: ["a =", "b ="], e: "Dividindo duas vezes por x − 2 com Briot-Ruffini, os dois restos precisam ser zero: 8a + 2b + 16 = 0 e 12a + b = 0 ⇒ a = 1 e b = −12." },
+  { l: 3, q: "1 é raiz dupla de x³ + ax² − 2x + b = 0. Quanto vale a + b?", f: ["1"], e: "P(1) = 1 + a − 2 + b = 0 ⇒ a + b = 1. A segunda condição dá a = −1/2 e b = 3/2." },
+  { l: 3, q: "−1 é raiz tripla de x⁵ + 5x⁴ + 6x³ − 2x² − 7x − 3 = 0. Ache as outras duas raízes.", f: ["1", "-3"], set: true, e: "Três divisões por x + 1 deixam x² + 2x − 3 = (x − 1)(x + 3)." },
+  { l: 3, q: "3 é raiz dupla de x⁴ − 7x³ + 13x² + 3x − 18 = 0. Ache as outras duas raízes.", f: ["-1", "2"], set: true, e: "Dividindo duas vezes por x − 3 sobra x² − x − 2 = (x + 1)(x − 2)." },
+  { l: 3, q: "2 é raiz de x³ + 2x² − 5x + c = 0. Quanto vale c?", f: ["-6"], e: "8 + 8 − 10 + c = 0 ⇒ c = −6. As raízes ficam 2, −1 e −3." },
+  { l: 3, q: "Ache m e n para que 2 seja raiz dupla de x³ + mx² − 8x + n = 0.", f: ["-1", "12"], lab: ["m =", "n ="], e: "Chame a terceira raiz de r. Girard: 2·2 + 2r + 2r = −8 ⇒ r = −3. Soma: 2 + 2 − 3 = −m ⇒ m = −1. Produto: 2·2·(−3) = −n ⇒ n = 12." },
+  { l: 3, q: "2, 4 e −3 são raízes de x³ + ax² + bx + c = 0. Ache a, b e c.", f: ["-3", "-10", "24"], lab: ["a =", "b =", "c ="], e: "Girard: soma 3 = −a; soma dos produtos dois a dois 8 − 6 − 12 = −10 = b; produto −24 = −c ⇒ c = 24." },
+  { l: 3, q: "3 + i é raiz de x⁴ − 9x³ + 30x² − 42x + 20 = 0. Ache as outras três raízes.", f: ["3-i", "1", "2"], set: true, e: "3 − i também é raiz, e (x − 3 − i)(x − 3 + i) = x² − 6x + 10. Dividindo: x² − 3x + 2 = (x − 1)(x − 2)." },
+  { l: 3, q: "Resolva x³ − 2x² + 9x − 18 = 0, sabendo que uma raiz é da forma bi.", f: ["2", "3i", "-3i"], set: true, e: "Agrupando: x²(x − 2) + 9(x − 2) = (x − 2)(x² + 9)." },
+  { l: 3, q: "x³ + mx² + 2x + n = 0, com m e n reais, admite 1 + i como raiz. Ache m e n.", f: ["-2", "0"], lab: ["m =", "n ="], e: "Raízes 1 + i, 1 − i e r. Produtos dois a dois: 2 + 2r = 2 ⇒ r = 0. Soma: 2 = −m ⇒ m = −2. Produto: 0 = −n ⇒ n = 0." },
+  { l: 3, q: "Resolva x³ − 9x² + 23x − 15 = 0, sabendo que as raízes estão em PA.", f: ["1", "3", "5"], set: true, e: "Raízes a − r, a e a + r: soma 3a = 9 ⇒ a = 3 é raiz. Dividindo: x² − 6x + 5 = (x − 1)(x − 5)." },
+  { l: 3, q: "Resolva 64x³ − 56x² + 14x − 1 = 0, sabendo que as raízes estão em PG.", f: ["1/8", "1/4", "1/2"], set: true, e: "Raízes a/q, a e aq: produto a³ = 1/64 ⇒ a = 1/4. Dividindo por x − 1/4: 16x² − 10x + 1 = 0 ⇒ x = 1/8 ou x = 1/2." },
+  { l: 3, q: "As raízes de x³ − 6x² + kx + 64 = 0 estão em PG. Calcule k.", f: ["-24"], e: "O produto das raízes é a³ = −64 ⇒ a = −4 é raiz. P(−4) = −64 − 96 − 4k + 64 = 0 ⇒ k = −24." },
+  { l: 3, q: "Para que valor de p a equação x³ − px² + 3x − 1 = 0 tem raiz tripla?", f: ["3"], e: "Raiz tripla r com r³ = 1 ⇒ r = 1, e (x − 1)³ = x³ − 3x² + 3x − 1 ⇒ p = 3." },
+  { l: 3, q: "a, b e c são raízes de 2x³ − 3x² + 5x + 1 = 0. Calcule a²b² + a²c² + b²c².", f: ["31/4"], e: "Girard: a + b + c = 3/2, ab + ac + bc = 5/2 e abc = −1/2. A expressão é (ab + ac + bc)² − 2abc(a + b + c) = 25/4 + 3/2 = 31/4 = 7.75." },
+  { l: 3, q: "a, b e c são raízes de x³ − 2x² + 3x − 4 = 0. Calcule 1/a + 1/b + 1/c.", f: ["3/4"], e: "1/a + 1/b + 1/c = (ab + ac + bc)/abc = 3/4 = 0.75." },
+  { l: 3, q: "a, b e c são raízes de x³ − 4x² + 5x + 3 = 0. Calcule a/(bc) + b/(ac) + c/(ab).", f: ["-2"], e: "A expressão é (a² + b² + c²)/abc. a² + b² + c² = 4² − 2·5 = 6 e abc = −3 ⇒ 6/(−3) = −2." },
+  { l: 3, q: "a, b e c são raízes de 2x³ − 30x² + 15x − 3 = 0. Calcule log[1/(ab) + 1/(bc) + 1/(ac)].", f: ["1"], e: "A soma é (a + b + c)/abc = 15 ÷ 3/2 = 10, e log 10 = 1." },
+  { l: 3, q: "Qual é o menor grau de uma equação de coeficientes reais com raízes 2, i e 1 + i?", o: ["5", "3", "4", "6"], e: "Os conjugados −i e 1 − i também precisam ser raízes: 2, ±i e 1 ± i ⇒ grau 5." },
+  { l: 3, q: "Resolva x³ − 3x² − 4x + 12 = 0, sabendo que duas raízes são simétricas.", f: ["2", "-2", "3"], set: true, e: "Raízes r, −r e s: a soma dá s = 3. Dividindo por x − 3: x² − 4 ⇒ ±2." },
+  { l: 3, q: "Qual é a multiplicidade da raiz 1 em (x − 2)²(x − 1)³(x² + 3x − 4) = 0?", f: ["4"], e: "x² + 3x − 4 = (x − 1)(x + 4). O fator x − 1 aparece 3 + 1 = 4 vezes." },
+  { l: 3, q: "Resolva x³ − 10x² + 31x − 30 = 0, sabendo que uma raiz é a diferença das outras duas.", f: ["2", "3", "5"], set: true, e: "Se a = b − c, a soma a + b + c = 2b = 10 ⇒ b = 5. Dividindo por x − 5: x² − 5x + 6 = (x − 2)(x − 3)." },
+  { l: 3, q: "Um polinômio p(x) de grau 3 é divisível por x + 2, deixa resto 3 na divisão por x − 1 e tem 0 como raiz dupla. p(x) é", o: ["x³ + 2x²", "2x³ + x²", "x³ + 2x", "3x³"], e: "0 raiz dupla e −2 raiz ⇒ p(x) = kx²(x + 2). p(1) = 3k = 3 ⇒ k = 1." }
+];
+const MQ = MAT_RAW.map((r, id) => ({ id, ...r }));
+
+/* ---------- leitor de respostas ----------
+ * Aceita ponto ou vírgula como separador decimal, frações (3/4), raízes (2√7, √2/2),
+ * números complexos (2-3i, -i, 1/2i) e um "x =" no começo. Devolve { re, im } ou null. */
+function matLerReal(t, vazioVale1) {
+  if (t === "") return vazioVale1 ? 1 : null;
+  const partes = t.split("/");
+  if (partes.length > 2) return null;
+  const vals = partes.map((p) => {
+    const m = /^(\d*\.?\d*)(?:√(\d*\.?\d+))?$/.exec(p);
+    if (!m || (!m[1] && m[2] == null)) return null;
+    if (m[1] && !/\d/.test(m[1])) return null;
+    const coef = m[1] ? Number(m[1]) : 1;
+    return m[2] != null ? coef * Math.sqrt(Number(m[2])) : coef;
+  });
+  if (vals.includes(null)) return null;
+  if (vals.length === 2) return vals[1] === 0 ? null : vals[0] / vals[1];
+  return vals[0];
+}
+function matLer(bruto) {
+  let s = String(bruto == null ? "" : bruto).toLowerCase()
+    .replace(/\s+/g, "").replace(/[−–—]/g, "-").replace(/,/g, ".")
+    .replace(/[°º]|graus?/g, "").replace(/sqrt|raiz/g, "√").replace(/[*·×]/g, "")
+    .replace(/√\((\d*\.?\d+)\)/g, "√$1");
+  s = s.replace(/^(?:\|z\||[a-zθρ][a-z0-9₀-₉]*)=/, "");
+  if (!s) return null;
+  const termos = s.match(/[+-]?[^+-]+/g);
+  if (!termos || termos.join("") !== s) return null;
+  let re = 0, im = 0;
+  for (let t of termos) {
+    let sinal = 1;
+    if (t[0] === "+" || t[0] === "-") { if (t[0] === "-") sinal = -1; t = t.slice(1); }
+    const nI = (t.match(/i/g) || []).length;
+    if (nI > 1) return null;
+    t = t.replace("i", "");
+    const v = matLerReal(t, nI === 1);
+    if (v == null || !Number.isFinite(v)) return null;
+    if (nI) im += sinal * v; else re += sinal * v;
+  }
+  return { re, im };
+}
+const matPerto = (a, b) => Math.abs(a - b) <= 0.011 + 0.001 * Math.abs(b);
+const matIgual = (a, b) => matPerto(a.re, b.re) && matPerto(a.im, b.im);
+/* compara as respostas do jogador com as esperadas; em "set" a ordem não importa */
+function matConfere(q, vals) {
+  const dados = vals.map(matLer), certos = q.f.map(matLer);
+  if (!q.set) return certos.every((c, i) => matIgual(dados[i], c));
+  const usado = new Array(certos.length).fill(false);
+  const tenta = (i) => {
+    if (i === dados.length) return true;
+    for (let j = 0; j < certos.length; j++) {
+      if (!usado[j] && matIgual(dados[i], certos[j])) { usado[j] = true; if (tenta(i + 1)) return true; usado[j] = false; }
+    }
+    return false;
+  };
+  return tenta(0);
+}
+
+/* ---------- formatação ---------- */
+const mfmt = (s) => esc(s).replace(/\^\{([^}]+)\}/g, "<sup>$1</sup>");
+const matMostra = (s) => esc(String(s).replace(/(.)([+-])/g, "$1 $2 ").replace(/-/g, "−"));
+const matSup = (n) => String(n).replace(/[0-9-]/g, (c) => "⁰¹²³⁴⁵⁶⁷⁸⁹"["0123456789".indexOf(c)] || "⁻");
+function matNum(x) {
+  if (!Number.isFinite(x)) return "∞";
+  if (x >= 1e6) { const [m, e] = x.toExponential(2).split("e"); return `${m.replace(/\.?0+$/, "")} × 10${matSup(+e)}`; }
+  const [int, dec] = String(Math.round(x * 100) / 100).split(".");
+  const g = int.length > 4 ? int.replace(/\B(?=(\d{3})+(?!\d))/g, " ") : int;
+  return dec ? `${g}.${dec}` : g;
+}
+const matExpoTxt = (k) => String(Math.round(matExpo(k) * 1000) / 1000);
+const matFormula = (k) => `${matForca(k).toFixed(1).replace(/\.0$/, "")}<sup>${matExpoTxt(k)}</sup>`;
+
+/* ---------- recordes da DLC (por conta, neste aparelho) ---------- */
+const MAT_KEY = "masmorra-dlc-matematica";
+function matRecordes() {
+  try { const d = JSON.parse(localStorage.getItem(MAT_KEY)); return (d && d[USER.name.toLowerCase()]) || {}; } catch (e) { return {}; }
+}
+function matSalvaRecorde(lvl, r) {
+  let d = {};
+  try { d = JSON.parse(localStorage.getItem(MAT_KEY)) || {}; } catch (e) { d = {}; }
+  const k = USER.name.toLowerCase();
+  const meu = d[k] || {}, ant = meu[lvl] || { best: 0, ko: false, combo: 0 };
+  const novo = r.score > ant.best;
+  meu[lvl] = { best: Math.max(ant.best, r.score), ko: ant.ko || r.ko, combo: Math.max(ant.combo, r.combo) };
+  d[k] = meu;
+  try { localStorage.setItem(MAT_KEY, JSON.stringify(d)); } catch (e) { /* sem armazenamento: o recorde só vale nesta sessão */ }
+  return novo;
+}
+
+/* ---------- regras ---------- */
+function matComecar(lvl) {
+  S = { screen: "mat-ring", m: {
+    lvl, hp: MAT_HP, k: 0, combo: 0, score: 0, hits: 0, tries: 0, missed: [], ko: false,
+    deck: shuffle(MQ.filter((q) => q.l === lvl).map((q) => q.id)), total: MQ.filter((q) => q.l === lvl).length, cur: null
+  } };
+  matSacar();
+  render();
+}
+function matSacar() {
+  const m = S.m, id = m.deck.shift();
+  m.cur = { id, n: m.total - m.deck.length, vals: [], err: "", done: false, order: MQ[id].o ? shuffle(MQ[id].o.map((_, i) => i)) : null };
+  fx.modal = true;
+}
+async function matResponder(escolha) {
+  const m = S.m, c = m.cur, q = MQ[c.id];
+  if (!c || c.done || busy) return;
+  let ok;
+  if (q.o) {
+    c.chosen = escolha;
+    ok = c.order[escolha] === 0;
+  } else {
+    c.vals = escolha;
+    if (escolha.some((v) => !String(v).trim())) { c.err = q.f.length > 1 ? "Preencha todos os campos." : "Digite uma resposta."; render(); return; }
+    const ruim = escolha.findIndex((v) => !matLer(v));
+    if (ruim >= 0) { c.err = `Não entendi “${escolha[ruim]}”. Escreva números como 1.5, 3/4, 2-3i ou 2√7.`; c.errAt = ruim; render(); return; }
+    ok = matConfere(q, escolha);
+  }
+  c.err = ""; c.done = true; c.ok = ok;
+  m.tries++;
+  const antes = m.hp;
+  c.hpAntes = antes;
+  if (ok) {
+    m.k++; m.hits++;
+    c.k = m.k;
+    c.dmg = matGolpe(m.k);
+    m.hp = Math.max(0, m.hp - c.dmg);
+    c.pts = 10 * m.k * (m.lvl + 1) + Math.round(Math.min(c.dmg, antes));
+    if (m.hp <= 0) { m.ko = true; c.bonus = 250 * (m.lvl + 1); c.pts += c.bonus; }
+    m.score += c.pts;
+    m.combo = Math.max(m.combo, m.k);
+  } else {
+    c.lost = m.k;
+    m.k = 0;
+    m.missed.push({ id: c.id, given: q.o ? q.o[c.order[escolha]] : escolha.join(" ; ") });
+  }
+  busy = true;
+  render();
+  try { await (ok ? matSoco(c, antes) : matErro(c)); } finally { busy = false; }
+  const nb = document.getElementById("matNext");
+  if (nb) { nb.disabled = false; nb.focus({ preventScroll: true }); }
+}
+function matProxima() {
+  const m = S.m;
+  if (busy || !m.cur || !m.cur.done) return;
+  if (m.ko || !m.deck.length) {
+    m.newBest = matSalvaRecorde(m.lvl, { score: m.score, ko: m.ko, combo: m.combo });
+    S.screen = "mat-end";
+  } else matSacar();
+  render();
+}
+
+/* ---------- animações ---------- */
+const MAT_LUVA = `<svg viewBox="0 0 92 64" aria-hidden="true"><rect class="cuff" x="0" y="17" width="22" height="30" rx="5"/><rect class="fist" x="16" y="3" width="70" height="58" rx="27"/><ellipse class="thumb" cx="46" cy="50" rx="19" ry="8"/><path class="shine" d="M40 13 q16 -6 30 2"/></svg>`;
+async function matSoco(c, antes) {
+  const bag = $app.querySelector(".bag"), ring = $app.querySelector(".ringbox");
+  const bar = $app.querySelector(".mat-hp i"), hpn = $app.querySelector(".mat-hpnum");
+  const fim = () => { if (bar) bar.style.width = (S.m.hp / MAT_HP) * 100 + "%"; if (hpn) hpn.textContent = `${matNum(S.m.hp)} / ${MAT_HP}`; };
+  if (!bag || !ring || reduceMotion()) { fim(); if (S.m.ko && bag) bag.classList.add("down"); await wait(120); return; }
+  const forte = c.dmg >= 100 || S.m.ko;
+  const luva = document.createElement("div");
+  luva.className = "glove";
+  luva.innerHTML = MAT_LUVA;
+  ring.appendChild(luva);
+  const rr = ring.getBoundingClientRect(), br = bag.getBoundingClientRect();
+  const alvoX = br.left - rr.left + br.width * 0.18, alvoY = br.top - rr.top + br.height * (0.42 + Math.random() * 0.12);
+  luva.style.top = alvoY + "px";
+  await luva.animate([
+    { transform: `translate(-120px, -50%) scale(.8) rotate(-8deg)`, opacity: 0 },
+    { transform: `translate(${alvoX * 0.35}px, -50%) scale(.95)`, opacity: 1, offset: .45 },
+    { transform: `translate(${alvoX - 60}px, -50%) scale(${forte ? 1.25 : 1.08})`, opacity: 1 }
+  ], { duration: forte ? 300 : 240, easing: "cubic-bezier(.5,0,.9,.6)", fill: "forwards" }).finished;
+  /* impacto */
+  bag.classList.add("hit");
+  const giro = Math.min(32, 8 + c.k * 3 + (forte ? 10 : 0));
+  bag.animate([{ transform: "rotate(0)" }, { transform: `rotate(${giro}deg)` }, { transform: `rotate(${-giro * 0.45}deg)` }, { transform: `rotate(${giro * 0.2}deg)` }, { transform: "rotate(0)" }],
+    { duration: forte ? 1100 : 800, easing: "cubic-bezier(.3,.6,.3,1)" });
+  if (forte) $app.animate([{ transform: "none" }, { transform: "translate(-8px,3px)" }, { transform: "translate(7px,-3px)" }, { transform: "translate(-4px,2px)" }, { transform: "none" }], { duration: 380 });
+  const px = alvoX, py = alvoY;
+  const onda = spawnIn(ring, "burst", px + rr.left, py + rr.top);
+  onda.style.setProperty("--dom", "var(--straw)");
+  onda.animate([{ width: "16px", height: "16px", opacity: 1 }, { width: forte ? "200px" : "110px", height: forte ? "200px" : "110px", opacity: 0 }], { duration: 480, easing: "ease-out" }).finished.then(() => onda.remove());
+  for (let i = 0; i < (forte ? 18 : 10); i++) {
+    const s = spawnIn(ring, "straw", px + rr.left, py + rr.top);
+    const ang = -Math.PI / 2 + (Math.random() - 0.2) * Math.PI * 1.2, dist = 50 + Math.random() * (forte ? 120 : 70);
+    s.animate([{ transform: `translate(-50%,-50%) rotate(${Math.random() * 180}deg)`, opacity: 1 },
+      { transform: `translate(calc(-50% + ${Math.cos(ang) * dist}px), calc(-50% + ${Math.sin(ang) * dist + 40}px)) rotate(${200 + Math.random() * 300}deg)`, opacity: 0 }],
+      { duration: 700 + Math.random() * 300, easing: "cubic-bezier(.2,.7,.4,1)" }).finished.then(() => s.remove());
+  }
+  const fl = spawnIn(ring, `float${forte ? " crit" : ""}`, br.left + br.width / 2, br.top + br.height * 0.3,
+    `−${matNum(c.dmg)}<small>${S.m.ko ? "NOCAUTE!" : `GOLPE ${c.k}`}</small>`);
+  fl.animate([{ transform: "translate(-50%,-30%) scale(.6)", opacity: 0 }, { transform: "translate(-50%,-80%) scale(1.15)", opacity: 1, offset: .25 }, { transform: "translate(-50%,-170%) scale(1)", opacity: 0 }],
+    { duration: 1100, easing: "ease-out", fill: "forwards" }).finished.then(() => fl.remove());
+  fim();
+  luva.animate([{ transform: `translate(${alvoX - 60}px, -50%) scale(1.1)` }, { transform: `translate(-140px, -50%) scale(.8)`, opacity: 0 }], { duration: 320, delay: 90, easing: "ease-in", fill: "forwards" })
+    .finished.then(() => luva.remove());
+  await wait(200);
+  bag.classList.remove("hit");
+  if (S.m.ko) {
+    await wait(500);
+    bag.classList.add("down");
+    const lado = $app.querySelector(".ring-side") || ring, lr = lado.getBoundingClientRect();
+    const st = spawnIn(lado, "ko-stamp", lr.left + lr.width / 2, lr.top + lr.height * 0.4, "NOCAUTE");
+    st.animate([{ transform: "translate(-50%,-50%) scale(2.4) rotate(-14deg)", opacity: 0 }, { transform: "translate(-50%,-50%) scale(1) rotate(-8deg)", opacity: 1 }],
+      { duration: 360, easing: "cubic-bezier(.3,1.4,.5,1)", fill: "forwards" });
+    await wait(700);
+  } else await wait(550);
+}
+async function matErro(c) {
+  const bag = $app.querySelector(".bag"), ring = $app.querySelector(".ringbox"), meter = $app.querySelector(".combo");
+  if (!bag || !ring || reduceMotion()) { await wait(120); return; }
+  bag.animate([{ transform: "rotate(0)" }, { transform: "rotate(-18deg)" }, { transform: "rotate(9deg)" }, { transform: "rotate(-4deg)" }, { transform: "rotate(0)" }], { duration: 760, easing: "ease-in-out" });
+  ring.animate([{ transform: "none" }, { transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "translateX(-3px)" }, { transform: "none" }], { duration: 340, delay: 160 });
+  if (meter) meter.classList.add("broken");
+  const r = bag.getBoundingClientRect();
+  const fl = spawnIn(ring, "float hurt", r.left + r.width / 2, r.top + r.height * 0.3, c.lost ? `×${c.lost}<small>SEQUÊNCIA QUEBRADA</small>` : `ERROU<small>DE VOLTA AO GOLPE 1</small>`);
+  fl.animate([{ transform: "translate(-50%,-30%) scale(.6)", opacity: 0 }, { transform: "translate(-50%,-70%) scale(1.05)", opacity: 1, offset: .25 }, { transform: "translate(-50%,-150%)", opacity: 0 }], { duration: 1000, fill: "forwards" })
+    .finished.then(() => fl.remove());
+  await wait(800);
+}
+
+/* ---------- telas ---------- */
+const MAT_SACO = `
+<svg class="bag-svg" viewBox="0 0 160 290" aria-hidden="true">
+  <g class="chain"><ellipse cx="80" cy="8" rx="5" ry="8"/><ellipse cx="80" cy="22" rx="5" ry="8"/><line x1="80" y1="30" x2="56" y2="46"/><line x1="80" y1="30" x2="104" y2="46"/></g>
+  <rect class="cap" x="40" y="42" width="80" height="18" rx="7"/>
+  <g class="tuft"><path d="M48 60 l-8 12 M58 60 l-3 14 M70 60 l2 13 M88 60 l-2 13 M100 60 l4 14 M112 60 l8 12"/></g>
+  <rect class="sack" x="32" y="56" width="96" height="206" rx="40"/>
+  <path class="seam" d="M80 64 V254"/>
+  <rect class="band" x="32" y="104" width="96" height="10"/>
+  <rect class="band" x="32" y="214" width="96" height="10"/>
+  <g class="face"><path d="M58 140 l12 12 M70 140 l-12 12 M90 140 l12 12 M102 140 l-12 12"/><path d="M62 176 q18 10 36 0"/></g>
+  <g class="tuft"><path d="M46 258 l-10 16 M58 262 l-4 20 M72 264 l0 22 M88 264 l0 22 M102 262 l4 20 M114 258 l10 16"/></g>
+</svg>`;
+
+function vMatBanner() {
+  const rec = matRecordes(), kos = MAT_NIVEIS.filter((_, i) => rec[i] && rec[i].ko).length;
+  return `
+  <section class="panel dlc-banner">
+    <div class="mini-bag" aria-hidden="true">${MAT_SACO}</div>
+    <div class="dlc-txt">
+      <span class="eyebrow"><span class="dlc-tag">DLC</span> Ringue da Matemática</span>
+      <h2>Soque o boneco de palha com contas</h2>
+      <p class="muted">Números complexos e polinômios em quatro níveis, sem relógio. Cada acerto é um soco, e a sequência de acertos faz o golpe crescer até o nocaute.</p>
+      <div class="row"><button class="btn" data-act="mat-home">Entrar no ringue</button>${kos ? `<span class="chip">${kos} de 4 nocautes</span>` : ""}</div>
+    </div>
+  </section>`;
+}
+
+function vMatHome() {
+  const rec = matRecordes();
+  const linhas = [1, 2, 3, 4, 5, 6].map((k) => {
+    const d = matGolpe(k);
+    return `<tr><td class="num">${k}º</td><td class="num">${matFormula(k)}</td><td class="num">${d >= MAT_HP ? `${matNum(d)} <b>nocaute</b>` : matNum(d)}</td></tr>`;
+  }).join("");
+  return `
+  <section class="title">
+    <span class="eyebrow"><span class="dlc-tag">DLC</span> Masmorra do Deploy</span>
+    <h1>Ringue da <span>Matemática</span></h1>
+    <p class="lead">Um boneco de palha com ${MAT_HP} de vida, pendurado como saco de pancadas. Responda certo para socar. Não tem relógio: pense, calcule e escreva a resposta.</p>
+  </section>
+  <section class="mat-rules">
+    <div class="panel">
+      <h3>Sequência é tudo</h3>
+      <p class="muted">Todo golpe começa em 1. O expoente começa em 1.001 e dobra a cada acerto seguido, e a força do soco sobe 0.1 por golpe. Errar devolve você ao golpe 1.</p>
+      <table class="golpes"><thead><tr><th>Golpe</th><th>Conta</th><th>Dano</th></tr></thead><tbody>${linhas}</tbody></table>
+    </div>
+    <div class="panel">
+      <h3>Como responder</h3>
+      <p class="muted">Algumas perguntas são de marcar. A maioria pede a conta: digite o resultado. Use <b>ponto</b> no lugar da vírgula decimal.</p>
+      <ul class="exemplos">
+        <li><code>1.25</code> ou <code>5/4</code></li>
+        <li><code>2-3i</code>, <code>-i</code>, <code>1/2i</code></li>
+        <li><code>2√7</code> ou <code>5.29</code></li>
+      </ul>
+      <p class="muted">Pontos por acerto: 10 × golpe × nível, mais o dano causado. O nocaute dá bônus.</p>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2 style="font-size:24px">Escolha o nível</h2>
+    <div class="mat-levels">
+      ${MAT_NIVEIS.map((n, i) => {
+        const r = rec[i], qt = MQ.filter((q) => q.l === i).length;
+        return `
+        <button class="card mat-card" style="--dom:${n.cor}" data-act="mat-go" data-v="${i}">
+          <span class="band"><span>Nível ${i + 1}</span><span>${qt} perguntas</span></span>
+          <span class="skill">${n.nome}</span>
+          <span class="desc"><b>${esc(n.tema)}.</b> ${esc(n.txt)}</span>
+          <span class="tags">${r ? `<span class="tag">${r.ko ? "Nocaute ✓" : "Sem nocaute"}</span><span class="tag">Recorde ${r.best}</span><span class="tag">Maior sequência ${r.combo}</span>` : `<span class="tag">Ainda não jogado</span>`}</span>
+          <span class="src">${esc(n.fonte)}</span>
+        </button>`;
+      }).join("")}
+    </div>
+  </section>
+  <div class="row"><button class="btn ghost" data-act="home">Voltar à masmorra</button></div>`;
+}
+
+function vMatCombo(m) {
+  const prox = m.k + 1;
+  if (m.ko) return `
+  <div class="combo hot">
+    <div><span class="eyebrow">Sequência</span><b class="num">×${m.k}</b></div>
+    <div><span class="eyebrow">Boneco</span><b class="num">Nocaute</b></div>
+  </div>`;
+  return `
+  <div class="combo${m.k ? " hot" : ""}">
+    <div><span class="eyebrow">Sequência</span><b class="num">×${m.k}</b></div>
+    <div><span class="eyebrow">Próximo golpe</span><b class="num">${matFormula(prox)}</b><span class="muted num">= ${matNum(matGolpe(prox))} de dano</span></div>
+  </div>`;
+}
+
+function vMatRing() {
+  const m = S.m, n = MAT_NIVEIS[m.lvl], c = m.cur, q = MQ[c.id];
+  const letters = "ABCD";
+  const hpVis = c.done && busy && c.hpAntes != null ? c.hpAntes : m.hp;
+  const corpo = q.o
+    ? `<div class="opts">${c.order.map((oi, k) => {
+        let cls = "opt";
+        if (c.done && oi === 0) cls += " right";
+        if (c.done && k === c.chosen && oi !== 0) cls += " wrong";
+        return `<button class="${cls}" data-act="mat-mc" data-v="${k}" ${c.done ? "disabled" : ""}><span class="l">${letters[k]}</span><span>${mfmt(q.o[oi])}</span></button>`;
+      }).join("")}</div>`
+    : `<form class="mat-form" id="matForm" autocomplete="off" novalidate>
+        <div class="ans-grid">
+          ${q.f.map((_, i) => {
+            const rot = q.lab ? q.lab[i] : q.f.length > 1 ? `${i + 1}ª raiz` : "Resposta";
+            return `<label class="ans${c.errAt === i && c.err ? " bad" : ""}"><span>${esc(rot)}</span>
+              <input name="r${i}" inputmode="text" spellcheck="false" autocapitalize="none" enterkeyhint="${i === q.f.length - 1 ? "done" : "next"}" value="${esc(c.vals[i] || "")}" ${c.done ? "disabled" : ""} placeholder="${i === 0 ? "ex.: 1.5 · 3/4 · 2-3i" : ""}"></label>`;
+          }).join("")}
+        </div>
+        ${q.set ? `<p class="set-note">Em qualquer ordem.</p>` : ""}
+        ${c.done ? "" : `
+        <div class="keys" aria-label="Símbolos">
+          ${["i", "√", "/", "−", "."].map((s) => `<button type="button" class="key" data-act="mat-key" data-v="${s === "−" ? "-" : s}">${s}</button>`).join("")}
+        </div>
+        <p class="err" role="alert">${esc(c.err || "")}</p>
+        <button class="btn punch" type="submit">Socar</button>`}
+      </form>`;
+  const resposta = q.o ? mfmt(q.o[0]) : (q.set ? `{ ${q.f.map(matMostra).join(" ; ")} }` : q.f.map((v, i) => `${q.lab ? esc(q.lab[i]) + " " : ""}${matMostra(v)}`).join(" · "));
+  return `
+  <header class="hud">
+    <div class="lvl"><span class="eyebrow"><span class="dlc-tag">DLC</span> Nível ${m.lvl + 1} · ${esc(n.tema)}</span><h2>${n.nome}</h2></div>
+    <div class="wallet"><span><b>${m.score}</b> pontos</span><span>Acertos ${m.hits}/${m.tries}</span><span>Maior sequência ${m.combo}</span></div>
+  </header>
+  <section class="ring" style="--dom:${n.cor}">
+    <div class="panel ring-side">
+      <div class="ringbox"><div class="bag${m.ko && !busy ? " down" : ""}">${MAT_SACO}</div></div>
+      <div class="ring-info">
+        <div class="row between"><span class="eyebrow">Boneco de palha</span><span class="mat-hpnum hpnum">${matNum(hpVis)} / ${MAT_HP}</span></div>
+        <div class="bar mat-hp" role="progressbar" aria-label="Vida do boneco" aria-valuemin="0" aria-valuemax="${MAT_HP}" aria-valuenow="${Math.round(m.hp)}"><i style="width:${(hpVis / MAT_HP) * 100}%"></i></div>
+        ${vMatCombo(m)}
+      </div>
+    </div>
+    <div class="qbox mat-q${fx.modal ? " enter" : ""}" style="--dom:${n.cor}">
+      <div class="band"><span>Pergunta ${c.n} de ${m.total}</span><span>${q.o ? "Marque" : "Calcule e digite"}</span></div>
+      <div class="qbody">
+        <h2 id="mqt">${mfmt(q.q)}</h2>
+        ${corpo}
+        ${c.done ? `
+        <div class="feedback ${c.ok ? "ok" : "bad"}">
+          <strong>${c.ok ? `Golpe ${c.k}: ${matNum(c.dmg)} de dano · +${c.pts} pontos` : c.lost ? `Errou · a sequência de ${c.lost} acabou` : "Errou"}</strong>
+          ${c.ok && c.bonus ? `<p><b>Nocaute!</b> Bônus de ${c.bonus} pontos.</p>` : ""}
+          ${!c.ok ? `<p>Resposta certa: <b>${resposta}</b></p>` : ""}
+          <p>${mfmt(q.e)}</p>
+        </div>
+        <button class="btn" data-act="mat-next" id="matNext" ${busy ? "disabled" : ""}>${m.ko || !m.deck.length ? "Ver resultado" : "Próxima pergunta"}</button>` : ""}
+      </div>
+    </div>
+  </section>
+  <div class="row"><button class="btn ghost small" data-act="mat-home">Sair do ringue</button></div>`;
+}
+
+function vMatEnd() {
+  const m = S.m, n = MAT_NIVEIS[m.lvl], rec = matRecordes()[m.lvl] || {};
+  const pct = m.tries ? Math.round((m.hits / m.tries) * 100) : 0;
+  return `
+  <section class="title end">
+    <span class="eyebrow"><span class="dlc-tag">DLC</span> Nível ${m.lvl + 1} · ${n.nome}</span>
+    <h1>${m.ko ? "Nocaute!" : "O boneco aguentou"}</h1>
+    <p class="lead">${m.ko
+      ? `O boneco de palha caiu depois de ${m.tries} perguntas. Maior sequência: ${m.combo} acertos seguidos.`
+      : `As perguntas do nível acabaram com o boneco em ${matNum(m.hp)} de vida. Sequências mais longas batem muito mais forte: tente de novo.`}</p>
+    <p class="wallet"><span>Pontuação <b>${m.score}</b></span><span>${m.newBest ? "Novo recorde neste nível!" : `Recorde do nível: ${rec.best || m.score}`}</span></p>
+    <div class="row">
+      <button class="btn" data-act="mat-go" data-v="${m.lvl}">Tentar de novo</button>
+      ${m.lvl < MAT_NIVEIS.length - 1 ? `<button class="btn ghost" data-act="mat-go" data-v="${m.lvl + 1}">Nível ${m.lvl + 2}: ${MAT_NIVEIS[m.lvl + 1].nome}</button>` : ""}
+      <button class="btn ghost" data-act="mat-home">Outros níveis</button>
+    </div>
+  </section>
+  <section class="stats">
+    <div class="panel stat"><span class="eyebrow">Acertos</span><span class="big">${m.hits}/${m.tries}</span><div class="bar"><i style="width:${pct}%;background:var(--ok)"></i></div><span class="hpnum">${pct}% de acerto</span></div>
+    <div class="panel stat"><span class="eyebrow">Maior sequência</span><span class="big">×${m.combo}</span><span class="hpnum">Golpe mais forte: ${matNum(m.combo ? matGolpe(m.combo) : 0)}</span></div>
+    <div class="panel stat"><span class="eyebrow">Vida do boneco</span><span class="big">${matNum(m.hp)}</span><div class="bar"><i style="width:${(m.hp / MAT_HP) * 100}%"></i></div><span class="hpnum">de ${MAT_HP}</span></div>
+  </section>
+  ${m.missed.length ? `
+  <section class="review">
+    <h2 style="font-size:24px">Para revisar</h2>
+    ${m.missed.map((x) => {
+      const q = MQ[x.id];
+      const certa = q.o ? mfmt(q.o[0]) : (q.set ? `{ ${q.f.map(matMostra).join(" ; ")} }` : q.f.map((v, i) => `${q.lab ? esc(q.lab[i]) + " " : ""}${matMostra(v)}`).join(" · "));
+      return `<div class="panel miss" style="--dom:${n.cor}">
+        <p><b>${mfmt(q.q)}</b></p>
+        <p class="you">Sua resposta: ${q.o ? mfmt(x.given) : esc(x.given)}</p>
+        <p class="ans">Correta: ${certa}</p>
+        <p class="exp">${mfmt(q.e)}</p>
+      </div>`;
+    }).join("")}
+  </section>` : ""}`;
+}
+
+function matTecla(sim) {
+  const form = document.getElementById("matForm");
+  if (!form) return;
+  const alvo = (matUltimoCampo && form.contains(matUltimoCampo)) ? matUltimoCampo : form.querySelector("input");
+  if (!alvo) return;
+  const a = alvo.selectionStart ?? alvo.value.length, b = alvo.selectionEnd ?? alvo.value.length;
+  alvo.value = alvo.value.slice(0, a) + sim + alvo.value.slice(b);
+  alvo.focus();
+  alvo.setSelectionRange(a + sim.length, a + sim.length);
+}
+let matUltimoCampo = null;
+document.addEventListener("focusin", (e) => { if (e.target.matches && e.target.matches("#matForm input")) matUltimoCampo = e.target; });
+
 /* ================= render ================= */
 function render() {
   if (!USER && S.screen !== "login") S = { screen: "login" };
-  const views = { login: vLogin, start: vStart, intro: vIntro, battle: vBattle, clear: vClear, shop: vShop, end: vEnd };
+  const views = { login: vLogin, start: vStart, intro: vIntro, battle: vBattle, clear: vClear, shop: vShop, end: vEnd, "mat-home": vMatHome, "mat-ring": vMatRing, "mat-end": vMatEnd };
   const prevScreen = $app.dataset.screen;
   $app.innerHTML = (views[S.screen] || vStart)();
   $app.dataset.screen = S.screen;
@@ -1295,6 +1953,13 @@ function render() {
     (u && !u.value ? u : pw)?.focus({ preventScroll: true });
   }
   if (S.screen === "end" && !S.saved) saveGame();
+  if (S.screen === "mat-ring" && S.m.cur) {
+    const c = S.m.cur;
+    const alvo = c.done ? $app.querySelector("#matNext:not(:disabled)")
+      : $app.querySelector(c.err && c.errAt != null ? `#matForm input[name="r${c.errAt}"]` : "#matForm input") || $app.querySelector(".mat-q .opt");
+    if (alvo) alvo.focus({ preventScroll: true });
+    fx.modal = false;
+  }
 }
 
 /* relógio das perguntas */
@@ -1327,6 +1992,11 @@ document.addEventListener("click", (e) => {
     case "again": newGame(S.cls); break;
     case "home": S = { screen: "start" }; render(); break;
     case "logout": logout(); break;
+    case "mat-home": S = { screen: "mat-home" }; render(); break;
+    case "mat-go": matComecar(+v); break;
+    case "mat-mc": matResponder(+v); break;
+    case "mat-next": matProxima(); break;
+    case "mat-key": matTecla(v); break;
     case "tab": {
       const u = $app.querySelector("#f-user");
       if (u) authUI.name = u.value;
@@ -1337,11 +2007,20 @@ document.addEventListener("click", (e) => {
 
 document.addEventListener("submit", (e) => {
   if (e.target.id === "authForm") { e.preventDefault(); submitAuth(e.target); }
+  if (e.target.id === "matForm") { e.preventDefault(); matResponder([...e.target.querySelectorAll("input")].map((x) => x.value)); }
 });
 
 document.addEventListener("keydown", (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey || busy || S.screen === "login") return;
   const k = e.key.toLowerCase();
+  if (S.screen === "mat-ring") {
+    const c = S.m.cur;
+    if (c && !c.done && MQ[c.id].o && !e.target.matches("input")) {
+      const idx = "abcd".indexOf(k) >= 0 ? "abcd".indexOf(k) : "1234".indexOf(k);
+      if (idx >= 0) { e.preventDefault(); matResponder(idx); }
+    }
+    return;
+  }
   if (S.screen === "battle" && S.cur) {
     if (S.cur.chosen == null) {
       const idx = "abcd".indexOf(k) >= 0 ? "abcd".indexOf(k) : "1234".indexOf(k);
