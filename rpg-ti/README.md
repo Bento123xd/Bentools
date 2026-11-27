@@ -2,7 +2,28 @@
 
 RPG de cartas sobre conhecimentos técnicos de TI: Infra, Dev e Redes, em quatro níveis (Júnior, Pleno, Sênior e Tech Lead).
 
-Abra `index.html` no navegador. Não precisa de build nem de dependências.
+## Baixar
+
+Os instaladores ficam nas [Releases do repositório](https://github.com/Bento123xd/Bentools/releases):
+
+- **Linux** (Debian, Ubuntu, Mint, 64 bits): `masmorra-do-deploy_<versão>_amd64.deb`
+
+  ```bash
+  sudo apt install ./masmorra-do-deploy_1.0.0_amd64.deb
+  ```
+
+- **Windows 10 e 11** (64 bits): `Masmorra-do-Deploy-Setup-<versão>.exe`. O instalador não tem assinatura digital; se o SmartScreen avisar, clique em “Mais informações” e “Executar assim mesmo”.
+
+Também dá para jogar no navegador abrindo `index.html`.
+
+## Contas e login
+
+- É preciso criar uma conta (usuário e senha) para jogar. Cada conta guarda recorde, partidas, vitórias e as últimas 20 partidas, e a tela inicial mostra o ranking das contas.
+- As contas são **locais**: não há servidor.
+  - No app para computador, ficam em `contas.json` na pasta de dados do app (`~/.config/Masmorra do Deploy/` no Linux, `%APPDATA%\Masmorra do Deploy\` no Windows), com permissão só para o seu usuário.
+  - No navegador, ficam no armazenamento local do site.
+- A senha nunca é gravada: o app guarda um sal aleatório e o hash da senha (scrypt no computador, PBKDF2-SHA256 com 150 mil iterações no navegador). Tentativas erradas esperam 0,6 s antes de responder.
+- “Manter conectado” lembra a sessão naquele computador ou navegador. Sem essa opção, é preciso entrar de novo ao reabrir o jogo.
 
 ## Como jogar
 
@@ -16,6 +37,38 @@ Abra `index.html` no navegador. Não precisa de build nem de dependências.
   - Carta de ataque: Hotfix em Produção (4 de dano direto).
   - Melhorias: Certificações (+1 de dano por área) e Servidor Redundante (+1 de uptime máximo).
 - No fim, a tela de resultado mostra o acerto por área e revisa as perguntas que você errou.
+
+## Desenvolvimento do app para computador
+
+O app usa Electron. O jogo é o mesmo `index.html`; `desktop/main.js` cria a janela e cuida das contas, e `desktop/preload.js` expõe só as funções de login para a página.
+
+```bash
+cd rpg-ti
+npm install
+npm start
+```
+
+Gerar os instaladores:
+
+```bash
+npm run dist:linux
+```
+
+```bash
+npm run dist:win
+```
+
+O `.exe` precisa ser gerado no Windows (ou no Linux com Wine funcionando). O jeito mais simples é o GitHub Actions: o workflow `.github/workflows/rpg-ti-desktop.yml` gera os dois instaladores e, ao receber uma tag `rpg-ti-vX.Y.Z`, publica uma Release com eles.
+
+```bash
+git tag rpg-ti-v1.0.1
+```
+
+```bash
+git push origin rpg-ti-v1.0.1
+```
+
+Antes de criar a tag, atualize `version` em `package.json` e a constante `VERSAO` em `index.html` (usada nos botões de download da versão web).
 
 ## Adicionar perguntas
 

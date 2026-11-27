@@ -275,6 +275,57 @@ button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .miss .ans { color: var(--ok); }
 .miss .exp { color: var(--muted); }
 
+/* login */
+.auth { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px; align-items: center; padding-top: 12px; }
+.auth .title { padding-top: 0; }
+.form { display: flex; flex-direction: column; gap: 14px; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 4px; }
+.tabs button { border: 0; background: transparent; border-radius: 7px; padding: 9px; font-family: var(--f-display); font-weight: 600; color: var(--muted); }
+.tabs button[aria-selected="true"] { background: var(--panel-2); color: var(--fg); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-family: var(--f-display); font-weight: 600; font-size: 15px; }
+.field input { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; width: 100%; }
+.field input:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+.field small { color: var(--muted); font-size: 13px; }
+.check { display: flex; gap: 9px; align-items: center; font-size: 15px; color: var(--muted); cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--gold); margin: 0; }
+.err { color: var(--bad); font-size: 15px; min-height: 1.5em; }
+.form .btn { width: 100%; }
+.note { color: var(--muted); font-size: 14px; }
+
+/* perfil */
+.profile { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.profile .panel { display: flex; flex-direction: column; gap: 12px; }
+.me { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.me h3 { font-size: 24px; overflow-wrap: anywhere; }
+.kpis { display: flex; gap: 26px; flex-wrap: wrap; }
+.kpis div { display: flex; flex-direction: column; }
+.kpis b { font-family: var(--f-display); font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--gold); }
+.kpis span { color: var(--muted); font-size: 13px; }
+.rank { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.rank li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; font-size: 15px; }
+.rank .pos { font-family: var(--f-display); font-weight: 700; color: var(--muted); }
+.rank .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank .pts { font-family: var(--f-display); font-weight: 600; font-variant-numeric: tabular-nums; }
+.rank li.mine { color: var(--gold); }
+.btn.small { padding: 7px 14px; font-size: 14px; }
+
+/* downloads */
+.downloads { display: flex; flex-direction: column; gap: 12px; }
+.dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+.dl { display: flex; gap: 14px; align-items: flex-start; text-decoration: none; color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; transition: border-color .15s, transform .15s; }
+.dl:hover { border-color: var(--gold); transform: translateY(-2px); }
+.dl:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.dl .os { font-family: var(--f-display); font-weight: 800; font-size: 15px; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 10px; background: var(--paper); color: var(--paper-ink); flex: none; }
+.dl .txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.dl b { font-family: var(--f-display); font-size: 17px; }
+.dl p { color: var(--muted); font-size: 14px; }
+.dl code { font-size: 12px; overflow-wrap: anywhere; }
+.downloads a.link { color: var(--gold); }
+
+@media (max-width: 720px) {
+  .auth, .profile { grid-template-columns: 1fr; }
+}
 @media (max-width: 720px) {
   .arena { grid-template-columns: 1fr; }
   .hand, .classes { gap: 8px; }
@@ -476,7 +527,7 @@ const SHOP = [
 ];
 
 /* ================= estado ================= */
-const BASE_HP = 5, HAND = 3, HOTFIX_DMG = 4, BEST_KEY = "masmorra-deploy-best";
+const BASE_HP = 5, HAND = 3, HOTFIX_DMG = 4;
 let S = { screen: "start" };
 let fx = { cards: new Set(), modal: false };
 let busy = false;
@@ -491,8 +542,134 @@ const pick = (a) => a[Math.floor(Math.random() * a.length)];
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const rich = (s) => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-const loadBest = () => { try { return Number(localStorage.getItem(BEST_KEY)) || 0; } catch (e) { return 0; } };
-const saveBest = (v) => { try { localStorage.setItem(BEST_KEY, String(v)); } catch (e) { /* sem storage */ } };
+
+/* ================= contas =================
+ * No app para computador, as contas ficam no processo principal do Electron (scrypt, arquivo local).
+ * Na versão web, ficam no armazenamento do navegador (PBKDF2 via Web Crypto).
+ * As duas implementações expõem a mesma interface.
+ */
+const NOME_RE = /^[\p{L}\p{N}._-]{3,20}$/u, SENHA_MIN = 6;
+function validarConta(nome, senha) {
+  if (typeof nome !== "string" || !NOME_RE.test(nome.trim())) return "O nome de usuário precisa ter de 3 a 20 caracteres: letras, números, ponto, hífen ou sublinhado.";
+  if (typeof senha !== "string" || senha.length < SENHA_MIN) return `A senha precisa ter pelo menos ${SENHA_MIN} caracteres.`;
+  if (senha.length > 200) return "A senha é longa demais.";
+  return null;
+}
+const WebAuth = (() => {
+  const KEY = "masmorra-contas", SES = "masmorra-sessao";
+  let atual = null;
+  const read = () => { try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && d.users) return d; } catch (e) { /* vazio */ } return { users: {} }; };
+  const write = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); return true; } catch (e) { return false; } };
+  const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  const unhex = (h) => new Uint8Array(h.match(/../g).map((x) => parseInt(x, 16)));
+  async function hash(senha, salt) {
+    const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(senha), "PBKDF2", false, ["deriveBits"]);
+    return hex(await crypto.subtle.deriveBits({ name: "PBKDF2", salt: unhex(salt), iterations: 150000, hash: "SHA-256" }, k, 256));
+  }
+  const pub = (u) => u ? { name: u.name, best: u.best, games: u.games, wins: u.wins, history: u.history } : null;
+  const key = (n) => String(n || "").trim().toLowerCase();
+  const sessao = (k, lembrar) => {
+    atual = k;
+    try { sessionStorage.setItem(SES, k); if (lembrar) localStorage.setItem(SES, k); else localStorage.removeItem(SES); } catch (e) { /* só em memória */ }
+  };
+  const semCripto = () => !(window.crypto && crypto.subtle);
+  return {
+    kind: "web",
+    async register({ name, password, remember }) {
+      const erro = validarConta(name, password);
+      if (erro) return { ok: false, error: erro };
+      if (semCripto()) return { ok: false, error: "Este navegador não oferece criptografia para guardar a senha. Use o app para computador." };
+      const d = read(), k = key(name);
+      if (d.users[k]) return { ok: false, error: "Já existe uma conta com esse nome neste navegador." };
+      const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
+      d.users[k] = { name: name.trim(), salt, hash: await hash(password, salt), createdAt: new Date().toISOString(), best: 0, games: 0, wins: 0, history: [] };
+      if (!write(d)) return { ok: false, error: "O navegador bloqueou o armazenamento do site. Libere os dados do site ou use o app para computador." };
+      sessao(k, remember);
+      return { ok: true, user: pub(d.users[k]) };
+    },
+    async login({ name, password, remember }) {
+      const u = read().users[key(name)];
+      if (!u || semCripto() || (await hash(String(password || ""), u.salt)) !== u.hash) {
+        await wait(600);
+        return { ok: false, error: "Usuário ou senha incorretos." };
+      }
+      sessao(key(name), remember);
+      return { ok: true, user: pub(u) };
+    },
+    async logout() {
+      atual = null;
+      try { localStorage.removeItem(SES); sessionStorage.removeItem(SES); } catch (e) { /* nada a limpar */ }
+      return { ok: true };
+    },
+    async current() {
+      if (!atual) { try { atual = sessionStorage.getItem(SES) || localStorage.getItem(SES); } catch (e) { atual = null; } }
+      const u = atual ? read().users[atual] : null;
+      if (!u) atual = null;
+      return { ok: true, user: pub(u) };
+    },
+    async saveResult(r) {
+      const d = read(), u = atual ? d.users[atual] : null;
+      if (!u) return { ok: false, error: "Entre na sua conta para salvar o resultado." };
+      const novo = r.score > u.best;
+      u.games++; if (r.win) u.wins++; if (novo) u.best = r.score;
+      u.history.unshift({ score: r.score, cleared: r.cleared, win: !!r.win, cls: r.cls, date: new Date().toISOString() });
+      u.history = u.history.slice(0, 20);
+      if (!write(d)) return { ok: false, error: "Não foi possível salvar o resultado neste navegador." };
+      return { ok: true, user: pub(u), newBest: novo };
+    },
+    async ranking() {
+      const lista = Object.values(read().users).filter((u) => u.games > 0).sort((a, b) => b.best - a.best).slice(0, 5)
+        .map((u) => ({ name: u.name, best: u.best, wins: u.wins }));
+      return { ok: true, ranking: lista };
+    }
+  };
+})();
+const IS_DESKTOP = !!window.masmorraDesktop;
+const Auth = window.masmorraDesktop || WebAuth;
+const ONDE = IS_DESKTOP ? "neste computador" : "neste navegador";
+let USER = null, RANKING = [];
+let authUI = { tab: "login", error: "", busy: false, name: "", remember: true };
+async function refreshRanking() {
+  try { const r = await Auth.ranking(); RANKING = r.ok ? r.ranking : []; } catch (e) { RANKING = []; }
+}
+async function submitAuth(form) {
+  if (authUI.busy) return;
+  const name = form.elements.user.value.trim();
+  const password = form.elements.pass.value;
+  const remember = form.elements.remember.checked;
+  authUI.name = name; authUI.remember = remember;
+  const reg = authUI.tab === "register";
+  const erro = reg ? validarConta(name, password) : (!name || !password ? "Preencha usuário e senha." : null);
+  if (erro) { authUI.error = erro; render(); return; }
+  if (reg && password !== form.elements.pass2.value) { authUI.error = "As senhas não conferem."; render(); return; }
+  authUI.busy = true; authUI.error = ""; render();
+  let r;
+  try { r = await (reg ? Auth.register({ name, password, remember }) : Auth.login({ name, password, remember })); }
+  catch (e) { r = { ok: false, error: "Não foi possível acessar as contas agora." }; }
+  authUI.busy = false;
+  if (!r.ok) { authUI.error = r.error; render(); return; }
+  USER = r.user;
+  authUI = { tab: "login", error: "", busy: false, name: "", remember: true };
+  await refreshRanking();
+  S = { screen: "start" };
+  render();
+}
+async function logout() {
+  await Auth.logout();
+  USER = null;
+  authUI = { tab: "login", error: "", busy: false, name: "", remember: true };
+  S = { screen: "login" };
+  render();
+}
+async function saveGame() {
+  S.saved = true;
+  let r;
+  try { r = await Auth.saveResult({ score: S.score, cleared: S.cleared, win: S.cleared === NIVEIS.length - 1, cls: S.cls }); }
+  catch (e) { r = { ok: false, error: "Não foi possível salvar o resultado." }; }
+  if (r.ok) { USER = r.user; S.newBest = r.newBest; S.saveError = ""; } else S.saveError = r.error;
+  await refreshRanking();
+  if (S.screen === "end") render();
+}
 
 const lvl = () => NIVEIS[S.ch];
 const boss = () => lvl().boss;
@@ -610,7 +787,6 @@ function resolvePending() {
   } else if (!S.hand.length) {
     S.screen = "end";
   }
-  if (S.screen === "end" && S.score > loadBest()) { S.newBest = true; saveBest(S.score); }
 }
 function useSO() {
   const c = S.cur;
@@ -772,15 +948,89 @@ const leds = (hp, max) => `<div class="leds" aria-label="Uptime ${hp} de ${max}"
 const wallet = () => `<div class="wallet"><span><b>${S.xp}</b> XP para gastar</span><span>Pontuação ${S.score}</span></div>`;
 const weakChip = (b) => b.fraco ? domChip(b.fraco, `Fraqueza: ${DOM[b.fraco].nome}`) : `<span class="chip">Sem fraqueza</span>`;
 
+const nomeNivel = (c) => (c == null || c < 0) ? "Estagiário(a)" : NIVEIS[c].nome;
+const RELEASES = "https://github.com/Bento123xd/Bentools/releases";
+const VERSAO = "1.0.0";
+function vDownloads() {
+  const base = `${RELEASES}/download/rpg-ti-v${VERSAO}`;
+  return `
+  <section class="downloads">
+    <h2 style="font-size:24px">Jogue no computador</h2>
+    <p class="muted">O app funciona sem internet e guarda as contas no próprio computador.</p>
+    <div class="dl-grid">
+      <a class="dl" href="${base}/masmorra-do-deploy_${VERSAO}_amd64.deb" target="_blank" rel="noopener">
+        <span class="os">.deb</span>
+        <span class="txt"><b>Linux: Debian, Ubuntu, Mint</b><p>64 bits. Instale com <code>sudo apt install ./masmorra-do-deploy_${VERSAO}_amd64.deb</code></p></span>
+      </a>
+      <a class="dl" href="${base}/Masmorra-do-Deploy-Setup-${VERSAO}.exe" target="_blank" rel="noopener">
+        <span class="os">.exe</span>
+        <span class="txt"><b>Windows 10 e 11</b><p>Instalador de 64 bits. O app não tem assinatura digital: se o Windows avisar, clique em “Mais informações” e depois em “Executar assim mesmo”.</p></span>
+      </a>
+    </div>
+    <p class="note">Todas as versões: <a class="link" href="${RELEASES}" target="_blank" rel="noopener">github.com/Bento123xd/Bentools/releases</a></p>
+  </section>`;
+}
+
+function vLogin() {
+  const reg = authUI.tab === "register";
+  return `
+  <section class="auth">
+    <div class="title">
+      <span class="eyebrow">Um RPG de cartas para quem vive de TI</span>
+      <h1>Masmorra do <span>Deploy</span></h1>
+      <p class="lead">Suba de Júnior a Tech Lead respondendo perguntas de Infra, Dev e Redes. Entre na sua conta para guardar recordes, vitórias e o histórico das partidas.</p>
+      <p class="note">As contas ficam salvas apenas ${ONDE}.</p>
+    </div>
+    <form class="panel form" id="authForm" novalidate>
+      <div class="tabs" role="tablist" aria-label="Acesso">
+        <button type="button" role="tab" aria-selected="${!reg}" data-act="tab" data-v="login">Entrar</button>
+        <button type="button" role="tab" aria-selected="${reg}" data-act="tab" data-v="register">Criar conta</button>
+      </div>
+      <div class="field">
+        <label for="f-user">Usuário</label>
+        <input id="f-user" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20" value="${esc(authUI.name)}">
+        ${reg ? `<small>De 3 a 20 caracteres: letras, números, ponto, hífen ou sublinhado.</small>` : ""}
+      </div>
+      <div class="field">
+        <label for="f-pass">Senha</label>
+        <input id="f-pass" name="pass" type="password" autocomplete="${reg ? "new-password" : "current-password"}">
+        ${reg ? `<small>Pelo menos 6 caracteres.</small>` : ""}
+      </div>
+      ${reg ? `<div class="field"><label for="f-pass2">Confirme a senha</label><input id="f-pass2" name="pass2" type="password" autocomplete="new-password"></div>` : ""}
+      <label class="check"><input id="f-remember" name="remember" type="checkbox" ${authUI.remember ? "checked" : ""}> Manter conectado ${ONDE}</label>
+      <p class="err" role="alert">${esc(authUI.error)}</p>
+      <button class="btn" type="submit" ${authUI.busy ? "disabled" : ""}>${authUI.busy ? "Verificando…" : reg ? "Criar conta e jogar" : "Entrar"}</button>
+      <p class="note">${reg ? "Já tem conta? Use a aba Entrar." : `Primeira vez? Use a aba Criar conta.`}</p>
+    </form>
+  </section>
+  ${IS_DESKTOP ? "" : vDownloads()}`;
+}
+
+function vProfile() {
+  const u = USER, ult = u.history && u.history[0];
+  return `
+  <section class="profile">
+    <div class="panel">
+      <div class="me"><div><span class="eyebrow">Jogando como</span><h3>${esc(u.name)}</h3></div><button class="btn ghost small" data-act="logout">Sair</button></div>
+      <div class="kpis"><div><b>${u.best}</b><span>Recorde</span></div><div><b>${u.games}</b><span>Partidas</span></div><div><b>${u.wins}</b><span>Vitórias</span></div></div>
+      <p class="note">${ult ? `Última partida: ${ult.score} pontos, nível ${nomeNivel(ult.cleared)}${ult.win ? ", com vitória" : ""}.` : "Nenhuma partida ainda. Escolha uma classe abaixo para começar."}</p>
+    </div>
+    <div class="panel">
+      <span class="eyebrow">Ranking ${ONDE}</span>
+      ${RANKING.length ? `<ol class="rank">${RANKING.map((r, i) => `<li class="${r.name === u.name ? "mine" : ""}"><span class="pos">${i + 1}º</span><span class="nm">${esc(r.name)}</span><span class="pts">${r.best}</span></li>`).join("")}</ol>`
+        : `<p class="note">O ranking aparece depois da primeira partida concluída.</p>`}
+    </div>
+  </section>`;
+}
+
 function vStart() {
-  const best = loadBest();
   return `
   <section class="title">
     <span class="eyebrow">Um RPG de cartas para quem vive de TI</span>
     <h1>Masmorra do <span>Deploy</span></h1>
     <p class="lead">Suba de Júnior a Tech Lead enfrentando quatro chefes. Cada carta é um ataque de Infra, Dev ou Redes: jogue, responda à pergunta técnica e cause dano. A cada nível as perguntas ficam mais difíceis, o tempo encurta e nenhuma pergunta se repete na jornada.</p>
-    ${best ? `<p class="wallet"><span>Seu recorde neste navegador: <b>${best}</b></span></p>` : ""}
   </section>
+  ${vProfile()}
   <section class="rules">
     <div class="panel"><h3>Cartas escondem perguntas</h3><p>A carta mostra só a área e o dano. A pergunta aparece quando você joga.</p></div>
     <div class="panel"><h3>Ataque a fraqueza</h3><p>Cada chefe tem uma área fraca. Cartas dessa área causam dano dobrado.</p></div>
@@ -798,7 +1048,8 @@ function vStart() {
           <span class="power"><b>+1</b> dano em ${DOM[c.id].nome}</span>
         </button>`).join("")}
     </div>
-  </section>`;
+  </section>
+  ${IS_DESKTOP ? "" : vDownloads()}`;
 }
 
 function vPath() {
@@ -988,7 +1239,6 @@ function rankName() { return S.cleared < 0 ? "Estagiário(a)" : NIVEIS[S.cleared
 
 function vEnd() {
   const win = S.cleared === NIVEIS.length - 1;
-  const best = loadBest();
   return `
   <section class="title end">
     <span class="eyebrow">${win ? "Fim de jogo · vitória" : "Fim de jogo · incidente P1"}</span>
@@ -996,7 +1246,7 @@ function vEnd() {
     <p class="lead">${win
       ? "Você derrotou o Dragão do Débito Técnico e venceu os quatro capítulos."
       : `Seu uptime chegou a zero no capítulo ${S.ch + 1}. Nível alcançado: <b>${rankName()}</b>.`}</p>
-    <p class="wallet"><span>Pontuação <b>${S.score}</b></span><span>${S.newBest ? "Novo recorde!" : best ? `Recorde ${best}` : ""}</span></p>
+    <p class="wallet"><span>Pontuação <b>${S.score}</b></span><span>${S.saveError ? esc(S.saveError) : !S.saved || S.newBest == null ? "Salvando na sua conta…" : S.newBest ? `Novo recorde pessoal de ${esc(USER.name)}!` : `Recorde de ${esc(USER.name)}: ${USER.best}`}</span></p>
     <div class="row">
       <button class="btn" data-act="again">Jogar de novo</button>
       <button class="btn ghost" data-act="home">Trocar de classe</button>
@@ -1028,7 +1278,8 @@ function vEnd() {
 
 /* ================= render ================= */
 function render() {
-  const views = { start: vStart, intro: vIntro, battle: vBattle, clear: vClear, shop: vShop, end: vEnd };
+  if (!USER && S.screen !== "login") S = { screen: "login" };
+  const views = { login: vLogin, start: vStart, intro: vIntro, battle: vBattle, clear: vClear, shop: vShop, end: vEnd };
   const prevScreen = $app.dataset.screen;
   $app.innerHTML = (views[S.screen] || vStart)();
   $app.dataset.screen = S.screen;
@@ -1039,6 +1290,11 @@ function render() {
   if (prevScreen !== S.screen) window.scrollTo(0, 0);
   const focus = $modal.querySelector("#nextBtn") || $modal.querySelector(".opt:not(:disabled)");
   if (focus) focus.focus({ preventScroll: true });
+  if (S.screen === "login" && !authUI.busy) {
+    const u = $app.querySelector("#f-user"), pw = $app.querySelector("#f-pass");
+    (u && !u.value ? u : pw)?.focus({ preventScroll: true });
+  }
+  if (S.screen === "end" && !S.saved) saveGame();
 }
 
 /* relógio das perguntas */
@@ -1070,11 +1326,21 @@ document.addEventListener("click", (e) => {
     case "promote": promote(); break;
     case "again": newGame(S.cls); break;
     case "home": S = { screen: "start" }; render(); break;
+    case "logout": logout(); break;
+    case "tab": {
+      const u = $app.querySelector("#f-user");
+      if (u) authUI.name = u.value;
+      authUI.tab = v; authUI.error = ""; render(); break;
+    }
   }
 });
 
+document.addEventListener("submit", (e) => {
+  if (e.target.id === "authForm") { e.preventDefault(); submitAuth(e.target); }
+});
+
 document.addEventListener("keydown", (e) => {
-  if (e.metaKey || e.ctrlKey || e.altKey || busy) return;
+  if (e.metaKey || e.ctrlKey || e.altKey || busy || S.screen === "login") return;
   const k = e.key.toLowerCase();
   if (S.screen === "battle" && S.cur) {
     if (S.cur.chosen == null) {
@@ -1088,11 +1354,15 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ================= boot ================= */
-function start(data) {
-  if (data && data.state && data.state.screen) {
+async function start(data) {
+  try { USER = (await Auth.current()).user || null; } catch (e) { USER = null; }
+  if (USER) await refreshRanking();
+  if (USER && data && data.state && data.state.screen && data.state.screen !== "login") {
     S = data.state;
     if (S.pending) resolvePending();
     if (S.cur && S.cur.deadline && S.cur.chosen == null) S.cur.deadline = Date.now() + lvl().tempo * 1000;
+  } else {
+    S = { screen: USER ? "start" : "login" };
   }
   render();
 }

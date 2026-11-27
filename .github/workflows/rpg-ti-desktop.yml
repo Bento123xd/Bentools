@@ -1,0 +1,76 @@
+name: Masmorra do Deploy - instaladores
+
+# Gera o .deb (Linux) e o .exe (Windows) do jogo em rpg-ti/.
+# Ao enviar uma tag rpg-ti-vX.Y.Z, publica os dois arquivos numa Release.
+on:
+  push:
+    tags:
+      - "rpg-ti-v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: rpg-ti
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: --linux deb
+            files: rpg-ti/dist/*.deb
+          - os: windows-latest
+            target: --win nsis
+            files: rpg-ti/dist/*.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: rpg-ti/package-lock.json
+      - run: npm ci
+      - run: npx electron-builder ${{ matrix.target }}
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: instalador-${{ matrix.os }}
+          path: ${{ matrix.files }}
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/rpg-ti-v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: instaladores
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Masmorra do Deploy ${{ github.ref_name }}
+          files: instaladores/*
+          body: |
+            RPG de cartas de TI: Infra, Dev e Redes, de Júnior a Tech Lead.
+
+            **Linux (Debian, Ubuntu, Mint, 64 bits):** baixe o `.deb` e instale com
+            `sudo apt install ./masmorra-do-deploy_*_amd64.deb`
+
+            **Windows 10 e 11 (64 bits):** baixe e execute o `Masmorra-do-Deploy-Setup-*.exe`.
+            O instalador não tem assinatura digital: se o Windows SmartScreen avisar,
+            clique em "Mais informações" e depois em "Executar assim mesmo".
+
+            As contas de login ficam salvas apenas no computador onde o jogo está instalado.
