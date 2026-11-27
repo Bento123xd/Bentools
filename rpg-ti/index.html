@@ -1396,7 +1396,7 @@ function vEnd() {
  * Cada acerto é um soco. Golpe nº k da sequência: dano = força^expoente, com
  *   força    = 1 + 0.1·(k − 1)            → o 1º golpe é 1^1.001 = 1
  *   expoente = 1.001 · 1.1^(k − 1)        → a cada acerto seguido soma 1/10 dele mesmo
- * Errar zera a sequência. As perguntas vêm das Listas 1, 2 e 3 de Polinômios, em ordem de dificuldade,
+ * Errar zera a sequência. As perguntas são de Geometria Espacial (lista de 100 questões + extras), em ordem de dificuldade,
  * e cada uma traz a resolução passo a passo (e, nas de marcar, o motivo de cada alternativa errada).
  */
 const MAT_HP = 1000;
@@ -1408,55 +1408,59 @@ const matGolpe = (k) => matForca(k) ** matExpo(k);
 
 const MAT_NIVEIS = [
   {
-    nome: "Nível 1", cor: "#7fc8d8", tema: "Conceitos de polinômios",
-    txt: "Grau, valor numérico, raízes, forma fatorada, polinômios idênticos e frações parciais.",
-    fonte: "Polinômios · Lista 1",
+    nome: "Nível 1", cor: "#7fc8d8", tema: "Geometria de posição",
+    txt: "Pontos, retas e planos: como um plano é determinado e as posições relativas entre retas e entre reta e plano.",
+    fonte: "Lista de 100 questões",
     resumo: [
-      "Polinômio: P(x) = aₙxⁿ + … + a₁x + a₀. O grau é o maior expoente de x com coeficiente diferente de zero.",
-      "Grau de um produto = soma dos graus. Grau de [P(x)]ⁿ = n · grau de P. Numa soma vale o maior grau.",
-      "Valor numérico: P(a) é o resultado de trocar x por a. Se P(a) = 0, a é raiz (ou zero) de P.",
-      "Forma fatorada: P(x) = aₙ(x − r₁)(x − r₂)…(x − rₙ), onde r₁, …, rₙ são as raízes.",
-      "Identicamente nulo: todos os coeficientes valem 0. Polinômios idênticos: coeficientes de mesmo grau iguais.",
-      "Frações parciais: escreva a fração como A/(x − r₁) + B/(x − r₂) + … e ache A, B… trocando x pelas raízes."
+      "Ponto, reta e plano são noções primitivas: não se definem. Por dois pontos passa uma única reta.",
+      "Um plano fica determinado por: três pontos não colineares; uma reta e um ponto fora dela; duas retas concorrentes; duas retas paralelas distintas.",
+      "Duas retas podem ser concorrentes (um ponto comum), paralelas (coplanares, sem ponto comum) ou reversas (não coplanares). Não ter ponto comum não basta para serem paralelas.",
+      "Reta e plano: a reta pode estar contida no plano, ser paralela a ele (nenhum ponto comum) ou ser secante (um único ponto comum).",
+      "Dois planos distintos são paralelos ou secantes. Se são secantes, a interseção é uma reta.",
+      "Uma reta é paralela a um plano que não a contém se for paralela a alguma reta desse plano.",
+      "Contagens: n pontos, 3 a 3 não colineares e 4 a 4 não coplanares, determinam C(n,2) retas e C(n,3) planos."
     ]
   },
   {
-    nome: "Nível 2", cor: "#9ed3a9", tema: "Divisão de polinômios",
-    txt: "Método da chave, teorema do resto, teorema de D'Alembert e dispositivo de Briot-Ruffini.",
-    fonte: "Polinômios · Lista 2",
+    nome: "Nível 2", cor: "#9ed3a9", tema: "Perpendicularismo, projeções e distâncias",
+    txt: "Reta perpendicular a plano, planos perpendiculares, diedros, projeção ortogonal e distâncias no espaço.",
+    fonte: "Lista de 100 questões",
     resumo: [
-      "Divisão: P(x) = D(x) · Q(x) + R(x), com grau de R menor que o grau de D.",
-      "Teorema do resto: o resto da divisão de P(x) por (x − a) é P(a). Para (bx + a), use a raiz x = −a/b.",
-      "D'Alembert: P(x) é divisível por (x − a) se e somente se P(a) = 0.",
-      "Divisível por (x − a)(x − b): basta P(a) = 0 e P(b) = 0.",
-      "Briot-Ruffini: complete os coeficientes com zeros, desça o primeiro, multiplique pela raiz do divisor e some ao próximo. O último número é o resto.",
-      "Se o divisor for bx + a com b ≠ 1, use a raiz −a/b e divida o quociente por b. O resto não muda."
+      "Retas ortogonais formam 90° mas podem ser reversas; retas perpendiculares formam 90° e são concorrentes.",
+      "Uma reta é perpendicular a um plano quando é perpendicular a duas retas concorrentes do plano. Aí ela é ortogonal a todas as retas do plano.",
+      "Por um ponto passa um único plano perpendicular a uma reta, e uma única reta perpendicular a um plano.",
+      "Duas retas perpendiculares a um mesmo plano são paralelas. Dois planos perpendiculares a uma mesma reta são paralelos.",
+      "Planos perpendiculares: um deles contém uma reta perpendicular ao outro. Se α ⊥ γ e β ⊥ γ, a interseção de α e β é perpendicular a γ.",
+      "Diedro: ângulo entre dois semiplanos. Só a secção reta (perpendicular à aresta) mede o ângulo do diedro.",
+      "Projeção ortogonal de um segmento AB: se o desnível entre A e B é d, a projeção mede √(AB² − d²). Distância entre retas reversas = distância entre os planos paralelos que as contêm."
     ]
   },
   {
-    nome: "Nível 3", cor: "#f0a07a", tema: "Raízes e equações algébricas",
-    txt: "Raízes nulas, multiplicidade, abaixamento do grau, raízes complexas conjugadas e raízes racionais.",
-    fonte: "Polinômios · Lista 3, primeira parte",
+    nome: "Nível 3", cor: "#f0a07a", tema: "Poliedros, prismas e pirâmides",
+    txt: "Relação de Euler, poliedros de Platão, diagonais, áreas e volumes de prismas e pirâmides.",
+    fonte: "Lista + exercícios extras",
     resumo: [
-      "Raízes nulas: se o termo independente é 0, o número de raízes nulas é o menor expoente de x.",
-      "Multiplicidade: quantas vezes o fator (x − a) aparece. Ex.: em (x − 2)³, 2 é raiz tripla.",
-      "Abaixamento do grau: conhecida uma raiz, divida por (x − raiz) com Briot-Ruffini e resolva o quociente.",
-      "Raízes conjugadas: se os coeficientes são reais e a + bi é raiz, então a − bi também é, com a mesma multiplicidade.",
-      "Raiz racional p/q (coeficientes inteiros): p divide o termo independente a₀ e q divide o coeficiente líder aₙ.",
-      "Ferramentas: agrupar termos, x² − a² = (x − a)(x + a) e trocar y = x² em equações biquadradas."
+      "Relação de Euler (poliedro convexo): V − A + F = 2. Contando arestas pelas faces: 2A = soma do número de lados de todas as faces.",
+      "Há só 5 poliedros de Platão: tetraedro (4 faces), hexaedro/cubo (6), octaedro (8), dodecaedro (12) e icosaedro (20).",
+      "Prisma de base com n lados: 2n vértices, 3n arestas e n + 2 faces. Pirâmide de base com n lados: n + 1 vértices, 2n arestas e n + 1 faces.",
+      "Cubo de aresta a: diagonal a√3, área total 6a², volume a³. Paralelepípedo a × b × c: diagonal √(a² + b² + c²), área 2(ab + ac + bc), volume abc.",
+      "Prisma: volume = área da base × altura. Triângulo equilátero de lado ℓ tem área ℓ²√3/4; hexágono regular, 6 vezes isso.",
+      "Pirâmide: volume = (área da base × altura)/3. Na pirâmide regular, o apótema (altura da face lateral) é √(h² + m²), com m o apótema da base.",
+      "Tetraedro regular de aresta a: altura a√6/3 e volume a³√2/12."
     ]
   },
   {
-    nome: "Nível 4", cor: "#c7a8ff", tema: "Relações de Girard e problemas",
-    txt: "Raízes duplas e triplas com parâmetros, relações de Girard, PA, PG, determinantes e equações irracionais.",
-    fonte: "Polinômios · Lista 3, segunda parte",
+    nome: "Nível 4", cor: "#c7a8ff", tema: "Cilindro, cone e esfera",
+    txt: "Corpos redondos: áreas, volumes, seções, sólidos inscritos e o princípio de Arquimedes.",
+    fonte: "Lista + exercícios extras",
     resumo: [
-      "Girard para ax³ + bx² + cx + d = 0 com raízes r₁, r₂, r₃: r₁ + r₂ + r₃ = −b/a; r₁r₂ + r₁r₃ + r₂r₃ = c/a; r₁r₂r₃ = −d/a.",
-      "Raiz dupla r: dividindo P duas vezes por (x − r), os dois restos são zero.",
-      "Raízes em PA: a − r, a, a + r (soma 3a). Em PG: a/q, a, aq (produto a³).",
-      "Raízes simétricas: r e −r somam zero.",
-      "Expressões úteis: 1/a + 1/b + 1/c = (ab + ac + bc)/abc e a² + b² + c² = (a + b + c)² − 2(ab + ac + bc).",
-      "Equação irracional: isole a raiz, eleve ao quadrado e teste cada solução na equação original."
+      "Cilindro de raio r e altura h: área lateral 2πrh, área total 2πr² + 2πrh, volume πr²h. Equilátero quando h = 2r (seção meridiana quadrada).",
+      "Cone de raio r, altura h e geratriz g: g² = r² + h²; área lateral πrg; área total πr² + πrg; volume πr²h/3. Equilátero quando g = 2r.",
+      "Esfera de raio R: área 4πR², volume 4πR³/3. Uma seção plana a uma distância d do centro é um círculo de raio √(R² − d²).",
+      "Esfera inscrita no cubo de aresta a: R = a/2. Cubo inscrito na esfera: a diagonal do cubo é o diâmetro, a√3 = 2R.",
+      "Arquimedes: o volume de um objeto submerso é igual ao volume de água que ele desloca.",
+      "Volumes semelhantes: se as medidas lineares se multiplicam por k, o volume se multiplica por k³ e a área por k².",
+      "Responda com π quando quiser: 36π, π/3 e 9√3π são aceitos, e também o valor decimal (36π ≈ 113.1)."
     ]
   }
 ];
@@ -1464,266 +1468,279 @@ const MAT_NIVEIS = [
 /* Formato (as perguntas aparecem na ordem do array, da mais fácil para a mais difícil):
  *   { l: nível, q: enunciado, s: [passos da resolução] } e então
  *   o: [correta, erradas…], ow: [null, por que cada errada está errada…]   → marcar
- *   f: [respostas], lab?: [rótulos], set?: true (qualquer ordem)            → calcular e digitar */
+ *   f: [respostas], lab?: [rótulos], set?: true (qualquer ordem)            → calcular e digitar
+ * Baseado na lista "Geometria Espacial · questões e gabarito" (100 questões); os números entre
+ * parênteses indicam a questão de origem. Itens sem número foram acrescentados. */
 const MAT_RAW = [
-  /* ================= Nível 1 · Lista 1 ================= */
-  { l: 0, q: "Com P(x) = 2x³ − x² + x + 3, calcule P(2).", f: ["17"],
-    s: ["Valor numérico: troque x por 2.", "P(2) = 2·2³ − 2² + 2 + 3 = 2·8 − 4 + 2 + 3.", "16 − 4 + 2 + 3 = 17."] },
-  { l: 0, q: "Se P(x) tem grau 4, qual é o grau de [P(x)]³ + [P(x)]² + 3P(x)?", o: ["12", "20", "24", "4"],
-    ow: [null, "20 é 12 + 8: numa soma os graus não se somam, vale o maior.", "24 multiplica os expoentes 4·3·2, mas cada termo tem o próprio grau.", "4 é o grau de 3P(x) sozinho; a soma tem o grau do maior termo."],
-    s: ["Grau de uma potência: grau de [P]ⁿ = n · grau de P.", "[P]³ tem grau 3·4 = 12; [P]² tem grau 2·4 = 8; 3P tem grau 4.", "Numa soma, o grau é o do termo de maior grau. Só [P]³ tem grau 12, então nada cancela.", "Grau = 12."] },
-  { l: 0, q: "p(x) e q(x) têm graus n e m. Qual é o grau de 2(x − 1)³·p(x)·q⁴(x)?", o: ["3 + n + 4m", "12nm", "3nm⁴", "3 + n + m⁴"],
-    ow: [null, "Multiplicou os graus; num produto de polinômios os graus se somam.", "Multiplicou em vez de somar e elevou m à quarta.", "q⁴(x) tem grau 4·m, não m⁴: elevar à 4ª multiplica o grau por 4."],
-    s: ["Num produto, os graus dos fatores se somam. A constante 2 tem grau 0.", "(x − 1)³ tem grau 3, p(x) tem grau n e q⁴(x) tem grau 4m.", "Total: 3 + n + 4m."] },
-  { l: 0, q: "O número 3 é raiz de P(x) = x³ − 3x² + 2x − 6?", o: ["Sim, porque P(3) = 0", "Não, porque P(3) = 6", "Não, porque P(3) = −6", "Não, porque P(3) = 54"],
-    ow: [null, "6 é o valor antes de somar o −6 final: 27 − 27 + 6 = 6, e ainda falta − 6.", "−6 é P(0), o termo independente. Para testar a raiz 3 é preciso calcular P(3).", "54 aparece trocando o sinal de −3x²: 27 + 27 + 6 − 6. O certo é 27 − 27."],
-    s: ["a é raiz quando P(a) = 0.", "P(3) = 3³ − 3·3² + 2·3 − 6 = 27 − 27 + 6 − 6 = 0.", "Logo 3 é raiz. Agrupando: x²(x − 3) + 2(x − 3) = (x − 3)(x² + 2)."] },
-  { l: 0, q: "Qual é a soma das raízes de P(x) = −2(x + 2)(x − 3)(x + 5)?", f: ["-4"],
-    s: ["Na forma fatorada, cada fator (x − r) dá a raiz r.", "x + 2 = 0 ⇒ x = −2; x − 3 = 0 ⇒ x = 3; x + 5 = 0 ⇒ x = −5. O −2 da frente só multiplica, não é raiz.", "Soma: −2 + 3 − 5 = −4."] },
-  { l: 0, q: "Qual polinômio tem raízes −2, −1 e 2?", o: ["x³ + x² − 4x − 4", "x³ − x² − 4x + 4", "x³ − x² − 4x − 4", "x³ + x² + 4x + 4"],
-    ow: [null, "Esse é (x − 1)(x² − 4): tem raízes 1, 2 e −2. Os sinais foram trocados.", "Teste x = −1: −1 − 1 + 4 − 4 = −2 ≠ 0.", "Teste x = 2: 8 + 4 + 8 + 4 = 24 ≠ 0."],
-    s: ["Raiz r ⇒ fator (x − r). Raízes −2, −1 e 2 ⇒ (x + 2)(x + 1)(x − 2).", "(x + 2)(x − 2) = x² − 4.", "(x² − 4)(x + 1) = x³ + x² − 4x − 4."] },
-  { l: 0, q: "Com P(x) = x² − 2x + 1, calcule P(i).", f: ["-2i"],
-    s: ["P(i) = i² − 2i + 1.", "Como i² = −1: P(i) = −1 − 2i + 1.", "P(i) = −2i."] },
-  { l: 0, q: "Com P(x) = x² − 2x + 1, calcule P(1 + i).", f: ["-1"],
-    s: ["Repare que P(x) = x² − 2x + 1 = (x − 1)².", "P(1 + i) = (1 + i − 1)² = i².", "i² = −1."] },
-  { l: 0, q: "Para que valor real de m o polinômio P(x) = (m² − 1)x³ + (m + 1)x² − x + 4 é do 2º grau?", f: ["1"],
-    s: ["Para ser do 2º grau: coeficiente de x³ igual a 0 e coeficiente de x² diferente de 0.", "m² − 1 = 0 ⇒ m = 1 ou m = −1.", "m + 1 ≠ 0 ⇒ m ≠ −1.", "Sobra m = 1, e P(x) = 2x² − x + 4."] },
-  { l: 0, q: "Para que valor real de m o polinômio P(x) = (m² − 1)x³ + (m + 1)x² − x + 4 é do 1º grau?", f: ["-1"],
-    s: ["Para ser do 1º grau: coeficientes de x³ e de x² iguais a 0 (o de x já é −1 ≠ 0).", "m² − 1 = 0 ⇒ m = ±1. m + 1 = 0 ⇒ m = −1.", "O valor que atende as duas condições é m = −1, e P(x) = −x + 4."] },
-  { l: 0, q: "Para que valor de a a expressão (a² − 1)x⁴ + (a² − a − 2)x³ + ax² + x é um polinômio do 2º grau?", o: ["−1", "1", "2", "0"],
-    ow: [null, "Com a = 1, o coeficiente de x³ fica 1 − 1 − 2 = −2 ≠ 0: o grau seria 3.", "Com a = 2, o coeficiente de x⁴ fica 4 − 1 = 3 ≠ 0: o grau seria 4.", "Com a = 0, o coeficiente de x⁴ fica −1: o grau seria 4 (e o x² sumiria)."],
-    s: ["Os coeficientes de x⁴ e x³ precisam ser 0, e o de x² precisa ser diferente de 0.", "a² − 1 = 0 ⇒ a = 1 ou a = −1.", "a² − a − 2 = 0 ⇒ (a − 2)(a + 1) = 0 ⇒ a = 2 ou a = −1.", "O valor comum é a = −1, e o coeficiente de x² fica a = −1 ≠ 0."] },
-  { l: 0, q: "Se P(x) = 2x³ − kx² + 3x − 2k, para que valor de k temos P(2) = 4?", f: ["3"],
-    s: ["P(2) = 2·8 − k·4 + 3·2 − 2k = 16 − 4k + 6 − 2k = 22 − 6k.", "22 − 6k = 4 ⇒ 6k = 18 ⇒ k = 3."] },
-  { l: 0, q: "Sabendo que P(−1) = 0, calcule a em P(x) = −2x³ − 4x² − 3x + 2a.", f: ["-1/2"],
-    s: ["P(−1) = −2(−1)³ − 4(−1)² − 3(−1) + 2a.", "= −2(−1) − 4(1) + 3 + 2a = 2 − 4 + 3 + 2a = 1 + 2a.", "1 + 2a = 0 ⇒ a = −1/2 (−0.5)."] },
-  { l: 0, q: "Sabendo que −3 é raiz de P(x) = x³ + 4x² − ax + 1, calcule a.", f: ["-10/3"],
-    s: ["−3 é raiz ⇒ P(−3) = 0.", "P(−3) = (−3)³ + 4(−3)² − a(−3) + 1 = −27 + 36 + 3a + 1 = 10 + 3a.", "10 + 3a = 0 ⇒ a = −10/3 ≈ −3.33.", "O gabarito da lista traz −10/2, mas a conta correta dá −10/3."] },
-  { l: 0, q: "Determine o polinômio do 1º grau P(x) = ax + b tal que P(5) = 13 e P(3) = 7.", f: ["3", "-2"], lab: ["a =", "b ="],
-    s: ["P(5) = 5a + b = 13 e P(3) = 3a + b = 7.", "Subtraindo as equações: 2a = 6 ⇒ a = 3.", "3·3 + b = 7 ⇒ b = −2. P(x) = 3x − 2."] },
-  { l: 0, q: "P(x) = x³ + (a − 2)x² + (b − 4)x − 3 admite as raízes 1 e −1. Calcule a e b.", f: ["5", "3"], lab: ["a =", "b ="],
-    s: ["P(1) = 1 + (a − 2) + (b − 4) − 3 = a + b − 8. Como 1 é raiz: a + b = 8.", "P(−1) = −1 + (a − 2) − (b − 4) − 3 = a − b − 2. Como −1 é raiz: a − b = 2.", "Somando: 2a = 10 ⇒ a = 5, e então b = 3."] },
-  { l: 0, q: "Em P(x) = 2x³ − 6x² + mx + n, temos P(2) = 0 e P(−1) = −6. Calcule m e n.", f: ["2", "4"], lab: ["m =", "n ="],
-    s: ["P(2) = 16 − 24 + 2m + n = −8 + 2m + n = 0 ⇒ 2m + n = 8.", "P(−1) = −2 − 6 − m + n = −8 − m + n = −6 ⇒ −m + n = 2.", "Subtraindo a 2ª da 1ª: 3m = 6 ⇒ m = 2. Então n = 2 + m = 4."] },
-  { l: 0, q: "Ache a, b e c para que P(x) = (a + b − 1)x³ + (b + c − 3)x² + (c − 1)x seja identicamente nulo.", f: ["-1", "2", "1"], lab: ["a =", "b =", "c ="],
-    s: ["Identicamente nulo: todos os coeficientes valem 0.", "Coeficiente de x: c − 1 = 0 ⇒ c = 1.", "Coeficiente de x²: b + c − 3 = 0 ⇒ b = 2.", "Coeficiente de x³: a + b − 1 = 0 ⇒ a = −1."] },
-  { l: 0, q: "Sendo x³ + 1 ≡ (x + 1)(x² + ax + b) para todo x real, determine a e b.", f: ["-1", "1"], lab: ["a =", "b ="],
-    s: ["Desenvolva: (x + 1)(x² + ax + b) = x³ + (a + 1)x² + (a + b)x + b.", "Compare com x³ + 0x² + 0x + 1: a + 1 = 0, a + b = 0 e b = 1.", "a = −1 e b = 1 (confere: a + b = 0)."] },
-  { l: 0, q: "Ache m, n e p para que P₁(x) = mx² + px² + 2mx − nx + 4 e P₂(x) = 3x² + 5x + 2p + 2 sejam idênticos.", f: ["2", "-1", "1"], lab: ["m =", "n =", "p ="],
-    s: ["Agrupe P₁: (m + p)x² + (2m − n)x + 4.", "Compare com P₂ termo a termo: m + p = 3; 2m − n = 5; 4 = 2p + 2.", "Da última: p = 1. Então m = 3 − 1 = 2 e n = 2·2 − 5 = −1."] },
-  { l: 0, q: "Seja P(x + 1) = 3x² − x + 5. Calcule P(2) e P(−3).", f: ["7", "57"], lab: ["P(2) =", "P(−3) ="],
-    s: ["Para P(2), escolha x com x + 1 = 2, ou seja, x = 1: P(2) = 3·1 − 1 + 5 = 7.", "Para P(−3), x + 1 = −3 ⇒ x = −4: P(−3) = 3·16 − (−4) + 5 = 48 + 4 + 5 = 57."] },
-  { l: 0, q: "Dado P(x) = 2x³ − x² + x + 3, calcule [P(2) − 2P(−1)] ÷ P(1/2).", f: ["38/7"],
-    s: ["P(2) = 16 − 4 + 2 + 3 = 17.", "P(−1) = −2 − 1 − 1 + 3 = −1, então 2P(−1) = −2.", "P(1/2) = 2·(1/8) − 1/4 + 1/2 + 3 = 1/4 − 1/4 + 1/2 + 3 = 7/2.", "[17 − (−2)] ÷ 7/2 = 19 · 2/7 = 38/7 ≈ 5.43."] },
-  { l: 0, q: "P(x) = ax² + bx + c tem P(1) = 0, P(2) = 7 e P(−1) = 4. Ache a, b e c.", f: ["3", "-2", "-1"], lab: ["a =", "b =", "c ="],
-    s: ["P(1): a + b + c = 0. P(2): 4a + 2b + c = 7. P(−1): a − b + c = 4.", "Subtraindo a 3ª da 1ª: 2b = −4 ⇒ b = −2. Então a + c = 2.", "Na 2ª: 4a − 4 + c = 7 ⇒ 4a + c = 11. Com a + c = 2: 3a = 9 ⇒ a = 3 e c = −1.", "P(x) = 3x² − 2x − 1 (e P(0) = −1)."] },
-  { l: 0, q: "Seja P(x + 1) = 3x² − x + 5. Escreva P(x) = ax² + bx + c.", f: ["3", "-7", "9"], lab: ["a =", "b =", "c ="],
-    s: ["Chame t = x + 1, ou seja, x = t − 1: P(t) = 3(t − 1)² − (t − 1) + 5.", "3(t² − 2t + 1) − t + 1 + 5 = 3t² − 6t + 3 − t + 6 = 3t² − 7t + 9.", "Trocando t por x: P(x) = 3x² − 7x + 9. Conferindo: P(2) = 12 − 14 + 9 = 7, igual à questão anterior."] },
-  { l: 0, q: "Num polinômio P(x) do 3º grau, o coeficiente de x³ é 1. Se P(1) = P(2) = 0 e P(3) = 30, calcule P(−1).", f: ["66"],
-    s: ["1 e 2 são raízes: P(x) = (x − 1)(x − 2)(x − r), em que r é a terceira raiz.", "P(3) = (3 − 1)(3 − 2)(3 − r) = 2·1·(3 − r) = 30 ⇒ 3 − r = 15 ⇒ r = −12.", "P(x) = (x − 1)(x − 2)(x + 12).", "P(−1) = (−2)(−3)(11) = 66."] },
-  { l: 0, q: "Se (−x − 14)/(x² + 3x − 4) ≡ A/(x − 1) + B/(x + 4), quanto vale A + B?", f: ["-1"],
-    s: ["x² + 3x − 4 = (x − 1)(x + 4). Somando as frações: A(x + 4) + B(x − 1) = −x − 14 para todo x.", "x = 1: 5A = −15 ⇒ A = −3.", "x = −4: −5B = 4 − 14 = −10 ⇒ B = 2.", "A + B = −1."] },
-  { l: 0, q: "Calcule k para que p(x) = kx² + kx + 1 satisfaça p(x) − x = p(x − 1).", f: ["1/2"],
-    s: ["p(x − 1) = k(x − 1)² + k(x − 1) + 1 = kx² − 2kx + k + kx − k + 1 = kx² − kx + 1.", "p(x) − x = kx² + kx + 1 − x = kx² + (k − 1)x + 1.", "Igualando os coeficientes de x: k − 1 = −k ⇒ 2k = 1 ⇒ k = 1/2."] },
-  { l: 0, q: "Determine A, B e C sabendo que (5 − 3x)/(x³ − 5x² + 6x) ≡ A/x + B/(x − 2) + C/(x − 3).", f: ["5/6", "1/2", "-4/3"], lab: ["A =", "B =", "C ="],
-    s: ["Fatore o denominador: x³ − 5x² + 6x = x(x² − 5x + 6) = x(x − 2)(x − 3).", "Multiplicando tudo por ele: 5 − 3x = A(x − 2)(x − 3) + Bx(x − 3) + Cx(x − 2).", "x = 0: 5 = A·(−2)(−3) = 6A ⇒ A = 5/6.", "x = 2: 5 − 6 = B·2·(−1) ⇒ −1 = −2B ⇒ B = 1/2.", "x = 3: 5 − 9 = C·3·1 ⇒ C = −4/3."] },
+  /* ================= Nível 1 · geometria de posição ================= */
+  { l: 0, q: "Quatro pontos distintos e não coplanares determinam exatamente quantos planos? (Questão 06)", f: ["4"],
+    s: ["Um plano fica determinado por três pontos não colineares.", "Como os 4 pontos não são coplanares, nenhum trio deles é colinear e cada trio gera um plano diferente.", "Número de trios: C(4,3) = 4. São 4 planos, as quatro faces de um tetraedro."] },
+  { l: 0, q: "Qual destas opções NÃO determina um plano?", o: ["Duas retas reversas", "Três pontos não colineares", "Uma reta e um ponto fora dela", "Duas retas paralelas distintas"],
+    ow: [null, "Três pontos não colineares é a forma básica de determinar um plano.", "Uma reta e um ponto fora dela determinam um único plano.", "Duas retas paralelas distintas são coplanares e determinam um plano."],
+    s: ["Um plano é determinado por três pontos não colineares, por uma reta e um ponto fora dela, por duas retas concorrentes ou por duas retas paralelas distintas.", "Retas reversas, por definição, não estão num mesmo plano.", "Logo, duas retas reversas não determinam plano algum."] },
+  { l: 0, q: "Considere: I. Três pontos distintos não colineares determinam um plano. II. Um plano pode ser determinado por duas retas concorrentes. III. Duas retas distintas são paralelas se, e somente se, são coplanares. IV. Por um ponto de uma reta existem infinitos planos perpendiculares a ela. V. Se um plano intercepta dois planos paralelos, as interseções são duas retas paralelas. (Questão 100)", o: ["Somente I, II e V são verdadeiras", "Somente I, IV e V são verdadeiras", "Somente I, III e V são verdadeiras", "Somente I, II e IV são falsas"],
+    ow: [null, "IV é falsa: por um ponto de uma reta passa um único plano perpendicular a ela.", "III é falsa: retas coplanares também podem ser concorrentes.", "I e II são verdadeiras, então não podem estar na lista das falsas."],
+    s: ["I: verdadeira (é um dos modos de determinar um plano).", "II: verdadeira (duas retas concorrentes determinam um plano).", "III: falsa. Paralelas são coplanares, mas coplanares podem ser concorrentes. O 'se e somente se' não vale.", "IV: falsa. Por um ponto passa um único plano perpendicular a uma reta.", "V: verdadeira. As duas interseções estão num mesmo plano e não se encontram, então são paralelas.", "Verdadeiras: I, II e V."] },
+  { l: 0, q: "Qual das afirmações é VERDADEIRA? (Questão 09)", o: ["Duas retas não coplanares são reversas", "Se duas retas distintas não são paralelas, elas são concorrentes", "Se a interseção de duas retas é o conjunto vazio, elas são paralelas", "Se três retas são paralelas, existe um plano que as contém"],
+    ow: [null, "Podem ser reversas: não paralelas e sem ponto comum.", "Retas sem ponto comum podem ser paralelas ou reversas.", "Três retas paralelas podem não ser coplanares, como três arestas laterais de um prisma triangular."],
+    s: ["Reversas são, por definição, retas que não estão num mesmo plano.", "Então 'duas retas não coplanares são reversas' é a própria definição: verdadeira.", "As outras confundem 'sem ponto comum' com 'paralelas' ou supõem coplanaridade."] },
+  { l: 0, q: "Considere: I. Se duas retas distintas não são paralelas, então são concorrentes. II. Três pontos distintos determinam um único plano. III. Duas retas paralelas distintas determinam um plano. IV. Se r e s são reversas, existe um único plano que contém r e é paralelo a s. Quais estão corretas? (Questão 79)", o: ["III e IV", "I e II", "I e IV", "II, III e IV"],
+    ow: [null, "I é falsa (podem ser reversas) e II é falsa (os pontos podem ser colineares).", "I é falsa: retas não paralelas podem ser reversas.", "II é falsa: três pontos colineares estão em infinitos planos."],
+    s: ["I: falsa. Não paralelas podem ser reversas.", "II: falsa. Se os três pontos forem colineares, há infinitos planos passando por eles.", "III: verdadeira. Paralelas distintas são coplanares e determinam um plano.", "IV: verdadeira. Pegue um ponto de r e trace por ele a paralela a s; essa reta e r determinam o único plano que contém r e é paralelo a s.", "Corretas: III e IV."] },
+  { l: 0, q: "I. Duas retas que não se interceptam são paralelas. II. Duas retas que não se interceptam são reversas. III. Se uma reta é perpendicular a uma reta do plano, ela é perpendicular ao plano. IV. Se uma reta e um plano são paralelos, toda reta perpendicular à reta dada é perpendicular ao plano. Podemos concluir que (Questão 80)", o: ["Todas são falsas", "Apenas I é verdadeira", "Apenas II é verdadeira", "Apenas III é verdadeira"],
+    ow: [null, "I é falsa: sem ponto comum, as retas podem ser reversas.", "II é falsa: sem ponto comum, as retas podem ser paralelas.", "III é falsa: é preciso ser perpendicular a duas retas concorrentes do plano."],
+    s: ["I e II: retas sem ponto comum podem ser paralelas ou reversas; nenhuma das duas afirmações vale sempre.", "III: falsa. Ser perpendicular a uma única reta do plano não basta; são necessárias duas retas concorrentes.", "IV: falsa. Uma reta perpendicular à reta dada pode até ser paralela ao plano.", "Todas são falsas."] },
+  { l: 0, q: "Assinale a INCORRETA. (Questão 05)", o: ["Existem planos concorrentes com apenas cinco pontos comuns", "Dois planos, quando se interceptam, o fazem segundo uma reta", "Dois planos perpendiculares a uma mesma reta são paralelos", "Duas retas perpendiculares determinam um único plano"],
+    ow: [null, "Verdadeira: a interseção de dois planos secantes é uma reta.", "Verdadeira: planos perpendiculares a uma mesma reta são paralelos.", "Verdadeira: retas perpendiculares são concorrentes, e concorrentes determinam um plano."],
+    s: ["Dois planos concorrentes (secantes) se cortam numa reta, que tem infinitos pontos.", "Logo não existem planos concorrentes com exatamente cinco pontos comuns.", "As outras três afirmações são teoremas básicos."] },
+  { l: 0, q: "Sobre geometria espacial de posição, assinale a correta. (Questão 89)", o: ["Três planos distintos podem se cortar, dois a dois, segundo três retas paralelas", "Se dois planos são paralelos a uma reta, então são paralelos entre si", "Quatro pontos no espaço determinam quatro planos", "A interseção de dois planos secantes pode ser um único ponto"],
+    ow: [null, "Dois planos secantes também podem ser paralelos a uma mesma reta (paralela à interseção deles).", "Se os quatro pontos forem coplanares, determinam um só plano (ou nenhum novo).", "A interseção de planos secantes é sempre uma reta."],
+    s: ["Pense nas três faces laterais de um prisma triangular: os planos se cortam dois a dois nas arestas laterais, que são paralelas.", "Logo a afirmação sobre três retas paralelas é possível e é a correta.", "As demais ignoram casos possíveis (planos secantes paralelos a uma reta, pontos coplanares)."] },
+  { l: 0, q: "I. Se uma reta é paralela a uma reta de um plano, então ela é paralela ao plano. II. Se dois planos têm um ponto em comum, então eles têm uma reta em comum. III. Se dois planos distintos são perpendiculares a um terceiro, então eles são paralelos. É correto afirmar que (Questão 82)", o: ["I e III são falsas e II é verdadeira", "I é falsa e II e III são verdadeiras", "III é falsa e I e II são verdadeiras", "I, II e III são falsas"],
+    ow: [null, "III é falsa: duas paredes vizinhas são perpendiculares ao chão e não são paralelas.", "I é falsa: a reta pode estar contida no plano.", "II é verdadeira: planos com um ponto comum são coincidentes ou secantes numa reta."],
+    s: ["I: falsa. A reta pode estar contida no plano (aí não é 'paralela ao plano').", "II: verdadeira. Se são o mesmo plano, têm todas as retas em comum; se são distintos com um ponto comum, são secantes e se cortam numa reta.", "III: falsa. Duas paredes adjacentes são perpendiculares ao chão e se cortam.", "Logo I e III falsas, II verdadeira."] },
+  { l: 0, q: "Quantas retas são determinadas por 4 pontos não coplanares?", f: ["6"],
+    s: ["Cada par de pontos determina uma reta, e como nenhum trio é colinear as retas são todas diferentes.", "C(4,2) = 4·3/2 = 6. São as 6 arestas de um tetraedro."] },
+  { l: 0, q: "Três retas paralelas distintas, não coplanares, determinam quantos planos?", f: ["3"],
+    s: ["Cada par de retas paralelas distintas determina um plano.", "Como as três não estão no mesmo plano, cada par dá um plano diferente.", "C(3,2) = 3 planos, como as faces laterais de um prisma triangular."] },
+  { l: 0, q: "Qual é o número máximo de planos determinados por 6 pontos do espaço? (Questão 93, item III)", f: ["20"],
+    s: ["O máximo acontece quando não há 4 pontos coplanares nem 3 colineares.", "Cada trio de pontos determina um plano diferente.", "C(6,3) = 6·5·4/(3·2·1) = 20."] },
+  { l: 0, q: "Qual é o número máximo de retas determinadas por 6 pontos do espaço?", f: ["15"],
+    s: ["Cada par de pontos determina uma reta; o máximo ocorre sem três pontos colineares.", "C(6,2) = 6·5/2 = 15."] },
+  { l: 0, q: "r e r' são retas reversas. Quantos planos paralelos a r podem passar por r'? (Questão 53)", f: ["1"],
+    s: ["Por um ponto P de r', trace a reta t paralela a r.", "t e r' são concorrentes em P, então determinam um único plano.", "Esse plano contém r' e é paralelo a r (contém t, paralela a r). Ele é único: 1 plano."] },
+  { l: 0, q: "A reta r é paralela ao plano α. Então (Questão 39)", o: ["existem em α retas paralelas a r e também retas reversas a r", "todas as retas de α são paralelas a r", "a reta r não pode ser coplanar com nenhuma reta de α", "todo plano que contém r é paralelo a α"],
+    ow: [null, "As retas de α em outras direções são reversas a r, não paralelas.", "As retas de α paralelas a r são coplanares com ela.", "Um plano que contém r pode cortar α (numa reta paralela a r)."],
+    s: ["r não tem ponto comum com α, então nenhuma reta de α corta r.", "As retas de α na mesma direção de r são paralelas a ela.", "As retas de α em outras direções não cortam r e não são paralelas: são reversas.", "Logo existem em α retas paralelas e retas reversas a r."] },
+  { l: 0, q: "Qual das afirmações é verdadeira? (Questão 54)", o: ["Se duas retas concorrentes de um plano são paralelas a duas retas de outro plano, os planos são paralelos", "Por uma reta dada pode-se conduzir um plano paralelo a um plano dado", "Se uma reta é paralela a dois planos, esses planos são paralelos", "Existem planos reversos"],
+    ow: [null, "Só é possível se a reta for paralela ao plano dado (ou estiver nele); se ela o corta, não há plano paralelo.", "Dois planos secantes são paralelos a qualquer reta paralela à interseção deles.", "'Reverso' é posição de retas; planos distintos são paralelos ou secantes."],
+    s: ["Teorema: se um plano contém duas retas concorrentes paralelas a outro plano, os planos são paralelos.", "Duas retas concorrentes de α paralelas a retas de β são paralelas a β.", "Logo α e β são paralelos: a primeira afirmação é a verdadeira."] },
+  { l: 0, q: "Se a reta r está contida no plano α e é paralela ao plano π, então (Questão 73)", o: ["a reta interseção de α e π, se existir, será paralela a r", "α e π são dois planos paralelos", "α e π são dois planos perpendiculares", "α e π são planos congruentes"],
+    ow: [null, "Não necessariamente: α pode cortar π.", "Nada garante 90° entre α e π.", "'Congruentes' não descreve posição de planos."],
+    s: ["Se α e π forem secantes, a interseção i está em α e em π.", "r e i estão no mesmo plano α, e r não corta π, logo não corta i.", "Coplanares sem ponto comum: r é paralela a i."] },
+  { l: 0, q: "Considere as retas r e s e os planos α e β. Podemos afirmar que (Questão 96)", o: ["r // s e r // α ⇒ s // α ou s ⊂ α", "r = α ∩ β e s ⊂ α ⇒ s // β", "r // s e s ⊂ α ⇒ r ⊂ α", "r // α e s // α ⇒ r // s"],
+    ow: [null, "s pode cortar r e, portanto, cortar β.", "r pode ser paralela a α, fora dele.", "Duas retas paralelas a um mesmo plano podem ser concorrentes ou reversas."],
+    s: ["Se r é paralela a α, existe em α uma reta t paralela a r.", "s // r ⇒ s // t (ou s = t).", "Assim s é paralela a α ou está contida em α."] },
+  { l: 0, q: "I. Se um plano intercepta dois outros planos paralelos, as interseções são retas paralelas. II. Se dois planos são paralelos, qualquer reta de um é paralela a qualquer reta do outro. III. Se uma reta é paralela a dois planos, esses planos são paralelos. IV. Se dois planos são paralelos, uma reta de um pode ser reversa a uma reta do outro. (Questão 22)", o: ["Apenas I e IV são verdadeiras", "Apenas I e II são verdadeiras", "Apenas I e III são verdadeiras", "Apenas II e IV são verdadeiras"],
+    ow: [null, "II é falsa: retas de planos paralelos podem ser reversas.", "III é falsa: planos secantes podem ser paralelos a uma mesma reta.", "II é falsa (I é verdadeira e ficou de fora)."],
+    s: ["I: verdadeira (as duas interseções são coplanares e não se encontram).", "II: falsa. No teto e no chão, retas em direções diferentes são reversas.", "III: falsa. Dois planos secantes são paralelos a qualquer reta paralela à interseção.", "IV: verdadeira, como no exemplo do teto e do chão.", "Verdadeiras: I e IV."] },
+  { l: 0, q: "Duas retas distintas perpendiculares a uma terceira podem ser: I. concorrentes; II. perpendiculares; III. paralelas; IV. reversas e não ortogonais; V. ortogonais. (Questão 78)", o: ["VVVVV", "VFVFV", "FVFFF", "VVVVF"],
+    ow: [null, "II e IV também são possíveis (veja os exemplos da resolução).", "Concorrentes e paralelas também são possíveis.", "V também é possível: duas arestas do cubo ortogonais entre si, ambas perpendiculares a uma terceira."],
+    s: ["Pense no cubo e numa aresta vertical t.", "Duas arestas da base que partem do pé de t são perpendiculares a t e concorrentes (e perpendiculares entre si): I e II.", "Uma aresta da base que sai do pé de t e a aresta paralela a ela no topo, que sai da ponta de t, são perpendiculares a t e paralelas entre si: III.", "Retas horizontais que cortam t em alturas diferentes são perpendiculares a t e reversas entre si; conforme a direção, formam 90° (ortogonais) ou outro ângulo (não ortogonais): IV e V.", "Todas possíveis: VVVVV."] },
+  { l: 0, q: "Considere duas retas r e s concorrentes em P. Assinale a correta. (Questão 85)", o: ["Se u é reversa a r e a s, existe uma única reta por P paralela a u", "Se t é perpendicular a r em P, t não pode ser perpendicular a s em P", "Qualquer plano contendo r intercepta s em um único ponto", "Se m é paralela a r, então m intercepta s"],
+    ow: [null, "A reta por P perpendicular ao plano (r, s) é perpendicular às duas.", "O plano que contém r e s contém s inteira.", "m pode estar fora do plano de r e s e ser reversa a s."],
+    s: ["Postulado das paralelas: por um ponto fora de uma reta passa uma única paralela a ela.", "P não está em u (u é reversa a r e s, logo não passa por P).", "Então existe uma única reta por P paralela a u."] },
+  { l: 0, q: "Quantos pares de arestas reversas há num tetraedro?", f: ["3"],
+    s: ["Arestas reversas não têm vértice comum e não são coplanares.", "Num tetraedro ABCD, cada aresta tem exatamente uma aresta oposta sem vértice comum: AB e CD, AC e BD, AD e BC.", "São 3 pares (Questão 72)."] },
+  { l: 0, q: "Quantos pares de retas reversas podem ser formados com as retas suporte das arestas de um cubo? (Questão 17)", f: ["24"],
+    s: ["Pegue uma aresta. Das outras 11: 3 são paralelas a ela, 4 a encontram num vértice. Sobram 11 − 3 − 4 = 4 reversas.", "Cada uma das 12 arestas tem 4 reversas: 12 · 4 = 48.", "Cada par foi contado duas vezes: 48 ÷ 2 = 24."] },
+  { l: 0, q: "I. Se duas retas r e s são reversas, não existe plano paralelo a r e s. II. Se uma reta é ortogonal a duas retas paralelas de um plano, ela é perpendicular ao plano. III. Quatro pontos não coplanares determinam exatamente quatro planos. IV. Se dois planos são perpendiculares, toda reta perpendicular a um deles é paralela ao outro. (Questão 24)", o: ["Três afirmativas são falsas", "Apenas uma é falsa", "Duas são falsas", "Todas são falsas"],
+    ow: [null, "Há mais de uma falsa: I, II e IV.", "Há três falsas: I, II e IV.", "III é verdadeira."],
+    s: ["I: falsa. O plano que contém r e é paralelo a s (questão anterior) é paralelo às duas; planos paralelos a ele também.", "II: falsa. As duas retas precisam ser concorrentes, não paralelas.", "III: verdadeira (C(4,3) = 4).", "IV: falsa. A reta pode estar contida no outro plano.", "Três falsas."] },
+  { l: 0, q: "I. Duas retas coplanares são concorrentes. II. Duas retas sem ponto comum são reversas. III. Dadas duas retas reversas, existem dois, e apenas dois, planos paralelos, cada um contendo uma das retas. IV. Os pontos médios dos lados de um quadrilátero reverso definem um paralelogramo. São verdadeiras apenas (Questão 99)", o: ["III e IV", "III", "I e III", "II e III"],
+    ow: [null, "IV também é verdadeira (teorema do segmento médio).", "I é falsa: coplanares podem ser paralelas.", "II é falsa: sem ponto comum, podem ser paralelas."],
+    s: ["I: falsa (podem ser paralelas).", "II: falsa (podem ser paralelas).", "III: verdadeira. Cada reta está num plano paralelo à outra, e esse par é único.", "IV: verdadeira. Num quadrilátero ABCD, o segmento médio de AB e BC é paralelo a AC e mede AC/2; o de CD e DA também. Os lados opostos ficam paralelos e iguais.", "Verdadeiras: III e IV."] },
+  { l: 0, q: "r e s são retas reversas. Então a distância entre r e s (Questão 35)", o: ["é igual àquela entre dois planos paralelos que contenham r e s respectivamente", "não se define", "é igual àquela entre qualquer ponto de r e qualquer ponto de s", "é igual àquela entre dois quaisquer planos que contenham r e s respectivamente"],
+    ow: [null, "Está definida: é a menor distância entre pontos de r e de s.", "A distância entre pontos varia; a distância entre as retas é a menor delas.", "Planos quaisquer podem ser secantes (distância zero)."],
+    s: ["A distância entre retas reversas é o comprimento da perpendicular comum.", "Os dois planos paralelos que contêm r e s (um cada) estão separados exatamente por essa perpendicular comum.", "Logo a distância entre r e s é a distância entre esses planos paralelos."] },
 
-  /* ================= Nível 2 · Lista 2 ================= */
-  { l: 1, q: "Determine o resto da divisão de P(x) = x⁴ − 2x³ + x − 1 por x − 2.", f: ["1"],
-    s: ["Teorema do resto: o resto da divisão por (x − a) é P(a). Aqui a = 2.", "P(2) = 16 − 16 + 2 − 1 = 1."] },
-  { l: 1, q: "Calcule o resto da divisão de P(x) = 2x³ − x² + 5x − 3 por x − 4.", f: ["129"],
-    s: ["Resto = P(4).", "P(4) = 2·64 − 16 + 20 − 3 = 128 − 16 + 20 − 3 = 129."] },
-  { l: 1, q: "Calcule o resto da divisão de P(x) = 2x³ − 4x² + x − 1 por x − 1.", f: ["-2"],
-    s: ["Resto = P(1).", "P(1) = 2 − 4 + 1 − 1 = −2."] },
-  { l: 1, q: "Calcule o resto da divisão de P(x) = x⁴ + 2x² − x − 5 por x + 3.", f: ["97"],
-    s: ["x + 3 = x − (−3), então o resto é P(−3).", "(−3)⁴ = 81; 2·(−3)² = 18; −(−3) = +3.", "P(−3) = 81 + 18 + 3 − 5 = 97.", "O gabarito da lista traz 98, mas a conta correta dá 97."] },
-  { l: 1, q: "4x⁴ + 3x³ − 7x² + 2x − 2 é divisível por x − 1?", o: ["Sim, porque P(1) = 0", "Não, porque P(1) = −2", "Não, porque P(−1) ≠ 0", "Sim, porque P(−1) = 0"],
-    ow: [null, "−2 é o termo independente, ou seja, P(0). O teste para x − 1 é P(1).", "P(−1) testa a divisão por x + 1, não por x − 1.", "P(−1) = 4 − 3 − 7 − 2 − 2 = −10, e o teste para x − 1 é P(1)."],
-    s: ["D'Alembert: P(x) é divisível por (x − a) se e somente se P(a) = 0.", "P(1) = 4 + 3 − 7 + 2 − 2 = 0.", "Logo é divisível por x − 1."] },
-  { l: 1, q: "P(x) = x² − 3x + 2 é divisível por x + 3?", o: ["Não, o resto é 20", "Sim, o resto é 0", "Não, o resto é 2", "Não, o resto é −20"],
-    ow: [null, "As raízes de x² − 3x + 2 são 1 e 2; −3 não é raiz.", "2 é P(3). Mas x + 3 = x − (−3), então o teste é P(−3).", "Cuidado com os sinais: (−3)² = 9 e −3·(−3) = +9, então P(−3) = 9 + 9 + 2 = 20."],
-    s: ["O resto da divisão por x + 3 é P(−3).", "P(−3) = (−3)² − 3(−3) + 2 = 9 + 9 + 2 = 20.", "Resto 20 ≠ 0: não é divisível. (x² − 3x + 2 = (x − 1)(x − 2).)"] },
-  { l: 1, q: "Calcule a para que P(x) = x³ + (a − 1)x + 10 seja divisível por x − 5.", f: ["-26"],
-    s: ["Divisível por x − 5 ⇔ P(5) = 0.", "P(5) = 125 + 5(a − 1) + 10 = 125 + 5a − 5 + 10 = 130 + 5a.", "130 + 5a = 0 ⇒ a = −26."] },
-  { l: 1, q: "Determine a para que P(x) = 2x³ + 5x² − ax + 2 seja divisível por x − 2.", f: ["19"],
-    s: ["Divisível por x − 2 ⇔ P(2) = 0.", "P(2) = 16 + 20 − 2a + 2 = 38 − 2a.", "38 − 2a = 0 ⇒ a = 19."] },
-  { l: 1, q: "O resto da divisão de P(x) = x³ + ax² − x + a por x − 1 é 4. Calcule a.", f: ["2"],
-    s: ["Resto = P(1) = 1 + a − 1 + a = 2a.", "2a = 4 ⇒ a = 2."] },
-  { l: 1, q: "Calcule a para que o resto da divisão de P(x) = ax³ − 2x + 1 por x − 3 seja 4.", f: ["1/3"],
-    s: ["Resto = P(3) = 27a − 6 + 1 = 27a − 5.", "27a − 5 = 4 ⇒ 27a = 9 ⇒ a = 1/3."] },
-  { l: 1, q: "A divisão de P(x) por x² + 1 tem quociente x − 2 e resto 1. O polinômio P(x) é", o: ["x³ − 2x² + x − 1", "x³ − 2x² + x − 2", "x² + x + 1", "x³ − 2x² + x + 1"],
-    ow: [null, "Esse é só D·Q; faltou somar o resto 1.", "O grau não bate: D tem grau 2 e Q grau 1, então P tem grau 3.", "(x² + 1)(x − 2) termina em −2; somando 1 dá −1, não +1."],
-    s: ["P(x) = D(x)·Q(x) + R(x).", "(x² + 1)(x − 2) = x³ − 2x² + x − 2.", "Somando o resto 1: P(x) = x³ − 2x² + x − 1."] },
-  { l: 1, q: "O resto da divisão de p(x) = x³ − 2x² + x − 1 por q(x) = x² − x + 1 é r(x). Quanto vale r(1)?", o: ["−1", "1", "0", "−2"],
-    ow: [null, "r(x) = −x, então r(1) = −1: atenção ao sinal.", "q(x) não divide p(x): o resto é −x, não zero.", "Revise a última subtração: (−x² − 1) − (−x² + x − 1) = −x."],
-    s: ["Método da chave: x³ ÷ x² = x, e x·(x² − x + 1) = x³ − x² + x.", "(x³ − 2x² + x − 1) − (x³ − x² + x) = −x² − 1.", "−x² ÷ x² = −1, e −1·(x² − x + 1) = −x² + x − 1.", "(−x² − 1) − (−x² + x − 1) = −x. O resto é r(x) = −x (grau menor que 2).", "r(1) = −1."] },
-  { l: 1, q: "Dividindo p(x) por 2x − 1, obtém-se quociente x² − x e resto m. Se p(−1) = 0, quanto vale m?", f: ["6"],
-    s: ["p(x) = (2x − 1)(x² − x) + m.", "p(−1) = (2·(−1) − 1)((−1)² − (−1)) + m = (−3)(2) + m = −6 + m.", "−6 + m = 0 ⇒ m = 6."] },
-  { l: 1, q: "Qual é o resto da divisão de x⁵ − 2x⁴ + x² + 1 por 2x + 1?", f: ["35/32"],
-    s: ["A raiz do divisor 2x + 1 é x = −1/2, e o resto é P(−1/2).", "(−1/2)⁵ = −1/32; −2·(−1/2)⁴ = −2/16 = −1/8; (−1/2)² = 1/4.", "P(−1/2) = −1/32 − 4/32 + 8/32 + 32/32 = 35/32 ≈ 1.09."] },
-  { l: 1, q: "O resto da divisão de P(x) = xⁿ + aⁿ por Q(x) = x + a, sendo n par, é", o: ["2aⁿ", "0", "aⁿ", "−aⁿ"],
-    ow: [null, "Daria 0 se n fosse ímpar, porque aí (−a)ⁿ = −aⁿ.", "Faltou somar os dois termos: (−a)ⁿ + aⁿ.", "Com n par, (−a)ⁿ é positivo e igual a aⁿ."],
-    s: ["O resto da divisão por x + a é P(−a).", "P(−a) = (−a)ⁿ + aⁿ. Como n é par, (−a)ⁿ = aⁿ.", "Resto = aⁿ + aⁿ = 2aⁿ."] },
-  { l: 1, q: "Use Briot-Ruffini para dividir x³ + 8 por x + 2. Digite os coeficientes do quociente e o resto.", f: ["1", "-2", "4", "0"], lab: ["coeficiente de x² =", "coeficiente de x =", "termo independente =", "resto ="],
-    s: ["Complete os coeficientes com zeros: 1, 0, 0, 8. A raiz do divisor x + 2 é −2.", "Desce o 1.", "1·(−2) + 0 = −2.", "(−2)·(−2) + 0 = 4.", "4·(−2) + 8 = 0 → este é o resto.", "Quociente x² − 2x + 4, resto 0."] },
-  { l: 1, q: "Na divisão de P(x) = x³ + x² − 10x + 8 por x − 1, obtém-se o quociente Q(x). Quais são as raízes de Q(x) = 0?", f: ["-4", "2"], set: true,
-    s: ["Briot-Ruffini com a raiz 1 e coeficientes 1, 1, −10, 8.", "Desce 1; 1·1 + 1 = 2; 2·1 − 10 = −8; −8·1 + 8 = 0 (resto).", "Q(x) = x² + 2x − 8. Δ = 4 + 32 = 36.", "x = (−2 ± 6)/2 ⇒ x = 2 ou x = −4."] },
-  { l: 1, q: "Determine o quociente e o resto da divisão de x³ + 2x² − 3x − 4 por 2x − 1.", f: ["1/2", "5/4", "-7/8", "-39/8"], lab: ["coeficiente de x² =", "coeficiente de x =", "termo independente =", "resto ="],
-    s: ["2x − 1 = 2(x − 1/2). Faça Briot-Ruffini com a raiz 1/2 e depois divida o quociente por 2.", "Coeficientes 1, 2, −3, −4. Desce 1.", "1·(1/2) + 2 = 5/2.", "(5/2)·(1/2) − 3 = 5/4 − 3 = −7/4.", "(−7/4)·(1/2) − 4 = −7/8 − 4 = −39/8 → resto.", "Quociente de x − 1/2: x² + (5/2)x − 7/4. Dividindo por 2: (1/2)x² + (5/4)x − 7/8. O resto continua −39/8."] },
-  { l: 1, q: "Divida P(x) = x⁴ − 3x³ + 4x² + x − 1 por D(x) = x² − 2x + 4. Escreva Q(x) = ax² + bx + c e R(x) = dx + e.", f: ["1", "-1", "-2", "1", "7"], lab: ["a =", "b =", "c =", "d =", "e ="],
-    s: ["x⁴ ÷ x² = x². x²·D = x⁴ − 2x³ + 4x². Subtraindo: −x³ + 0x² + x − 1.", "−x³ ÷ x² = −x. −x·D = −x³ + 2x² − 4x. Subtraindo: −2x² + 5x − 1.", "−2x² ÷ x² = −2. −2·D = −2x² + 4x − 8. Subtraindo: x + 7.", "Q(x) = x² − x − 2 e R(x) = x + 7 (grau 1 < 2, a divisão para aqui)."] },
-  { l: 1, q: "Se P(x) = x³ + ax² − bx + 8 é divisível por (x + 2)(x − 1), quanto valem a e b?", f: ["-3", "6"], lab: ["a =", "b ="],
-    s: ["Divisível por (x + 2)(x − 1) ⇔ P(−2) = 0 e P(1) = 0.", "P(1) = 1 + a − b + 8 = 0 ⇒ a − b = −9.", "P(−2) = −8 + 4a + 2b + 8 = 0 ⇒ 4a + 2b = 0 ⇒ b = −2a.", "a + 2a = −9 ⇒ a = −3 e b = 6."] },
-  { l: 1, q: "Calcule os valores reais de m para que o resto da divisão de P(x) = x³ + 3x² + 5x + m por x − m seja m³.", f: ["0", "-2"], set: true,
-    s: ["Resto = P(m) = m³ + 3m² + 5m + m = m³ + 3m² + 6m.", "m³ + 3m² + 6m = m³ ⇒ 3m² + 6m = 0.", "3m(m + 2) = 0 ⇒ m = 0 ou m = −2."] },
-  { l: 1, q: "Determine b e c para que P(x) = x⁴ + x² + bx + c seja divisível por x − 2 e deixe resto 4 na divisão por x + 2.", f: ["-1", "-18"], lab: ["b =", "c ="],
-    s: ["P(2) = 16 + 4 + 2b + c = 0 ⇒ 2b + c = −20.", "P(−2) = 16 + 4 − 2b + c = 4 ⇒ −2b + c = −16.", "Somando: 2c = −36 ⇒ c = −18. Então 2b = −20 + 18 ⇒ b = −1."] },
-  { l: 1, q: "Determine o polinômio do 2º grau P(x) = ax² + bx + c que deixa restos 4, 9 e 18 na divisão por x, x − 1 e x − 2.", f: ["2", "3", "4"], lab: ["a =", "b =", "c ="],
-    s: ["Pelo teorema do resto: P(0) = 4, P(1) = 9 e P(2) = 18.", "P(0) = c = 4.", "P(1) = a + b + 4 = 9 ⇒ a + b = 5. P(2) = 4a + 2b + 4 = 18 ⇒ 2a + b = 7.", "Subtraindo: a = 2 e b = 3. P(x) = 2x² + 3x + 4."] },
-  { l: 1, q: "Determine m e n de modo que P(x) = 2x⁴ − x³ + mx² − nx + 2 seja divisível por (x − 2)(x + 1).", f: ["-6", "1"], lab: ["m =", "n ="],
-    s: ["P(2) = 32 − 8 + 4m − 2n + 2 = 26 + 4m − 2n = 0 ⇒ 2m − n = −13.", "P(−1) = 2 + 1 + m + n + 2 = 5 + m + n = 0 ⇒ m + n = −5.", "Somando: 3m = −18 ⇒ m = −6, e n = −5 − (−6) = 1."] },
-  { l: 1, q: "O polinômio P(x) = x⁴ − 4x³ + mx² + 4x + n é divisível por (x − 1)(x − 2). Calcule 5m + 2n.", f: ["7"],
-    s: ["P(1) = 1 − 4 + m + 4 + n = 0 ⇒ m + n = −1.", "P(2) = 16 − 32 + 4m + 8 + n = 0 ⇒ 4m + n = 8.", "Subtraindo: 3m = 9 ⇒ m = 3 e n = −4.", "5m + 2n = 15 − 8 = 7."] },
-  { l: 1, q: "Dado P(x) = 4x⁴ − 5x² − 3bx + a, calcule a e b para que P(x) seja divisível por x² − 1.", f: ["1", "0"], lab: ["a =", "b ="],
-    s: ["x² − 1 = (x − 1)(x + 1), então P(1) = 0 e P(−1) = 0.", "P(1) = 4 − 5 − 3b + a = 0 ⇒ a − 3b = 1.", "P(−1) = 4 − 5 + 3b + a = 0 ⇒ a + 3b = 1.", "Somando: 2a = 2 ⇒ a = 1, e então b = 0."] },
-  { l: 1, q: "Determine o polinômio do 3º grau que se anula para x = 1 e que, dividido por x + 1, x − 2 e x + 2, deixa resto 6. Escreva P(x) = ax³ + bx² + cx + d.", f: ["1", "1", "-4", "2"], lab: ["a =", "b =", "c =", "d ="],
-    s: ["Resto 6 nas três divisões ⇒ P(−1) = P(2) = P(−2) = 6. Então P(x) − 6 tem raízes −1, 2 e −2.", "P(x) − 6 = k(x + 1)(x − 2)(x + 2), ou seja, P(x) = k(x + 1)(x² − 4) + 6.", "P(1) = 0: k·2·(−3) + 6 = 0 ⇒ k = 1.", "P(x) = (x + 1)(x² − 4) + 6 = x³ + x² − 4x − 4 + 6 = x³ + x² − 4x + 2."] },
-  { l: 1, q: "O polinômio P(x) = 2x³ − ax² + bx + 2 é divisível por 2x² + 5x − 2. Calcule a − b.", f: ["4"],
-    s: ["O quociente tem grau 1 e começa com x (2x³ ÷ 2x² = x): P(x) = (2x² + 5x − 2)(x + k).", "Termo independente: −2·k = 2 ⇒ k = −1.", "(2x² + 5x − 2)(x − 1) = 2x³ − 2x² + 5x² − 5x − 2x + 2 = 2x³ + 3x² − 7x + 2.", "Comparando: −a = 3 ⇒ a = −3 e b = −7. Então a − b = −3 + 7 = 4.", "O gabarito da lista traz a = −7 e b = 7, mas a multiplicação acima mostra a = −3 e b = −7."] },
-  { l: 1, q: "No polinômio P(x) de grau 3, o coeficiente de x³ é 2, e P(x) é divisível por x² − 5x + 6 e por x² − 4x + 4. O termo independente é", o: ["−24", "24", "−6", "0"],
-    ow: [null, "O sinal: 2·(−2)²·(−3) = 2·4·(−3) = −24.", "−6 é o produto 2·(−3) sem o fator (−2)² = 4.", "0 só se 0 fosse raiz, e as raízes são 2 e 3."],
-    s: ["x² − 5x + 6 = (x − 2)(x − 3) e x² − 4x + 4 = (x − 2)².", "Para ser divisível pelos dois, P precisa de (x − 2)² e de (x − 3). Com grau 3: P(x) = 2(x − 2)²(x − 3).", "Termo independente = P(0) = 2·(−2)²·(−3) = 2·4·(−3) = −24."] },
+  /* ================= Nível 2 · perpendicularismo ================= */
+  { l: 1, q: "A é um ponto que não pertence à reta r. Quantos são os planos que contêm A e são perpendiculares a r? (Questão 25)", f: ["1"],
+    s: ["Por um ponto passa um único plano perpendicular a uma reta dada.", "Isso vale para A fora de r ou em r.", "Resposta: 1."] },
+  { l: 1, q: "Assinale a afirmação correta. (Questão 12)", o: ["Não existem retas distintas, concorrentes, perpendiculares a um plano α", "Não existem ângulos de lados paralelos não congruentes", "Não existem retas distintas, perpendiculares a uma reta r, passando por um ponto P de r", "Não existem retas paralelas e distintas perpendiculares a um mesmo plano"],
+    ow: [null, "Ângulos de lados paralelos podem ser suplementares (60° e 120°).", "Por P passam infinitas perpendiculares a r (todas no plano perpendicular a r por P).", "Retas perpendiculares a um mesmo plano são paralelas, então existem sim."],
+    s: ["Retas perpendiculares a um mesmo plano são paralelas entre si.", "Se fossem concorrentes, teriam um ponto comum e por ele passariam duas perpendiculares ao plano, o que é impossível.", "Logo não existem retas distintas e concorrentes perpendiculares a α."] },
+  { l: 1, q: "Assinale a alternativa correta. (Questão 58)", o: ["Se duas retas distintas são perpendiculares a um plano, elas são paralelas", "Se duas retas são perpendiculares a uma reta do espaço, elas são paralelas", "Se duas retas não se cruzam, elas são ortogonais", "3 pontos determinam um plano"],
+    ow: [null, "Podem ser concorrentes ou reversas (veja o Nível 1).", "Retas sem ponto comum podem ser paralelas ou reversas em qualquer ângulo.", "Só se forem não colineares."],
+    s: ["Teorema: duas retas perpendiculares a um mesmo plano são paralelas.", "As outras afirmações têm contraexemplos simples no cubo."] },
+  { l: 1, q: "Indique a proposição verdadeira. (Questão 56)", o: ["Se um plano é perpendicular a duas retas distintas, elas são coplanares", "Duas retas perpendiculares a uma terceira são paralelas entre si", "Se s é secante às retas r e t, os ângulos colaterais externos são suplementares"],
+    ow: [null, "Podem ser concorrentes ou reversas.", "Só vale se r e t forem paralelas."],
+    s: ["Duas retas perpendiculares ao mesmo plano são paralelas.", "Retas paralelas distintas são coplanares.", "Logo as duas retas são coplanares."] },
+  { l: 1, q: "I. Se dois planos distintos são paralelos a uma mesma reta, são paralelos entre si. II. Se duas retas distintas são paralelas a um mesmo plano, são paralelas entre si. III. Se dois planos distintos são perpendiculares a uma mesma reta, são paralelos. IV. Se duas retas distintas são perpendiculares a um mesmo plano, são paralelas. Estão corretas (Questão 20)", o: ["III e IV", "I, II, III e IV", "I e II", "IV"],
+    ow: [null, "I e II são falsas.", "I e II são falsas; III e IV são as verdadeiras.", "III também é verdadeira."],
+    s: ["I: falsa. Planos secantes podem ser paralelos à mesma reta.", "II: falsa. Retas paralelas ao chão podem ser concorrentes ou reversas.", "III: verdadeira. Planos perpendiculares à mesma reta são paralelos.", "IV: verdadeira. Retas perpendiculares ao mesmo plano são paralelas.", "Corretas: III e IV."] },
+  { l: 1, q: "I. Duas retas no espaço, paralelas a uma terceira, são paralelas entre si. II. Um plano α, perpendicular a uma reta de um plano β, é paralelo a β. III. Dois planos perpendiculares à mesma reta são paralelos. Então (Questão 15)", o: ["Somente II é falsa", "Todas são falsas", "Todas são verdadeiras", "Somente I é falsa"],
+    ow: [null, "I e III são verdadeiras.", "II é falsa.", "I é verdadeira (transitividade do paralelismo)."],
+    s: ["I: verdadeira (o paralelismo de retas é transitivo).", "II: falsa. Se α é perpendicular a uma reta de β, então α ⊥ β, e não α // β.", "III: verdadeira.", "Somente II é falsa."] },
+  { l: 1, q: "I. Se dois planos são perpendiculares, toda reta de um deles perpendicular à interseção é perpendicular ao outro. II. Se dois planos são perpendiculares, toda reta paralela a um deles é perpendicular ao outro. III. Duas retas perpendiculares a um mesmo plano são paralelas. (Questão 23)", o: ["Apenas I e III são verdadeiras", "Todas são verdadeiras", "Todas são falsas", "Apenas I e II são verdadeiras"],
+    ow: [null, "II é falsa.", "I e III são teoremas verdadeiros.", "II é falsa e III é verdadeira."],
+    s: ["I: verdadeira. É o teorema dos planos perpendiculares (a parede e o chão: uma reta da parede perpendicular ao rodapé é vertical).", "II: falsa. Uma reta paralela à parede pode ser horizontal e paralela ao chão.", "III: verdadeira.", "Verdadeiras: I e III."] },
+  { l: 1, q: "Qual das proposições é FALSA? (Questão 63)", o: ["Se uma reta e um plano são paralelos, toda reta perpendicular à reta dada é perpendicular ao plano", "Por um ponto A pode-se conduzir uma única reta perpendicular a um plano α", "Se dois planos são perpendiculares a uma reta, então eles são paralelos", "Se dois planos são paralelos e uma reta é perpendicular a um deles, então é perpendicular ao outro"],
+    ow: [null, "Verdadeira: por um ponto passa uma única perpendicular a um plano.", "Verdadeira.", "Verdadeira: planos paralelos têm as mesmas perpendiculares."],
+    s: ["Tome o chão e uma reta r horizontal acima dele (paralela ao chão).", "Uma reta perpendicular a r pode ser horizontal também, e aí ela é paralela ao chão, não perpendicular.", "Por isso essa é a afirmação falsa."] },
+  { l: 1, q: "Qual das afirmações é FALSA? (Questão 60)", o: ["Duas retas perpendiculares a uma terceira são paralelas entre si (no espaço)", "Se dois planos são perpendiculares à mesma reta, eles são paralelos", "Se duas retas são perpendiculares a um plano, elas são paralelas", "Se uma reta é perpendicular a um plano, toda reta paralela a ela é perpendicular ao plano"],
+    ow: [null, "Verdadeira.", "Verdadeira.", "Verdadeira: a direção perpendicular se mantém."],
+    s: ["No espaço, duas retas perpendiculares a uma terceira podem ser concorrentes, paralelas ou reversas (Nível 1, questão 78).", "Então dizer que são sempre paralelas é falso."] },
+  { l: 1, q: "Assinale a afirmação correta. (Questão 87)", o: ["Uma reta perpendicular a um plano é perpendicular a todas as retas do plano", "Uma reta e um plano são paralelos. Toda reta perpendicular à reta dada é perpendicular ao plano", "Se uma reta é perpendicular a duas retas distintas de um plano, ela é perpendicular ao plano", "Se uma reta é perpendicular a duas retas paralelas e distintas de um plano, ela está contida no plano"],
+    ow: [null, "Falsa (veja a questão anterior).", "As duas retas precisam ser concorrentes.", "Não precisa estar contida; pode até ser oblíqua ao plano."],
+    s: ["Na linguagem desta lista, uma reta perpendicular a um plano forma 90° com todas as retas do plano (perpendicular às que passam pelo pé e ortogonal às demais).", "É a definição de reta perpendicular a plano; as outras alternativas falham nas condições."] },
+  { l: 1, q: "Assinale a única proposição errada. (Questão 57)", o: ["Uma reta ortogonal a duas retas de um plano é ortogonal ao plano", "Duas retas do espaço paralelas a uma terceira são paralelas entre si", "Um plano perpendicular a dois planos incidentes é perpendicular à reta interseção deles", "Dois planos perpendiculares à mesma reta são paralelos"],
+    ow: [null, "Correta (transitividade).", "Correta: é o teorema de α ⊥ γ, β ⊥ γ ⇒ (α ∩ β) ⊥ γ.", "Correta."],
+    s: ["Para a reta ser perpendicular ao plano, as duas retas do plano precisam ser concorrentes.", "Se forem paralelas, a reta pode ser oblíqua ao plano.", "Por isso essa afirmação é a errada."] },
+  { l: 1, q: "Se um plano α e uma reta r são tais que r ∩ α = r, então (Questão 30)", o: ["toda reta perpendicular a α é perpendicular a r", "existe um plano que contém r e não intercepta α", "existe uma reta em α concorrente com r em mais de um ponto", "toda reta paralela a α é paralela a r"],
+    ow: [null, "Todo plano que contém r corta α (pelo menos em r).", "Retas distintas se cortam em no máximo um ponto.", "Retas paralelas a α podem ter qualquer direção paralela a α."],
+    s: ["r ∩ α = r significa que r está contida em α.", "Uma reta perpendicular a α forma 90° com todas as retas de α, inclusive r.", "Logo toda perpendicular a α é perpendicular (ou ortogonal) a r."] },
+  { l: 1, q: "Considere uma reta s contida em um plano α e uma reta r perpendicular a s. Então, necessariamente (Questão 26)", o: ["r e s são coplanares", "r é perpendicular a α", "r é paralela a α", "r está contida em α"],
+    ow: [null, "Para ser perpendicular a α, r precisaria ser perpendicular a duas retas concorrentes de α.", "r corta s, que está em α, então r não é paralela a α.", "r pode sair de α."],
+    s: ["Retas perpendiculares são concorrentes (se cortam formando 90°).", "Duas retas concorrentes determinam um plano.", "Logo r e s são coplanares."] },
+  { l: 1, q: "Se um dos lados de um ângulo reto é paralelo a um plano e o outro não é perpendicular a esse plano, a projeção do ângulo sobre o plano é (Questão 13)", o: ["um ângulo reto", "um ângulo agudo", "um ângulo obtuso", "dependente da posição do plano"],
+    ow: [null, "A projeção mantém os 90° nesse caso.", "A projeção mantém os 90° nesse caso.", "O resultado é sempre o mesmo: 90°."],
+    s: ["O lado paralelo ao plano se projeta com a mesma direção.", "O outro lado é perpendicular ao primeiro; ao projetar, a componente que some é vertical, que também é perpendicular ao primeiro lado.", "Logo a projeção do segundo lado continua perpendicular ao primeiro: o ângulo projetado é reto (teorema das três perpendiculares)."] },
+  { l: 1, q: "Considere um plano α e uma reta r que encontra esse plano num ponto P e não é perpendicular a α. Assinale a verdadeira. (Questão 47)", o: ["Existe uma e somente uma reta de α perpendicular a r por P", "Existem infinitas retas de α perpendiculares a r pelo ponto P", "Não existe reta de α perpendicular a r por P", "Existem duas retas de α perpendiculares a r passando por P"],
+    ow: [null, "Isso só acontece se r for perpendicular a α.", "Existe: é a interseção de α com o plano perpendicular a r por P.", "O plano perpendicular a r por P corta α numa única reta."],
+    s: ["As perpendiculares a r por P formam um plano β (perpendicular a r em P).", "Como r não é perpendicular a α, β ≠ α, e os dois se cortam numa única reta.", "Essa reta está em α, passa por P e é perpendicular a r: é única."] },
+  { l: 1, q: "O plano π₁ é perpendicular a π₂, π₂ é perpendicular a π₃, e π₁ e π₃ se interceptam segundo a reta ℓ. É correto afirmar que (Questão 18)", o: ["a reta ℓ é perpendicular a π₂", "π₁ e π₃ são perpendiculares", "π₁ e π₃ são paralelos", "π₂ também contém a reta ℓ"],
+    ow: [null, "Não necessariamente: podem formar qualquer ângulo.", "Eles se cortam em ℓ, então não são paralelos.", "ℓ é perpendicular a π₂, então não está contida nele."],
+    s: ["Teorema: se dois planos secantes são ambos perpendiculares a um terceiro, a interseção deles é perpendicular a esse terceiro.", "π₁ ⊥ π₂ e π₃ ⊥ π₂, com π₁ ∩ π₃ = ℓ.", "Logo ℓ ⊥ π₂ (pense em duas paredes e no chão: a quina é vertical)."] },
+  { l: 1, q: "Dados os planos distintos α, β e γ, se α ⊥ γ e β ⊥ γ, então necessariamente (Questão 33)", o: ["se i = α ∩ β, então i ⊥ γ", "α // β", "α não é paralelo a β", "se i = α ∩ β, então i // γ"],
+    ow: [null, "Podem ser secantes (duas paredes vizinhas).", "Podem ser paralelos (duas paredes opostas).", "A interseção é perpendicular a γ, não paralela."],
+    s: ["Mesmo teorema da questão anterior.", "Se α e β se cortam numa reta i e ambos são perpendiculares a γ, então i ⊥ γ."] },
+  { l: 1, q: "Sejam as retas r // s // t e um plano α ⊥ r. Pode-se dizer que (Questão 34)", o: ["α ⊥ s e α ⊥ t, necessariamente", "α // s", "α // t", "α ⊥ s e α não ⊥ t, necessariamente"],
+    ow: [null, "Uma reta paralela a r é perpendicular a α, não paralela.", "Uma reta paralela a r é perpendicular a α, não paralela.", "t também é paralela a r, então também é perpendicular a α."],
+    s: ["Se uma reta é perpendicular a um plano, toda reta paralela a ela também é.", "s e t são paralelas a r, então α ⊥ s e α ⊥ t."] },
+  { l: 1, q: "Sejam a e b duas retas ortogonais, perpendiculares à reta r em A e B, respectivamente. Sejam M ∈ a e N ∈ b pontos distintos de A e B. O ângulo MB̂N (Questão 48)", o: ["é reto", "é agudo", "não pode ser reto", "depende de M e N"],
+    ow: [null, "É sempre 90°.", "É sempre 90°.", "Não depende: vale para quaisquer M e N."],
+    s: ["b é perpendicular a r e ortogonal a a, que são concorrentes em A. Logo b é perpendicular ao plano determinado por a e r.", "O ponto M está em a e o ponto B está em r: o segmento BM está nesse plano.", "Como b ⊥ plano, b ⊥ BM. N está em b, então o ângulo MBN é reto."] },
+  { l: 1, q: "Por uma reta não paralela nem perpendicular a um plano α passam: I. infinitos planos paralelos a α; II. nenhum plano paralelo a α; III. nenhum plano perpendicular a α; IV. um único plano perpendicular a α. Valem (Questão 49)", o: ["II e IV", "II e III", "I e III", "I e IV"],
+    ow: [null, "III é falsa: existe um plano perpendicular a α pela reta.", "A reta corta α, então nenhum plano que a contém é paralelo a α.", "I é falsa."],
+    s: ["A reta corta α (não é paralela), então nenhum plano que a contém é paralelo a α: II.", "Pela reta passa o plano que contém a perpendicular a α por um de seus pontos: esse plano é perpendicular a α e é único, porque a reta não é perpendicular a α: IV.", "Valem II e IV."] },
+  { l: 1, q: "Todas as afirmações estão corretas, EXCETO (Questão 01)", o: ["Toda secção de um diedro reto é um ângulo reto", "Dois diedros opostos pela aresta são congruentes", "O bissetor de um diedro reto forma, com suas faces, dois diedros de 45°", "Dois planos perpendiculares determinam quatro diedros retos"],
+    ow: [null, "Correta: como ângulos opostos pelo vértice.", "Correta: o bissetor divide 90° em 45° e 45°.", "Correta: é a definição de planos perpendiculares."],
+    s: ["Só a secção reta, feita por um plano perpendicular à aresta, mede o ângulo do diedro.", "Uma secção oblíqua de um diedro reto pode dar um ângulo agudo ou obtuso.", "Por isso 'toda secção' é a afirmação incorreta."] },
+  { l: 1, q: "Quanto à soma dos ângulos que uma reta forma com dois planos perpendiculares, podemos afirmar que (Questão 68)", o: ["não podemos garantir nenhuma das outras respostas", "é menor do que 90 graus", "é igual a 90 graus", "é maior do que 90 e menor do que 180 graus"],
+    ow: [null, "Pode ser igual a 90° (reta perpendicular à interseção dos planos).", "Só acontece em alguns casos; em outros a soma é menor.", "A soma nunca passa de 90°."],
+    s: ["Com os planos z = 0 e x = 0 e uma reta de direção (a, b, c) unitária, sen θ₁ = |c| e sen θ₂ = |a|.", "Como a² + c² ≤ 1, a soma θ₁ + θ₂ fica entre 0° e 90°.", "Ela é 90° quando b = 0 e menor que 90° nos outros casos. Então nenhuma das respostas fixas vale sempre."] },
+  { l: 1, q: "Sejam α e β dois planos paralelos a 4 m um do outro, e r uma reta que os intercepta em A ∈ α e B ∈ β, com AB = 5 m. Quanto mede a projeção ortogonal de AB sobre β, em metros? (Questão 98)", f: ["3"],
+    s: ["AB, sua projeção e a distância entre os planos formam um triângulo retângulo.", "A hipotenusa é AB = 5 e um cateto é a distância 4.", "Projeção = √(5² − 4²) = √9 = 3 m."] },
+  { l: 1, q: "Um triângulo ABC está inclinado em relação a um plano α, e as distâncias dos vértices A, B e C ao plano são 3 cm, 5 cm e 7 cm. Qual é a distância do baricentro ao plano, em cm? (Questão 94)", f: ["5"],
+    s: ["O baricentro G é a média dos vértices: G = (A + B + C)/3.", "A distância a α (com todos do mesmo lado) também é a média.", "(3 + 5 + 7)/3 = 15/3 = 5 cm."] },
+  { l: 1, q: "O ponto A pertence à reta r, contida no plano α. A reta s, perpendicular a α, o intercepta em B. O ponto C pertence a s e dista 2√5 cm de B. A projeção ortogonal de AB em r mede 5 cm e B dista 6 cm de r. Qual é a distância de A a C, em cm? (Questão 02)", f: ["9"],
+    s: ["Em α: a projeção de AB sobre r (5) e a distância de B a r (6) são catetos de um triângulo retângulo com hipotenusa AB.", "AB² = 5² + 6² = 61.", "BC é perpendicular a α, então é perpendicular a AB: triângulo ABC retângulo em B.", "AC² = AB² + BC² = 61 + (2√5)² = 61 + 20 = 81 ⇒ AC = 9 cm."] },
+  { l: 1, q: "Os planos α e β são paralelos, a 8 cm de distância. As retas s e t são as interseções de α e β com um plano perpendicular a ambos. O ponto A está em α e dista 5 cm da reta s. Qual é a distância de A até t, em cm? (Questão 77, item 04)", f: ["√89"],
+    s: ["Seja A' o pé da perpendicular de A até s (AA' = 5, dentro de α).", "t está em β, diretamente abaixo de s, a 8 cm: o segmento de A' até t mede 8 e é perpendicular a α, logo perpendicular a AA'.", "AA' também é perpendicular a t (ele é perpendicular ao plano que contém s e t).", "Distância² = 5² + 8² = 89 ⇒ distância = √89 ≈ 9.43 cm."] },
+  { l: 1, q: "São dados três pontos A, B e C não alinhados e um ponto P fora do plano ABC. Quantos planos passam por P e são equidistantes de A, B e C? (Questão 08)", f: ["4"],
+    s: ["Um plano equidistante de três pontos ou deixa os três do mesmo lado, ou separa um deles dos outros dois.", "Mesmo lado: o plano é paralelo a ABC. Por P passa exatamente um (1 plano).", "Separando um ponto: o plano é paralelo ao plano que passa pelos pontos médios dos lados que saem desse ponto, e há uma escolha para cada vértice: 3 planos, cada um por P.", "Total: 1 + 3 = 4 planos."] },
+  { l: 1, q: "O plano γ intercepta dois planos paralelos α e β. O conjunto dos pontos equidistantes de α, β e γ é (Questão 36)", o: ["a reunião de duas retas", "um único ponto", "uma reta", "um plano"],
+    ow: [null, "Há infinitos pontos (duas retas inteiras).", "São duas retas, uma de cada lado de γ.", "A condição de equidistar de γ restringe a retas."],
+    s: ["Equidistantes de α e β: o plano μ paralelo a eles, no meio, a d/2 de cada um (d = distância entre α e β).", "Nesse plano, os pontos a distância d/2 de γ formam duas retas paralelas a μ ∩ γ, uma de cada lado de γ.", "O conjunto é a reunião de duas retas."] },
+  { l: 1, q: "Leia as afirmativas: I. Dados um plano α e dois pontos A e B fora dele, é sempre possível passar por A e B um plano perpendicular a α. II. Dadas duas retas reversas, não existe plano equidistante delas. III. Se a interseção de duas retas é vazia, elas são paralelas ou reversas. IV. Quatro pontos não coplanares determinam 5 planos. V. Se dois planos são perpendiculares, todo plano perpendicular a um deles é perpendicular ao outro. VI. O poliedro regular com 30 arestas e 20 vértices é o dodecaedro. Quantas são verdadeiras? (Questão 71)", o: ["Apenas três", "Apenas duas", "Apenas quatro", "Todas são falsas"],
+    ow: [null, "São três: I, III e VI.", "IV, II e V são falsas, então não chegam a quatro.", "I, III e VI são verdadeiras."],
+    s: ["I: verdadeira. O plano que contém AB e a perpendicular a α por A é perpendicular a α.", "II: falsa. O plano no meio entre os dois planos paralelos que contêm as reversas é equidistante delas.", "III: verdadeira.", "IV: falsa (são 4).", "V: falsa (pense em parede, chão e outra parede paralela à primeira).", "VI: verdadeira. Dodecaedro: 12 faces pentagonais, 2A = 60 ⇒ A = 30, V = 2 + 30 − 12 = 20.", "Três verdadeiras: I, III e VI."] },
 
-  /* ================= Nível 3 · Lista 3, primeira parte ================= */
-  { l: 2, q: "Determine o número de raízes nulas do polinômio P(x) = −2x⁵ + 6x³ − 3x².", f: ["2"],
-    s: ["O termo independente é 0, então zero é raiz.", "Coloque a menor potência em evidência: P(x) = x²(−2x³ + 6x − 3).", "O fator x² mostra que zero é raiz dupla: 2 raízes nulas (o menor expoente é 2)."] },
-  { l: 2, q: "Qual é o grau de P(x) = 4x²(x² − 16)(x² + 9)³?", f: ["10"],
-    s: ["O grau de um produto é a soma dos graus.", "x² tem grau 2; (x² − 16) tem grau 2; (x² + 9)³ tem grau 3·2 = 6.", "2 + 2 + 6 = 10."] },
-  { l: 2, q: "Considerando (x − 2)²(x − 1)³(x² + 3x − 4) = 0, qual é a multiplicidade da raiz 1?", f: ["4"],
-    s: ["Fatore x² + 3x − 4: raízes 1 e −4, então x² + 3x − 4 = (x − 1)(x + 4).", "A equação fica (x − 2)²(x − 1)³(x − 1)(x + 4) = (x − 2)²(x − 1)⁴(x + 4).", "O fator (x − 1) aparece 4 vezes: multiplicidade 4."] },
-  { l: 2, q: "Qual é a multiplicidade da raiz −1 na equação x³ + x² − 3x − 3 = 0?", f: ["1"],
-    s: ["Agrupe: x²(x + 1) − 3(x + 1) = (x + 1)(x² − 3).", "x² − 3 = 0 dá ±√3, que não é −1.", "(x + 1) aparece uma vez: −1 é raiz simples (multiplicidade 1)."] },
-  { l: 2, q: "Resolva x³ − 7x² + 12x = 0.", f: ["0", "3", "4"], set: true,
-    s: ["Coloque x em evidência: x(x² − 7x + 12) = 0.", "x = 0 ou x² − 7x + 12 = 0.", "x² − 7x + 12 = (x − 3)(x − 4) ⇒ x = 3 ou x = 4.", "S = {0, 3, 4}."] },
-  { l: 2, q: "Resolva x³ − 4x² + 3x = 0.", f: ["0", "1", "3"], set: true,
-    s: ["x(x² − 4x + 3) = 0.", "x² − 4x + 3 = (x − 1)(x − 3).", "S = {0, 1, 3}."] },
-  { l: 2, q: "Resolva x³ + 3x² = x + 3.", f: ["-3", "1", "-1"], set: true,
-    s: ["Passe tudo para um lado: x³ + 3x² − x − 3 = 0.", "Agrupe: x²(x + 3) − 1(x + 3) = (x + 3)(x² − 1).", "x + 3 = 0 ⇒ x = −3; x² − 1 = 0 ⇒ x = ±1.", "S = {−3, −1, 1}."] },
-  { l: 2, q: "Resolva x³ + x² − 4x − 4 = 0.", f: ["-1", "2", "-2"], set: true,
-    s: ["Agrupe: x²(x + 1) − 4(x + 1) = (x + 1)(x² − 4).", "x + 1 = 0 ⇒ x = −1; x² − 4 = 0 ⇒ x = ±2.", "S = {−1, −2, 2}."] },
-  { l: 2, q: "Resolva x⁴ − 5x² + 4 = 0.", f: ["1", "-1", "2", "-2"], set: true,
-    s: ["Equação biquadrada: troque y = x². Fica y² − 5y + 4 = 0.", "(y − 1)(y − 4) = 0 ⇒ y = 1 ou y = 4.", "x² = 1 ⇒ x = ±1; x² = 4 ⇒ x = ±2.", "S = {±1, ±2}."] },
-  { l: 2, q: "Resolva x³ − 6x² + 10x = 0.", f: ["0", "3+i", "3-i"], set: true,
-    s: ["x(x² − 6x + 10) = 0 ⇒ x = 0 ou x² − 6x + 10 = 0.", "Δ = 36 − 40 = −4, e √(−4) = 2i.", "x = (6 ± 2i)/2 = 3 ± i.", "S = {0, 3 + i, 3 − i}."] },
-  { l: 2, q: "Resolva x³ + 2x² + 25x = −50.", f: ["-2", "5i", "-5i"], set: true,
-    s: ["x³ + 2x² + 25x + 50 = 0.", "Agrupe: x²(x + 2) + 25(x + 2) = (x + 2)(x² + 25).", "x = −2 ou x² = −25 ⇒ x = ±5i.", "S = {−2, 5i, −5i}."] },
-  { l: 2, q: "Determine a equação x³ + bx² + cx + d = 0 com S = {3, 5}, sendo 3 raiz de multiplicidade 2.", f: ["-11", "39", "-45"], lab: ["b =", "c =", "d ="],
-    s: ["3 dupla e 5 simples: (x − 3)²(x − 5) = 0.", "(x − 3)² = x² − 6x + 9.", "(x² − 6x + 9)(x − 5) = x³ − 5x² − 6x² + 30x + 9x − 45 = x³ − 11x² + 39x − 45."] },
-  { l: 2, q: "Determine as outras raízes de P(x) = x³ + 2x² − 5x − 6, sabendo que 2 é raiz.", f: ["-1", "-3"], set: true,
-    s: ["Abaixe o grau com Briot-Ruffini usando a raiz 2 e os coeficientes 1, 2, −5, −6.", "Desce 1; 1·2 + 2 = 4; 4·2 − 5 = 3; 3·2 − 6 = 0 (resto zero, confirma a raiz).", "Quociente x² + 4x + 3 = (x + 1)(x + 3).", "Outras raízes: −1 e −3."] },
-  { l: 2, q: "Sabendo que 2 é raiz da equação x³ + 2x² − 5x + c = 0, calcule c.", f: ["-6"],
-    s: ["2 é raiz ⇒ P(2) = 0.", "8 + 8 − 10 + c = 0 ⇒ 6 + c = 0 ⇒ c = −6.", "Com c = −6 a equação é a mesma da questão anterior: raízes 2, −1 e −3."] },
-  { l: 2, q: "Uma das raízes da equação 2x³ − 4x² − 2x + 4 = 0 é 1. Resolva a equação.", f: ["1", "-1", "2"], set: true,
-    s: ["Briot-Ruffini com a raiz 1: coeficientes 2, −4, −2, 4 → 2, −2, −4, resto 0.", "Quociente 2x² − 2x − 4 = 2(x² − x − 2) = 2(x − 2)(x + 1).", "S = {1, −1, 2}."] },
-  { l: 2, q: "Determine as raízes de P(x) = x⁴ − x³ − 2x² + 6x − 4, sabendo que 1 + i é uma delas. Digite as outras três.", f: ["1-i", "1", "-2"], set: true,
-    s: ["Coeficientes reais ⇒ o conjugado 1 − i também é raiz.", "(x − (1 + i))(x − (1 − i)) = (x − 1)² − i² = x² − 2x + 2.", "Dividindo P(x) por x² − 2x + 2 obtém-se x² + x − 2.", "x² + x − 2 = (x + 2)(x − 1). Outras raízes: 1 − i, 1 e −2."] },
-  { l: 2, q: "Resolva x³ − 2x² + 9x − 18 = 0, sabendo que uma raiz é da forma bi.", f: ["2", "3i", "-3i"], set: true,
-    s: ["Agrupe: x²(x − 2) + 9(x − 2) = (x − 2)(x² + 9).", "x − 2 = 0 ⇒ x = 2. x² + 9 = 0 ⇒ x = ±3i (a raiz da forma bi é 3i).", "S = {2, 3i, −3i}."] },
-  { l: 2, q: "Determine as raízes de x⁴ − x³ − 11x² = x + 12, sendo −i uma delas.", f: ["i", "-i", "4", "-3"], set: true,
-    s: ["Escreva x⁴ − x³ − 11x² − x − 12 = 0.", "−i é raiz e os coeficientes são reais ⇒ i também é. (x − i)(x + i) = x² + 1.", "Dividindo por x² + 1: x⁴ − x³ − 11x² − x − 12 = (x² + 1)(x² − x − 12).", "x² − x − 12 = (x − 4)(x + 3). S = {i, −i, 4, −3}."] },
-  { l: 2, q: "Uma das raízes da equação x⁴ − 9x³ + 30x² − 42x + 20 = 0 é 3 + i. Calcule as outras.", f: ["3-i", "1", "2"], set: true,
-    s: ["Coeficientes reais ⇒ 3 − i também é raiz.", "(x − 3 − i)(x − 3 + i) = (x − 3)² − i² = x² − 6x + 10.", "Dividindo: x⁴ − 9x³ + 30x² − 42x + 20 = (x² − 6x + 10)(x² − 3x + 2).", "x² − 3x + 2 = (x − 1)(x − 2). Outras raízes: 3 − i, 1 e 2."] },
-  { l: 2, q: "O polinômio P(x) tem coeficientes reais, é divisível por x² + 4 e P(1 − i) = 0. Qual é o menor grau que P(x) pode ter?", o: ["4", "2", "3", "5"],
-    ow: [null, "x² + 4 sozinho já tem grau 2, e ainda faltam as raízes 1 ± i.", "As raízes complexas vêm em pares conjugados: não dá para ter grau ímpar só com elas.", "É possível com grau 4; não é preciso uma raiz a mais."],
-    s: ["x² + 4 = 0 ⇒ x = ±2i: duas raízes.", "1 − i é raiz e os coeficientes são reais ⇒ 1 + i também é.", "No mínimo 4 raízes ⇒ grau mínimo 4: P(x) = (x² + 4)(x² − 2x + 2)."] },
-  { l: 2, q: "Qual é o menor grau que pode ter uma equação algébrica de coeficientes reais com raízes 2, i e 1 + i?", o: ["5", "3", "4", "6"],
-    ow: [null, "Esquece os conjugados: com coeficientes reais, −i e 1 − i também são raízes.", "Contou só um dos conjugados; são dois pares complexos mais o 2.", "Dá para ter grau 5; 6 teria uma raiz sobrando."],
-    s: ["Coeficientes reais ⇒ raízes complexas vêm com o conjugado.", "i traz −i; 1 + i traz 1 − i; 2 é real e vem sozinho.", "Raízes: 2, i, −i, 1 + i, 1 − i ⇒ grau mínimo 5."] },
-  { l: 2, q: "Entre os números abaixo, qual não pode ser raiz de P(x) = 3x⁴ + bx³ + cx² + dx − 4, com coeficientes inteiros?", o: ["3/4", "2/3", "4", "1"],
-    ow: [null, "2/3: p = 2 divide 4 e q = 3 divide 3, então é candidata.", "4 = 4/1: p = 4 divide 4 e q = 1 divide 3, então é candidata.", "1 = 1/1: é candidata (1 divide 4 e 1 divide 3)."],
-    s: ["Teorema das raízes racionais: se p/q (fração irredutível) é raiz, p divide a₀ = −4 e q divide aₙ = 3.", "p ∈ {±1, ±2, ±4} e q ∈ {1, 3}.", "Em 3/4, q = 4 não divide 3: não pode ser raiz."] },
-  { l: 2, q: "Quais são as raízes inteiras do polinômio P(x) = x³ − x² − 4?", f: ["2"],
-    s: ["Candidatas inteiras: divisores de −4: ±1, ±2, ±4.", "P(1) = −4; P(−1) = −6; P(2) = 8 − 4 − 4 = 0 ✓; P(−2) = −16; P(±4) ≠ 0.", "Dividindo por x − 2: x² + x + 2, com Δ = 1 − 8 < 0 (raízes não reais).", "Única raiz inteira: 2. Assim P(x) = (x − 2)(x² + x + 2)."] },
-  { l: 2, q: "Determine as raízes do polinômio P(x) = 4x³ + 3x² − 25x + 6.", f: ["2", "1/4", "-3"], set: true,
-    s: ["Candidatas p/q: p divide 6 e q divide 4.", "Testando x = 2: 32 + 12 − 50 + 6 = 0 ✓.", "Briot-Ruffini com 2: 4, 11, −3, resto 0. Quociente 4x² + 11x − 3.", "Δ = 121 + 48 = 169 ⇒ x = (−11 ± 13)/8 ⇒ x = 1/4 ou x = −3.", "S = {2, 1/4, −3}."] },
-  { l: 2, q: "Determine as raízes do polinômio P(x) = 2x³ − x² − 2x + 1.", f: ["1/2", "1", "-1"], set: true,
-    s: ["Agrupe: x²(2x − 1) − 1(2x − 1) = (2x − 1)(x² − 1).", "2x − 1 = 0 ⇒ x = 1/2; x² − 1 = 0 ⇒ x = ±1.", "S = {1/2, 1, −1}."] },
-  { l: 2, q: "Resolva 2x³ − 7x² + 7x − 2 = 0.", f: ["1", "2", "1/2"], set: true,
-    s: ["Soma dos coeficientes: 2 − 7 + 7 − 2 = 0 ⇒ x = 1 é raiz.", "Briot-Ruffini com 1: 2, −5, 2, resto 0. Quociente 2x² − 5x + 2.", "Δ = 25 − 16 = 9 ⇒ x = (5 ± 3)/4 ⇒ x = 2 ou x = 1/2.", "S = {1, 2, 1/2}."] },
-  { l: 2, q: "Resolva x⁵ + 5x⁴ + 6x³ − 2x² − 7x − 3 = 0, sabendo que −1 é raiz tripla. Digite as outras duas raízes.", f: ["1", "-3"], set: true,
-    s: ["Aplique Briot-Ruffini três vezes com a raiz −1.", "1ª: 1, 5, 6, −2, −7, −3 → 1, 4, 2, −4, −3, resto 0.", "2ª: 1, 4, 2, −4, −3 → 1, 3, −1, −3, resto 0.", "3ª: 1, 3, −1, −3 → 1, 2, −3, resto 0. Sobra x² + 2x − 3 = (x + 3)(x − 1).", "Outras raízes: 1 e −3."] },
-  { l: 2, q: "O número 3 é raiz dupla de x⁴ − 7x³ + 13x² + 3x − 18 = 0. Determine as outras duas raízes.", f: ["-1", "2"], set: true,
-    s: ["Briot-Ruffini com 3: 1, −7, 13, 3, −18 → 1, −4, 1, 6, resto 0.", "De novo com 3: 1, −4, 1, 6 → 1, −1, −2, resto 0.", "Sobra x² − x − 2 = (x − 2)(x + 1).", "Outras raízes: 2 e −1."] },
-  { l: 2, q: "Os números 1 e −1 são raízes de multiplicidade 2 de P(x) = (x − 1)·q(x). Se P(x) tem grau 4 e coeficiente líder 1, então q(x) é", o: ["x³ + x² − x − 1", "x³ − 3x² + 3x − 1", "x³ + 3x² + 3x + 1", "x³ − 3x² + 3x + 1"],
-    ow: [null, "Esse é (x − 1)³: daria 1 como raiz tripla e nenhum −1.", "Esse é (x + 1)³: daria −1 triplo em q, e P teria 1 só simples.", "Esse polinômio nem tem 1 ou −1 como raiz."],
-    s: ["P(x) = (x − 1)²(x + 1)².", "Como P(x) = (x − 1)·q(x), q(x) = (x − 1)(x + 1)².", "(x + 1)² = x² + 2x + 1, e (x − 1)(x² + 2x + 1) = x³ + 2x² + x − x² − 2x − 1 = x³ + x² − x − 1."] },
-  { l: 2, q: "Um polinômio p(x) de grau 3 é divisível por x + 2, deixa resto 3 na divisão por x − 1 e tem 0 como raiz de multiplicidade 2. p(x) é", o: ["x³ + 2x²", "2x³ + x²", "x³ + 2x", "3x³"],
-    ow: [null, "2x³ + x² = x²(2x + 1): a raiz não nula é −1/2, não −2.", "x³ + 2x = x(x² + 2): zero é só raiz simples.", "3x³ tem zero como raiz tripla e não é divisível por x + 2."],
-    s: ["0 raiz dupla e −2 raiz (divisível por x + 2) ⇒ p(x) = kx²(x + 2).", "Resto 3 na divisão por x − 1 ⇒ p(1) = k·1·3 = 3 ⇒ k = 1.", "p(x) = x²(x + 2) = x³ + 2x²."] },
-  { l: 2, q: "Um polinômio de coeficientes reais tem termo independente nulo, é divisível por x² − 1 e tem 2 − i como raiz de multiplicidade 3. Seu grau n satisfaz", o: ["n ≥ 9", "n ≥ 6", "n ≥ 8", "n ≥ 5"],
-    ow: [null, "Contou só 2 − i (3 vezes) e o 2 + i (3 vezes); faltaram 0, 1 e −1.", "Faltou uma das raízes: 0, 1 e −1 somam 3, e 2 ± i somam 6.", "Esqueceu que o conjugado 2 + i também tem multiplicidade 3."],
-    s: ["Termo independente nulo ⇒ 0 é raiz (1 raiz).", "Divisível por x² − 1 ⇒ 1 e −1 são raízes (2 raízes).", "2 − i tripla e coeficientes reais ⇒ 2 + i também tripla (6 raízes).", "Total mínimo: 1 + 2 + 6 = 9 ⇒ n ≥ 9."] },
+  /* ================= Nível 3 · poliedros ================= */
+  { l: 2, q: "Quantas arestas tem um prisma pentagonal? (Questão 03)", f: ["15"],
+    s: ["Um prisma de base com n lados tem n arestas em cada base e n arestas laterais.", "Total: 3n = 3 · 5 = 15."] },
+  { l: 2, q: "Um prisma hexagonal tem quantos vértices, faces e arestas?", f: ["12", "8", "18"], lab: ["vértices =", "faces =", "arestas ="],
+    s: ["Base com n = 6 lados.", "Vértices: 2n = 12 (6 em cada base).", "Faces: n + 2 = 8 (6 laterais + 2 bases).", "Arestas: 3n = 18. Confira com Euler: 12 − 18 + 8 = 2 ✓."] },
+  { l: 2, q: "Uma pirâmide hexagonal tem quantos vértices, faces e arestas?", f: ["7", "7", "12"], lab: ["vértices =", "faces =", "arestas ="],
+    s: ["Base com n = 6 lados.", "Vértices: n + 1 = 7 (6 da base + o ápice).", "Faces: n + 1 = 7 (6 triângulos laterais + a base).", "Arestas: 2n = 12. Euler: 7 − 12 + 7 = 2 ✓."] },
+  { l: 2, q: "Um prisma tem 30 arestas. Quantos lados tem o polígono da base?", f: ["10"],
+    s: ["Prisma de base com n lados tem 3n arestas.", "3n = 30 ⇒ n = 10: as bases são decágonos."] },
+  { l: 2, q: "Uma pirâmide tem 10 arestas. Quantas faces ela tem?", f: ["6"],
+    s: ["Pirâmide de base com n lados tem 2n arestas: 2n = 10 ⇒ n = 5.", "Faces: n + 1 = 6 (5 laterais + a base). Euler: V = 6, 6 − 10 + 6 = 2 ✓."] },
+  { l: 2, q: "Quantos poliedros regulares (de Platão) existem?", f: ["5"],
+    s: ["Em cada vértice precisam se encontrar pelo menos 3 faces, e a soma dos ângulos tem de ser menor que 360°.", "Triângulos: 3, 4 ou 5 por vértice (tetraedro, octaedro, icosaedro). Quadrados: 3 (cubo). Pentágonos: 3 (dodecaedro). Hexágonos já somam 360°.", "São 5."] },
+  { l: 2, q: "Um poliedro convexo tem 8 faces e 12 vértices. Quantas arestas ele tem?", f: ["18"],
+    s: ["Euler: V − A + F = 2.", "12 − A + 8 = 2 ⇒ A = 18."] },
+  { l: 2, q: "Um poliedro convexo tem 20 faces, todas triangulares. Quantos vértices ele tem?", f: ["12"],
+    s: ["Cada face tem 3 arestas e cada aresta é compartilhada por 2 faces: 2A = 20 · 3 ⇒ A = 30.", "Euler: V = 2 + A − F = 2 + 30 − 20 = 12. É o icosaedro."] },
+  { l: 2, q: "A soma dos ângulos de todas as faces de um poliedro convexo com V vértices é S = 360°·(V − 2). Quanto vale S para o cubo, em graus?", f: ["2160"],
+    s: ["O cubo tem V = 8.", "S = 360° · (8 − 2) = 2160°.", "Conferindo: 6 faces quadradas de 360° cada dão 6 · 360° = 2160° ✓."] },
+  { l: 2, q: "O poliedro regular que tem 30 arestas e 20 vértices é o", o: ["dodecaedro", "icosaedro", "octaedro", "hexaedro"],
+    ow: [null, "O icosaedro tem 30 arestas mas 12 vértices.", "O octaedro tem 12 arestas e 6 vértices.", "O cubo tem 12 arestas e 8 vértices."],
+    s: ["Euler: F = 2 + A − V = 2 + 30 − 20 = 12 faces.", "Poliedro regular com 12 faces: dodecaedro (Questão 71, item VI)."] },
+  { l: 2, q: "Um poliedro convexo tem 6 faces quadradas e 8 faces triangulares. Quantos vértices ele tem? (Questão 83)", f: ["12"],
+    s: ["Arestas: 2A = 6·4 + 8·3 = 48 ⇒ A = 24.", "Faces: F = 6 + 8 = 14.", "Euler: V = 2 + A − F = 2 + 24 − 14 = 12."] },
+  { l: 2, q: "Um silo é formado por 20 placas hexagonais e 12 placas pentagonais, como uma bola de futebol. Quantas arestas e quantos vértices ele tem? (Questão 86)", f: ["90", "60"], lab: ["arestas =", "vértices ="],
+    s: ["2A = 20·6 + 12·5 = 120 + 60 = 180 ⇒ A = 90.", "F = 20 + 12 = 32.", "Euler: V = 2 + 90 − 32 = 60."] },
+  { l: 2, q: "Qual é a medida da diagonal de um cubo de aresta 6 cm?", f: ["6√3"],
+    s: ["A diagonal da face mede a√2 = 6√2.", "A diagonal do cubo é a hipotenusa do triângulo com catetos a diagonal da face e a aresta: √((6√2)² + 6²) = √(72 + 36) = √108.", "√108 = 6√3 ≈ 10.39 cm (fórmula: d = a√3)."] },
+  { l: 2, q: "Um paralelepípedo retângulo tem dimensões 3, 4 e 12. Quanto mede sua diagonal?", f: ["13"],
+    s: ["d = √(a² + b² + c²).", "d = √(9 + 16 + 144) = √169 = 13."] },
+  { l: 2, q: "Calcule a área total e o volume de um cubo de aresta 5 cm.", f: ["150", "125"], lab: ["área total (cm²) =", "volume (cm³) ="],
+    s: ["São 6 faces quadradas de área 5² = 25: área total = 6 · 25 = 150 cm².", "Volume = a³ = 5³ = 125 cm³."] },
+  { l: 2, q: "Calcule a área total e o volume de um paralelepípedo retângulo de dimensões 2, 3 e 4.", f: ["52", "24"], lab: ["área total =", "volume ="],
+    s: ["Área total = 2(ab + ac + bc) = 2(6 + 8 + 12) = 2 · 26 = 52.", "Volume = abc = 2 · 3 · 4 = 24."] },
+  { l: 2, q: "Uma pirâmide tem base quadrada de lado 3 e altura 4. Qual é o volume?", f: ["12"],
+    s: ["Área da base = 3² = 9.", "Volume = (área da base × altura)/3 = 9 · 4/3 = 12."] },
+  { l: 2, q: "No cubo ABCDEFGH de aresta 6 cm, X e Y são os pontos médios das arestas AB e GH. O polígono XCYE é (Questão 29)", o: ["losango, mas não quadrado", "quadrado", "retângulo, mas não quadrado", "paralelogramo, mas não losango"],
+    ow: [null, "As diagonais XY e EC têm medidas diferentes, então não é quadrado.", "Os quatro lados são iguais e as diagonais diferentes: é losango, não retângulo.", "Os quatro lados são iguais, então é losango."],
+    s: ["Coloque A = (0,0,0), B = (6,0,0), C = (6,6,0), E = (0,0,6), G = (6,6,6), H = (0,6,6). Então X = (3,0,0) e Y = (3,6,6).", "Lados: XC, CY, YE e EX medem todos √(3² + 6²) = √45 = 3√5.", "Diagonais: XY = √(6² + 6²) = 6√2 e CE = 6√3. São diferentes.", "Quatro lados iguais e diagonais diferentes: losango que não é quadrado."] },
+  { l: 2, q: "Quantas diagonais de um prisma octogonal partem de um mesmo vértice? (Questão 90)", f: ["5"],
+    s: ["Diagonal do prisma liga dois vértices que não estão na mesma face.", "Tome um vértice da base de cima. Os vértices da mesma base estão na face da base: não contam.", "Na base de baixo há 8 vértices; 3 deles estão numa face lateral junto com o vértice escolhido (o de baixo e os dois vizinhos).", "Sobram 8 − 3 = 5 diagonais."] },
+  { l: 2, q: "Um prisma triangular regular tem aresta da base 4 e altura 10. Calcule a área da base e o volume.", f: ["4√3", "40√3"], lab: ["área da base =", "volume ="],
+    s: ["A base é um triângulo equilátero de lado 4: área = 4²√3/4 = 4√3 ≈ 6.93.", "Volume = área da base × altura = 4√3 · 10 = 40√3 ≈ 69.28."] },
+  { l: 2, q: "Um prisma hexagonal regular tem aresta da base 2 e altura 5. Calcule o volume.", f: ["30√3"],
+    s: ["O hexágono regular é formado por 6 triângulos equiláteros de lado 2.", "Área da base = 6 · (2²√3/4) = 6√3.", "Volume = 6√3 · 5 = 30√3 ≈ 51.96."] },
+  { l: 2, q: "Uma pirâmide quadrangular regular tem aresta da base 6 e altura 4. Calcule o apótema da pirâmide, a área total e o volume.", f: ["5", "96", "48"], lab: ["apótema =", "área total =", "volume ="],
+    s: ["O apótema da base (do centro ao meio de um lado) mede 3.", "Apótema da pirâmide: √(4² + 3²) = 5.", "Área lateral: 4 triângulos de base 6 e altura 5 = 4 · 15 = 60. Área da base: 36. Área total = 96.", "Volume = (36 · 4)/3 = 48."] },
+  { l: 2, q: "Uma pirâmide tem como base um triângulo equilátero de lado 2 cm e altura 8 cm. Qual é o volume, em cm³? (Questão 77, item 02)", f: ["8√3/3"],
+    s: ["Área da base = 2²√3/4 = √3.", "Volume = (área da base × altura)/3 = √3 · 8/3 = 8√3/3 ≈ 4.62 cm³."] },
+  { l: 2, q: "Calcule a altura e o volume de um tetraedro regular de aresta 6.", f: ["2√6", "18√2"], lab: ["altura =", "volume ="],
+    s: ["O pé da altura é o centro da base. A distância do centro a um vértice da base é (2/3) da altura do triângulo: (2/3) · (6√3/2) = 2√3.", "Altura: h = √(6² − (2√3)²) = √(36 − 12) = √24 = 2√6 ≈ 4.90.", "Área da base = 6²√3/4 = 9√3. Volume = 9√3 · 2√6 / 3 = 6√18 = 18√2 ≈ 25.46."] },
+  { l: 2, q: "São dados um tetraedro e um plano. A interseção dos dois será (Questão 45)", o: ["ou um ponto, ou um segmento, ou um triângulo, ou um quadrilátero, ou vazio", "um triângulo", "ou um triângulo ou um quadrilátero", "ou um ponto, ou um segmento, ou um triângulo, ou vazio"],
+    ow: [null, "Também pode ser quadrilátero, ponto, segmento ou vazio.", "Faltam os casos ponto, segmento e vazio.", "Falta o quadrilátero: um plano pode separar duas arestas de cada lado e cortar 4 arestas."],
+    s: ["O plano pode não tocar o tetraedro (vazio), tocar só num vértice (ponto) ou conter uma aresta (segmento).", "Se separar um vértice dos outros três, corta 3 arestas: triângulo.", "Se separar dois vértices dos outros dois, corta 4 arestas: quadrilátero."] },
+  { l: 2, q: "Quantos triângulos, com vértices entre os 20 vértices de um dodecaedro regular, NÃO estão contidos em nenhuma das faces? (Questão 91)", f: ["1020"],
+    s: ["Total de triângulos com 3 dos 20 vértices: C(20,3) = 1140 (não há 3 vértices colineares).", "Em cada face pentagonal cabem C(5,3) = 10 triângulos; são 12 faces: 120.", "Triângulos fora das faces: 1140 − 120 = 1020."] },
 
-  /* ================= Nível 4 · Lista 3, segunda parte ================= */
-  { l: 3, q: "Determine p de modo que a equação x³ − px² + 3x − 1 = 0 admita raiz tripla.", f: ["3"],
-    s: ["Raiz tripla r: x³ − px² + 3x − 1 = (x − r)³.", "Girard: r·r·r = −(−1)/1 = 1 ⇒ r = 1.", "(x − 1)³ = x³ − 3x² + 3x − 1 ⇒ p = 3."] },
-  { l: 3, q: "Os números 1 e 2 + i são raízes de x³ + ax² + bx − c = 0, com a, b e c reais. Calcule c.", f: ["5"],
-    s: ["Coeficientes reais ⇒ 2 − i também é raiz. As raízes são 1, 2 + i e 2 − i.", "Girard: produto das raízes = −(termo independente)/1 = −(−c) = c.", "Produto: 1·(2 + i)(2 − i) = 1·(4 − i²) = 5 ⇒ c = 5."] },
-  { l: 3, q: "Encontre a, b e c, sabendo que 2, 4 e −3 são raízes de x³ + ax² + bx + c = 0.", f: ["-3", "-10", "24"], lab: ["a =", "b =", "c ="],
-    s: ["Girard (coeficiente líder 1): soma = −a; soma dos produtos dois a dois = b; produto = −c.", "Soma: 2 + 4 − 3 = 3 ⇒ a = −3.", "Produtos dois a dois: 2·4 + 2·(−3) + 4·(−3) = 8 − 6 − 12 = −10 ⇒ b = −10.", "Produto: 2·4·(−3) = −24 ⇒ c = 24."] },
-  { l: 3, q: "A equação x³ + mx² + 2x + n = 0, com m e n reais, admite 1 + i como raiz. Calcule m e n.", f: ["-2", "0"], lab: ["m =", "n ="],
-    s: ["Raízes: 1 + i, 1 − i (conjugada) e uma real r.", "Produtos dois a dois = 2: (1 + i)(1 − i) + r(1 + i) + r(1 − i) = 2 + 2r = 2 ⇒ r = 0.", "Soma = −m: (1 + i) + (1 − i) + 0 = 2 ⇒ m = −2.", "Produto = −n: 2·0 = 0 ⇒ n = 0."] },
-  { l: 3, q: "Sabendo que 1 é raiz dupla de x³ + ax² − 2x + b = 0, determine a + b.", f: ["1"],
-    s: ["Briot-Ruffini com 1: coeficientes 1, a, −2, b → 1, a + 1, a − 1, resto a + b − 1.", "1ª condição: a + b − 1 = 0 ⇒ a + b = 1.", "(De novo com 1: 1, a + 2, resto 2a + 1 = 0 ⇒ a = −1/2 e b = 3/2, o que confirma a + b = 1.)"] },
-  { l: 3, q: "O número 2 é raiz dupla da equação ax³ + bx + 16 = 0. Calcule a e b.", f: ["1", "-12"], lab: ["a =", "b ="],
-    s: ["Coeficientes a, 0, b, 16. Briot-Ruffini com 2: a, 2a, 4a + b, resto 8a + 2b + 16.", "De novo com 2 (sobre a, 2a, 4a + b): a, 4a, resto 12a + b.", "Os dois restos são zero: 8a + 2b + 16 = 0 e 12a + b = 0 ⇒ b = −12a.", "8a − 24a + 16 = 0 ⇒ a = 1 e b = −12."] },
-  { l: 3, q: "Calcule m e n de modo que 2 seja raiz dupla da equação x³ + mx² − 8x + n = 0.", f: ["-1", "12"], lab: ["m =", "n ="],
-    s: ["Raízes: 2, 2 e r.", "Girard, produtos dois a dois = −8: 2·2 + 2r + 2r = −8 ⇒ 4r = −12 ⇒ r = −3.", "Soma = −m: 2 + 2 − 3 = 1 ⇒ m = −1.", "Produto = −n: 2·2·(−3) = −12 ⇒ n = 12."] },
-  { l: 3, q: "Resolva √(x + √(x − 1)) = √7.", f: ["5"],
-    s: ["Elevando ao quadrado: x + √(x − 1) = 7 ⇒ √(x − 1) = 7 − x (exige 7 − x ≥ 0).", "De novo ao quadrado: x − 1 = 49 − 14x + x² ⇒ x² − 15x + 50 = 0.", "x = 5 ou x = 10. Teste: em x = 10, 7 − x = −3 < 0, não serve.", "x = 5: √(5 + 2) = √7 ✓. S = {5}."] },
-  { l: 3, q: "Resolva x + √(3x − 11) = 7.", f: ["5"],
-    s: ["Isole a raiz: √(3x − 11) = 7 − x (exige x ≤ 7).", "Ao quadrado: 3x − 11 = 49 − 14x + x² ⇒ x² − 17x + 60 = 0.", "x = 5 ou x = 12. x = 12 não serve (7 − 12 < 0).", "x = 5: 5 + √4 = 7 ✓. S = {5}."] },
-  { l: 3, q: "Resolva x³ − 3x² − 4x + 12 = 0, sabendo que duas de suas raízes são simétricas.", f: ["2", "-2", "3"], set: true,
-    s: ["Raízes r, −r e s. Girard: r + (−r) + s = 3 ⇒ s = 3.", "Briot-Ruffini com 3: 1, −3, −4, 12 → 1, 0, −4, resto 0. Quociente x² − 4.", "x² − 4 = 0 ⇒ x = ±2. S = {−2, 2, 3}."] },
-  { l: 3, q: "Resolva x³ − 3x² − 6x + 8 = 0, sabendo que suas raízes estão em PA.", f: ["-2", "1", "4"], set: true,
-    s: ["Raízes em PA: a − r, a, a + r. Soma 3a = 3 ⇒ a = 1 é raiz.", "Briot-Ruffini com 1: 1, −3, −6, 8 → 1, −2, −8, resto 0.", "x² − 2x − 8 = (x − 4)(x + 2).", "S = {−2, 1, 4} (PA de razão 3)."] },
-  { l: 3, q: "Resolva x³ − 9x² + 23x − 15 = 0, sabendo que suas raízes estão em PA.", f: ["1", "3", "5"], set: true,
-    s: ["Raízes a − r, a, a + r. Soma 3a = 9 ⇒ a = 3.", "Briot-Ruffini com 3: 1, −9, 23, −15 → 1, −6, 5, resto 0.", "x² − 6x + 5 = (x − 1)(x − 5).", "S = {1, 3, 5}."] },
-  { l: 3, q: "Resolva x³ − 9x² + 24x − 20 = 0, sabendo que duas de suas raízes são iguais.", f: ["2", "5"], lab: ["raiz dupla =", "raiz simples ="],
-    s: ["Raízes r, r e s. Girard: 2r + s = 9; r² + 2rs = 24; r²s = 20.", "De 2r + s = 9: s = 9 − 2r. Em r² + 2r(9 − 2r) = 24: −3r² + 18r − 24 = 0 ⇒ r² − 6r + 8 = 0 ⇒ r = 2 ou r = 4.", "r = 2 ⇒ s = 5 e r²s = 20 ✓. (r = 4 ⇒ s = 1 e r²s = 16 ✗.)", "S = {2, 5}, com 2 raiz dupla."] },
-  { l: 3, q: "Resolva x³ − 10x² + 31x − 30 = 0, sabendo que uma das raízes é igual à diferença das outras duas.", f: ["2", "3", "5"], set: true,
-    s: ["Raízes a, b, c com a = b − c, ou seja, a + c = b.", "Girard: a + b + c = 10 ⇒ b + b = 10 ⇒ b = 5.", "Briot-Ruffini com 5: 1, −10, 31, −30 → 1, −5, 6, resto 0.", "x² − 5x + 6 = (x − 2)(x − 3). S = {2, 3, 5} (e 2 = 5 − 3)."] },
-  { l: 3, q: "Sendo a, b e c as raízes de x³ − 2x² + 3x − 4 = 0, calcule 1/a + 1/b + 1/c.", f: ["3/4"],
-    s: ["Girard: a + b + c = 2; ab + ac + bc = 3; abc = 4.", "1/a + 1/b + 1/c = (bc + ac + ab)/(abc).", "= 3/4 = 0.75."] },
-  { l: 3, q: "Sendo a, b e c as raízes de x³ − 4x² + 5x + 3 = 0, calcule a/(bc) + b/(ac) + c/(ab).", f: ["-2"],
-    s: ["Girard: a + b + c = 4; ab + ac + bc = 5; abc = −3.", "Com denominador comum abc: a/(bc) + b/(ac) + c/(ab) = (a² + b² + c²)/(abc).", "a² + b² + c² = (a + b + c)² − 2(ab + ac + bc) = 16 − 10 = 6.", "6/(−3) = −2."] },
-  { l: 3, q: "Sendo a, b e c as raízes de 2x³ − 30x² + 15x − 3 = 0, calcule log[1/(ab) + 1/(bc) + 1/(ac)].", f: ["1"],
-    s: ["Girard (divida por 2): a + b + c = 30/2 = 15; abc = 3/2.", "1/(ab) + 1/(bc) + 1/(ac) = (c + a + b)/(abc) = 15 ÷ 3/2 = 10.", "log 10 = 1."] },
-  { l: 3, q: "Sendo a, b e c as raízes de 2x³ − 3x² + 5x + 1 = 0, calcule E = a²b² + a²c² + b²c².", f: ["31/4"],
-    s: ["Girard: a + b + c = 3/2; ab + ac + bc = 5/2; abc = −1/2.", "(ab + ac + bc)² = a²b² + a²c² + b²c² + 2abc(a + b + c).", "E = (5/2)² − 2·(−1/2)·(3/2) = 25/4 + 3/2 = 25/4 + 6/4 = 31/4 = 7.75."] },
-  { l: 3, q: "Resolva 64x³ − 56x² + 14x − 1 = 0, sabendo que suas raízes estão em PG.", f: ["1/8", "1/4", "1/2"], set: true,
-    s: ["Raízes em PG: a/q, a, aq. Produto = a³ = −(−1)/64 = 1/64 ⇒ a = 1/4.", "Briot-Ruffini com 1/4: 64, −56, 14, −1 → 64, −40, 4, resto 0.", "64x² − 40x + 4 = 0 ⇒ 16x² − 10x + 1 = 0 ⇒ x = (10 ± 6)/32.", "x = 1/2 ou x = 1/8. S = {1/8, 1/4, 1/2} (razão 2)."] },
-  { l: 3, q: "As raízes da equação x³ − 6x² + kx + 64 = 0 estão em PG. Calcule k.", f: ["-24"],
-    s: ["Raízes a/q, a, aq: produto a³ = −64 ⇒ a = −4 é raiz.", "P(−4) = −64 − 6·16 − 4k + 64 = −96 − 4k = 0.", "k = −24."] },
-  { l: 3, q: "As raízes de x² + bx + 12 = 0 são, cada uma, 7 unidades maiores que as raízes de x² + βx + 12 = 0. Calcule β.", f: ["7"],
-    s: ["Sejam r e s as raízes de x² + βx + 12: r + s = −β e rs = 12.", "As raízes da outra são r + 7 e s + 7, com produto 12: (r + 7)(s + 7) = rs + 7(r + s) + 49 = 12.", "12 + 7(r + s) + 49 = 12 ⇒ r + s = −7.", "β = −(r + s) = 7."] },
-  { l: 3, q: "Dado f = | x  x  x ; x + 1  −2  x − 1 ; x  0  1 | (determinante 3×3, linhas separadas por ;), determine as raízes de f.", f: ["0", "√3", "-√3"], set: true,
-    s: ["Pela 1ª linha: f = x·(−2·1 − (x − 1)·0) − x·((x + 1)·1 − (x − 1)·x) + x·((x + 1)·0 − (−2)·x).", "= −2x − x(x + 1 − x² + x) + 2x² = −2x − x(−x² + 2x + 1) + 2x².", "= −2x + x³ − 2x² − x + 2x² = x³ − 3x.", "x(x² − 3) = 0 ⇒ x = 0 ou x = ±√3."] },
-  { l: 3, q: "Sabendo que −2 é raiz de f(x) = | x  −1  1 ; 1  x  0 ; 0  k  x |, com k real, determine k.", f: ["10"],
-    s: ["Pela 1ª linha: f(x) = x·(x·x − 0·k) − (−1)·(1·x − 0·0) + 1·(1·k − x·0).", "f(x) = x³ + x + k.", "f(−2) = −8 − 2 + k = 0 ⇒ k = 10."] },
-  { l: 3, q: "Com k = 10, f(x) = x³ + x + 10 tem −2 como raiz. Determine as demais raízes.", f: ["1+2i", "1-2i"], set: true,
-    s: ["Briot-Ruffini com −2: coeficientes 1, 0, 1, 10 → 1, −2, 5, resto 0.", "Quociente x² − 2x + 5. Δ = 4 − 20 = −16 ⇒ √Δ = 4i.", "x = (2 ± 4i)/2 = 1 ± 2i."] },
-  { l: 3, q: "Se m é raiz da equação x⁶ − (m + 1)x⁵ + 32 = 0, determine o resto da divisão do polinômio por x − 1.", f: ["30"],
-    s: ["m é raiz: m⁶ − (m + 1)m⁵ + 32 = 0 ⇒ m⁶ − m⁶ − m⁵ + 32 = 0 ⇒ m⁵ = 32 ⇒ m = 2.", "O polinômio é P(x) = x⁶ − 3x⁵ + 32.", "Resto da divisão por x − 1 = P(1) = 1 − 3 + 32 = 30.", "O gabarito da lista traz resto 0, mas P(1) = 30."] },
-  { l: 3, q: "Resolva x⁴ − 2x² − 3x − 2 = 0.", f: ["-1", "2", "-1/2+√3/2i", "-1/2-√3/2i"], set: true,
-    s: ["Candidatas racionais: ±1, ±2. P(−1) = 1 − 2 + 3 − 2 = 0 ✓; P(2) = 16 − 8 − 6 − 2 = 0 ✓.", "Dividindo por (x + 1)(x − 2) = x² − x − 2: quociente x² + x + 1.", "x² + x + 1 = 0: Δ = 1 − 4 = −3 ⇒ x = (−1 ± i√3)/2.", "S = {−1, 2, −1/2 + (√3/2)i, −1/2 − (√3/2)i}."] },
-  { l: 3, q: "Resolva x³ + 4x² + 2x − 4 = 0.", f: ["-2", "-1+√3", "-1-√3"], set: true,
-    s: ["Candidatas: ±1, ±2, ±4. P(−2) = −8 + 16 − 4 − 4 = 0 ✓.", "Briot-Ruffini com −2: 1, 4, 2, −4 → 1, 2, −2, resto 0.", "x² + 2x − 2 = 0: Δ = 4 + 8 = 12 ⇒ x = (−2 ± 2√3)/2 = −1 ± √3.", "S = {−2, −1 + √3, −1 − √3}."] },
-  { l: 3, q: "Resolva x⁴ + 2x³ − 2x² + 2x − 3 = 0.", f: ["1", "-3", "i", "-i"], set: true,
-    s: ["Soma dos coeficientes: 1 + 2 − 2 + 2 − 3 = 0 ⇒ x = 1 é raiz.", "Briot-Ruffini com 1: 1, 3, 1, 3, resto 0. Quociente x³ + 3x² + x + 3.", "Agrupe: x²(x + 3) + (x + 3) = (x + 3)(x² + 1).", "S = {1, −3, i, −i}."] },
-  { l: 3, q: "Resolva 2x⁴ − 3x³ − 13x² + 37x − 15 = 0.", f: ["-3", "1/2", "2+i", "2-i"], set: true,
-    s: ["Candidatas p/q: p divide 15, q divide 2. P(−3) = 162 + 81 − 117 − 111 − 15 = 0 ✓.", "Briot-Ruffini com −3: 2, −3, −13, 37, −15 → 2, −9, 14, −5, resto 0.", "Com 1/2 em 2x³ − 9x² + 14x − 5: 2, −8, 10, resto 0 ✓. Sobra 2x² − 8x + 10 = 2(x² − 4x + 5).", "x² − 4x + 5 = 0: Δ = −4 ⇒ x = 2 ± i. S = {−3, 1/2, 2 + i, 2 − i}."] }
+  /* ================= Nível 4 · corpos redondos ================= */
+  { l: 3, q: "Um cilindro tem raio 3 e altura 5. Calcule a área lateral e o volume.", f: ["30π", "45π"], lab: ["área lateral =", "volume ="],
+    s: ["Área lateral = 2πrh = 2π · 3 · 5 = 30π ≈ 94.25.", "Volume = πr²h = π · 9 · 5 = 45π ≈ 141.37."] },
+  { l: 3, q: "A planificação da superfície lateral de um cilindro reto de raio r e altura h é", o: ["um retângulo de lados 2πr e h", "um setor circular de raio h", "um retângulo de lados πr e h", "um quadrado de lado h"],
+    ow: [null, "Setor circular é a planificação lateral do cone.", "O comprimento da circunferência é 2πr, não πr.", "Só seria quadrado se 2πr = h."],
+    s: ["Ao 'desenrolar' a lateral, a altura vira um lado do retângulo.", "O outro lado é o comprimento da circunferência da base: 2πr."] },
+  { l: 3, q: "Um cilindro equilátero (altura igual ao diâmetro) tem raio 2. Calcule a área total e o volume.", f: ["24π", "16π"], lab: ["área total =", "volume ="],
+    s: ["Equilátero: h = 2r = 4.", "Área total = 2πr² + 2πrh = 8π + 16π = 24π ≈ 75.40.", "Volume = πr²h = π · 4 · 4 = 16π ≈ 50.27."] },
+  { l: 3, q: "Um cilindro tem raio 2 e altura 10. Qual é a área total?", f: ["48π"],
+    s: ["Área das duas bases: 2πr² = 2π · 4 = 8π.", "Área lateral: 2πrh = 2π · 2 · 10 = 40π.", "Área total = 48π ≈ 150.80."] },
+  { l: 3, q: "A seção meridiana de um cilindro é um quadrado de área 36. Qual é o volume do cilindro?", f: ["54π"],
+    s: ["A seção meridiana tem lados 2r e h. Quadrado de área 36: 2r = h = 6, então r = 3.", "Volume = π · 3² · 6 = 54π ≈ 169.65."] },
+  { l: 3, q: "Um cone reto tem raio 3 e altura 4. Calcule a geratriz, a área lateral, a área total e o volume.", f: ["5", "15π", "24π", "12π"], lab: ["geratriz =", "área lateral =", "área total =", "volume ="],
+    s: ["g = √(r² + h²) = √(9 + 16) = 5.", "Área lateral = πrg = π · 3 · 5 = 15π.", "Área total = πr² + πrg = 9π + 15π = 24π.", "Volume = πr²h/3 = π · 9 · 4/3 = 12π."] },
+  { l: 3, q: "Um cone tem geratriz 10 e raio 6. Calcule a altura e o volume.", f: ["8", "96π"], lab: ["altura =", "volume ="],
+    s: ["h = √(g² − r²) = √(100 − 36) = 8.", "Volume = πr²h/3 = π · 36 · 8/3 = 96π ≈ 301.59."] },
+  { l: 3, q: "Um cone equilátero (geratriz igual ao diâmetro) tem raio 3. Calcule a altura e o volume.", f: ["3√3", "9√3π"], lab: ["altura =", "volume ="],
+    s: ["Equilátero: g = 2r = 6.", "h = √(g² − r²) = √(36 − 9) = √27 = 3√3 ≈ 5.20.", "Volume = π · 9 · 3√3/3 = 9√3π ≈ 48.97."] },
+  { l: 3, q: "Um cone e um cilindro têm a mesma base (raio 2) e a mesma altura (6). Quanto vale o volume do cone e que fração ele é do volume do cilindro?", f: ["8π", "1/3"], lab: ["volume do cone =", "fração do cilindro ="],
+    s: ["Cilindro: π · 4 · 6 = 24π.", "Cone: 24π/3 = 8π.", "Fração: 8π/24π = 1/3. Sempre vale: o cone tem 1/3 do cilindro de mesma base e altura."] },
+  { l: 3, q: "Calcule a área da superfície e o volume de uma esfera de raio 3.", f: ["36π", "36π"], lab: ["área =", "volume ="],
+    s: ["Área = 4πR² = 4π · 9 = 36π.", "Volume = 4πR³/3 = 4π · 27/3 = 36π. (Para R = 3 os dois números coincidem.)"] },
+  { l: 3, q: "Se o raio de uma esfera dobra, a área da superfície fica multiplicada por quanto?", f: ["4"],
+    s: ["A área é 4πR², proporcional a R².", "Com raio 2R: 4π(2R)² = 16πR², ou seja, 4 vezes a área original. (O volume ficaria 8 vezes maior.)"] },
+  { l: 3, q: "Uma esfera tem volume 288π. Qual é o raio?", f: ["6"],
+    s: ["4πR³/3 = 288π ⇒ R³ = 288 · 3/4 = 216.", "R = ∛216 = 6."] },
+  { l: 3, q: "Uma esfera tangencia dois planos paralelos que estão a 8 cm um do outro. Qual é a área da superfície dessa esfera, em cm²? (Questão 77, item 03)", f: ["64π"],
+    s: ["Tangente aos dois planos paralelos, a esfera tem diâmetro igual à distância entre eles: 2R = 8 ⇒ R = 4.", "Área = 4π · 16 = 64π ≈ 201.06 cm².", "Por isso o item 03 da questão 77, que dizia 256π, é falso."] },
+  { l: 3, q: "Uma esfera de raio 6 é cortada por um plano a 4 do centro. Calcule o raio e a área da seção.", f: ["2√5", "20π"], lab: ["raio da seção =", "área da seção ="],
+    s: ["O raio da esfera, a distância ao centro e o raio da seção formam um triângulo retângulo: r² = R² − d².", "r² = 36 − 16 = 20 ⇒ r = 2√5 ≈ 4.47.", "Área da seção = πr² = 20π ≈ 62.83."] },
+  { l: 3, q: "Sejam E₁, E₂, E₃ e E₄ quatro pontos não coplanares. Sobre as superfícies esféricas que passam por eles, é correto afirmar que (Questão 31)", o: ["existe uma única superfície esférica contendo E₁, E₂, E₃ e E₄", "existem infinitas superfícies esféricas com centros numa mesma reta, cada uma contendo os quatro pontos", "existem infinitas superfícies esféricas com centros fora de uma mesma reta, cada uma contendo os quatro pontos", "nenhuma das anteriores"],
+    ow: [null, "Isso aconteceria com só três pontos (centros na reta perpendicular ao plano deles).", "Os quatro pontos fixam um único centro.", "A primeira alternativa é verdadeira."],
+    s: ["O centro precisa estar à mesma distância dos quatro pontos.", "Os pontos equidistantes de E₁ e E₂ formam um plano (plano mediador); o mesmo para E₁E₃ e E₁E₄.", "Com os pontos não coplanares, esses três planos se cortam num único ponto: o centro. O raio fica determinado: a esfera é única."] },
+  { l: 3, q: "Se uma reta r encontra a superfície lateral C de um cilindro em um ponto P, então (Questão 32)", o: ["P pode ser o único ponto comum a r e C", "a reta e a superfície terão necessariamente infinitos pontos em comum", "a reta e a superfície terão necessariamente dois únicos pontos em comum", "a reta e a superfície podem ter exatamente 3 pontos em comum"],
+    ow: [null, "Só se r for paralela ao eixo e estiver na superfície.", "Uma reta tangente toca a superfície num único ponto.", "Uma reta corta a superfície lateral em no máximo 2 pontos (ou fica contida nela)."],
+    s: ["Uma reta tangente à superfície lateral, perpendicular ao eixo, toca o cilindro em um só ponto.", "Logo P pode ser o único ponto comum."] },
+  { l: 3, q: "Uma pedra é mergulhada num recipiente cilíndrico e a água sobe do nível 6 para o nível 9. O volume da pedra é que fração do volume de água? (Questão 76)", o: ["1/2", "1/3", "2/3", "3/2"],
+    ow: [null, "1/3 seria comparar 3 com 9 (o nível com a pedra).", "2/3 seria 6/9.", "3/2 seria 9/6."],
+    s: ["Pelo princípio de Arquimedes, a pedra ocupa o volume da água deslocada.", "No cilindro, volume é proporcional à altura: a pedra corresponde a 9 − 6 = 3 níveis e a água a 6 níveis.", "3/6 = 1/2."] },
+  { l: 3, q: "Uma esfera de raio 3 é mergulhada num recipiente cilíndrico de raio 6 com água (sem transbordar). Quanto sobe o nível da água?", f: ["1"],
+    s: ["Volume da esfera = 4π · 27/3 = 36π.", "Esse volume ocupa um cilindro de raio 6 e altura h: π · 36 · h = 36π.", "h = 1."] },
+  { l: 3, q: "Uma esfera de raio 3 é derretida e o material forma um cilindro de raio 3. Qual é a altura do cilindro?", f: ["4"],
+    s: ["O volume se conserva: 36π = π · 3² · h.", "9πh = 36π ⇒ h = 4. (Em geral, h = 4R/3.)"] },
+  { l: 3, q: "Duas esferas têm raios 1 e 2. Qual é a razão entre o volume da menor e o da maior?", f: ["1/8"],
+    s: ["Os volumes são proporcionais ao cubo dos raios.", "(1/2)³ = 1/8 = 0.125."] },
+  { l: 3, q: "Qual é o raio da esfera inscrita num cubo de aresta 2 e o raio da esfera circunscrita a esse cubo?", f: ["1", "√3"], lab: ["inscrita =", "circunscrita ="],
+    s: ["Inscrita: toca as faces, então o diâmetro é a aresta: 2R = 2 ⇒ R = 1.", "Circunscrita: passa pelos vértices, então o diâmetro é a diagonal do cubo: 2R = 2√3 ⇒ R = √3 ≈ 1.73."] },
+  { l: 3, q: "Uma esfera está inscrita num cilindro (o cilindro tem raio R e altura 2R). Qual é a razão entre o volume da esfera e o do cilindro?", f: ["2/3"],
+    s: ["Esfera: 4πR³/3. Cilindro: πR² · 2R = 2πR³.", "Razão: (4/3)/2 = 2/3. Esse resultado é de Arquimedes."] },
+  { l: 3, q: "Compare a área lateral de um cilindro de raio R e altura 2R com a área da esfera de raio R.", o: ["São iguais", "A do cilindro é o dobro", "A da esfera é o dobro", "A do cilindro é 2/3 da esfera"],
+    ow: [null, "Lateral do cilindro: 2πR · 2R = 4πR², igual à da esfera.", "As duas valem 4πR².", "2/3 é a razão dos volumes, não das áreas laterais."],
+    s: ["Área lateral do cilindro: 2πrh = 2πR · 2R = 4πR².", "Área da esfera: 4πR².", "São iguais, outro resultado de Arquimedes."] },
+  { l: 3, q: "Duas esferas apoiadas sobre um plano têm raios 0.9 m e 0.4 m, e a distância entre os centros é 2.5 m. Elas são tangentes? Qual é, aproximadamente, a distância entre os pontos em que tocam o plano? (Questão 92)", o: ["não são; 2.4 m", "são; 2.4 m", "são; 2.5 m", "não são; 1.3 m"],
+    ow: [null, "Seriam tangentes só se a distância entre centros fosse 0.9 + 0.4 = 1.3 m.", "Não são tangentes, e 2.5 m é a distância entre os centros, não entre os pontos de apoio.", "1.3 m é a soma dos raios, não a distância entre os pontos de apoio."],
+    s: ["Tangentes exigiriam distância entre centros = soma dos raios = 1.3 m. Como é 2.5 m, não são tangentes.", "Os centros estão às alturas 0.9 e 0.4: desnível de 0.5 m.", "Distância horizontal = √(2.5² − 0.5²) = √(6.25 − 0.25) = √6 ≈ 2.45 m ≈ 2.4 m."] },
+  { l: 3, q: "Os centros de três esferas não são colineares. Qual é o maior número possível de planos tangentes às três? (Questão 81)", f: ["8"],
+    s: ["Cada plano tangente deixa cada esfera de um lado: para cada esfera há 2 escolhas de lado.", "Com 3 esferas, são 2³ = 8 combinações de lados.", "Em posição favorável (esferas afastadas), cada combinação dá um plano tangente: no máximo 8."] }
 ];
 const MQ = MAT_RAW.map((r, id) => ({ id, ...r }));
 
@@ -1749,8 +1766,9 @@ function matLer(bruto) {
   let s = String(bruto == null ? "" : bruto).toLowerCase()
     .replace(/\s+/g, "").replace(/[−–—]/g, "-").replace(/,/g, ".")
     .replace(/[°º]|graus?/g, "").replace(/sqrt|raiz/g, "√").replace(/[*·×]/g, "")
-    .replace(/√\((\d*\.?\d+)\)/g, "√$1");
-  s = s.replace(/^(?:\|z\||[a-zθρ][a-z0-9₀-₉]*)=/, "");
+    .replace(/√\((\d*\.?\d+)\)/g, "√$1").replace(/pi/g, "π");
+  s = s.replace(/^(?:\|z\||[a-zθρ][a-z0-9₀-₉]*)=/, "")
+    .replace(/(?:metros?|cent[ií]metros?|(?:cm|dm|mm|km|m)(?:²|³|2|3)?)$/, "");
   if (!s) return null;
   const termos = s.match(/[+-]?[^+-]+/g);
   if (!termos || termos.join("") !== s) return null;
@@ -1758,10 +1776,12 @@ function matLer(bruto) {
   for (let t of termos) {
     let sinal = 1;
     if (t[0] === "+" || t[0] === "-") { if (t[0] === "-") sinal = -1; t = t.slice(1); }
-    const nI = (t.match(/i/g) || []).length;
-    if (nI > 1) return null;
-    t = t.replace("i", "");
-    const v = matLerReal(t, nI === 1);
+    const nI = (t.match(/i/g) || []).length, nPi = (t.match(/π/g) || []).length;
+    if (nI > 1 || nPi > 1) return null;
+    t = t.replace("i", "").replace("π", "");
+    if (t[0] === "/") t = "1" + t;
+    let v = matLerReal(t, nI === 1 || nPi === 1);
+    if (v != null && nPi) v *= Math.PI;
     if (v == null || !Number.isFinite(v)) return null;
     if (nI) im += sinal * v; else re += sinal * v;
   }
@@ -1799,7 +1819,7 @@ const matExpoTxt = (k) => String(Math.round(matExpo(k) * 1000) / 1000);
 const matFormula = (k) => `${matForca(k).toFixed(1).replace(/\.0$/, "")}<sup>${matExpoTxt(k)}</sup>`;
 
 /* ---------- recordes da DLC (por conta, neste aparelho) ---------- */
-const MAT_KEY = "masmorra-dlc-polinomios";
+const MAT_KEY = "masmorra-dlc-geometria-espacial";
 function matRecordes() {
   try { const d = JSON.parse(localStorage.getItem(MAT_KEY)); return (d && d[USER.name.toLowerCase()]) || {}; } catch (e) { return {}; }
 }
@@ -1838,7 +1858,7 @@ async function matResponder(escolha) {
     c.vals = escolha;
     if (escolha.some((v) => !String(v).trim())) { c.err = q.f.length > 1 ? "Preencha todos os campos." : "Digite uma resposta."; c.errAt = escolha.findIndex((v) => !String(v).trim()); render(); return; }
     const ruim = escolha.findIndex((v) => !matLer(v));
-    if (ruim >= 0) { c.err = `Não entendi “${escolha[ruim]}”. Escreva números como 1.5, 3/4, -2, 2√7 ou 1+2i.`; c.errAt = ruim; render(); return; }
+    if (ruim >= 0) { c.err = `Não entendi “${escolha[ruim]}”. Escreva números como 1.5, 3/4, 6√3 ou 36π.`; c.errAt = ruim; render(); return; }
     ok = matConfere(q, escolha);
   }
   c.err = ""; c.done = true; c.ok = ok;
@@ -1972,7 +1992,7 @@ function vMatBanner() {
     <div class="dlc-txt">
       <span class="eyebrow"><span class="dlc-tag">DLC</span> Ringue da Matemática</span>
       <h2>Soque o boneco de palha com contas</h2>
-      <p class="muted">Polinômios em quatro níveis, das Listas 1, 2 e 3, sem relógio e com a resolução completa de cada pergunta. Cada acerto é um soco, e a sequência de acertos faz o golpe crescer até o nocaute.</p>
+      <p class="muted">Geometria espacial em quatro níveis, sem relógio e com a resolução completa de cada pergunta. Cada acerto é um soco, e a sequência de acertos faz o golpe crescer até o nocaute.</p>
       <div class="row"><button class="btn" data-act="mat-home">Entrar no ringue</button>${kos ? `<span class="chip">${kos} de 4 nocautes</span>` : ""}</div>
     </div>
   </section>`;
@@ -2020,7 +2040,7 @@ function vMatHome() {
   <section class="title">
     <span class="eyebrow"><span class="dlc-tag">DLC</span> Masmorra do Deploy</span>
     <h1>Ringue da <span>Matemática</span></h1>
-    <p class="lead">Polinômios em quatro níveis, baseados nas Listas 1, 2 e 3. Um boneco de palha com ${MAT_HP} de vida, pendurado como saco de pancadas: cada resposta certa é um soco. Não tem relógio, e toda pergunta, certa ou errada, mostra a resolução completa.</p>
+    <p class="lead">Geometria espacial em quatro níveis: posição de retas e planos, perpendicularismo, poliedros e corpos redondos. Um boneco de palha com ${MAT_HP} de vida, pendurado como saco de pancadas: cada resposta certa é um soco. Não tem relógio, e toda pergunta, certa ou errada, mostra a resolução completa.</p>
   </section>
   <section class="mat-rules">
     <div class="panel">
@@ -2033,9 +2053,9 @@ function vMatHome() {
       <h3>Como responder</h3>
       <p class="muted">As perguntas seguem a ordem da lista, da mais fácil para a mais difícil. Algumas são de marcar; a maioria pede a conta e a resposta digitada. Use <b>ponto</b> no lugar da vírgula decimal.</p>
       <ul class="exemplos">
-        <li><code>0.5</code> ou <code>1/2</code>, <code>-10/3</code></li>
-        <li><code>2√3</code>, <code>-1+√3</code></li>
-        <li><code>3-i</code>, <code>2i</code>, <code>-1/2+√3/2i</code></li>
+        <li><code>2.5</code> ou <code>5/2</code></li>
+        <li><code>6√3</code> ou <code>10.39</code></li>
+        <li><code>36π</code>, <code>8√3/3</code> ou <code>113.1</code> (unidades como cm³ podem ficar de fora)</li>
       </ul>
       <p class="muted">Pontos por acerto: 10 × golpe × nível, mais o dano causado. O nocaute dá bônus. Depois do nocaute você pode continuar estudando as perguntas que faltam.</p>
     </div>
@@ -2106,13 +2126,13 @@ function vMatRing() {
           ${q.f.map((_, i) => {
             const rot = q.lab ? q.lab[i] : q.f.length > 1 ? `${i + 1}ª raiz` : "Resposta";
             return `<label class="ans${c.errAt === i && c.err ? " bad" : ""}"><span>${esc(rot)}</span>
-              <input name="r${i}" inputmode="text" spellcheck="false" autocapitalize="none" enterkeyhint="${i === q.f.length - 1 ? "done" : "next"}" value="${esc(c.vals[i] || "")}" ${c.done ? "disabled" : ""} placeholder="${i === 0 ? "ex.: 1.5 · 3/4 · 2√3" : ""}"></label>`;
+              <input name="r${i}" inputmode="text" spellcheck="false" autocapitalize="none" enterkeyhint="${i === q.f.length - 1 ? "done" : "next"}" value="${esc(c.vals[i] || "")}" ${c.done ? "disabled" : ""} placeholder="${i === 0 ? "ex.: 12 · 6√3 · 36π" : ""}"></label>`;
           }).join("")}
         </div>
         ${q.set ? `<p class="set-note">Em qualquer ordem.</p>` : ""}
         ${c.done ? "" : `
         <div class="keys" aria-label="Símbolos">
-          ${["i", "√", "/", "−", "."].map((s) => `<button type="button" class="key" data-act="mat-key" data-v="${s === "−" ? "-" : s}">${s}</button>`).join("")}
+          ${["π", "√", "/", "−", "."].map((s) => `<button type="button" class="key" data-act="mat-key" data-v="${s === "−" ? "-" : s}">${s}</button>`).join("")}
         </div>
         <p class="err" role="alert">${esc(c.err || "")}</p>
         <button class="btn punch" type="submit">Socar</button>`}

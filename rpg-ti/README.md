@@ -40,14 +40,16 @@ Também dá para jogar no navegador abrindo `index.html`.
 
 ## DLC: Ringue da Matemática
 
-Modo extra de estudo, aberto pela tela inicial, com 117 perguntas de Polinômios baseadas nas Listas 1, 2 e 3 do curso Técnico em Desenvolvimento de Sistemas (IFRS Canoas, 4º ano). Em cada nível as perguntas seguem uma ordem fixa, da mais fácil para a mais difícil:
+Modo extra de estudo, aberto pela tela inicial, com 106 perguntas de **Geometria Espacial**. A base é a lista "Geometria Espacial · questões e gabarito" (100 questões), completada com exercícios de cálculo de áreas, volumes, Euler e diagonais, porque a lista é quase toda teórica. Em cada nível as perguntas seguem uma ordem fixa, da mais fácil para a mais difícil:
 
-| Nível | Tema | Base | Perguntas |
-|---|---|---|---|
-| Nível 1 | Grau, valor numérico, raízes, forma fatorada, identidade e frações parciais | Lista 1 | 28 |
-| Nível 2 | Método da chave, teorema do resto, D'Alembert e Briot-Ruffini | Lista 2 | 29 |
-| Nível 3 | Raízes nulas, multiplicidade, abaixamento do grau, raízes conjugadas e raízes racionais | Lista 3, primeira parte | 31 |
-| Nível 4 | Raízes duplas e triplas, relações de Girard, PA, PG, determinantes e equações irracionais | Lista 3, segunda parte | 29 |
+| Nível | Tema | Perguntas |
+|---|---|---|
+| Nível 1 | Geometria de posição: determinação de planos, posições de retas e planos, retas reversas | 26 |
+| Nível 2 | Perpendicularismo, diedros, projeções e distâncias | 29 |
+| Nível 3 | Poliedros: Euler, Platão, prismas, pirâmides, diagonais, áreas e volumes | 26 |
+| Nível 4 | Corpos redondos: cilindro, cone, esfera, sólidos inscritos e Arquimedes | 25 |
+
+Nem todas as 100 questões entraram: escolhi as mais claras para cada tema, sem as repetidas (13/50, 12/40, 39/52, 47/55, 41/70, 48/66, 01/97) e sem as que dependem de uma figura difícil de descrever. As que entraram citam o número de origem no enunciado. Ficaram de fora de propósito as de gabarito duvidoso ou errado: 04 (r pode estar contida em β), 07, 43 (o lugar geométrico correto são quatro retas, não um par de planos) e 95.
 
 - Antes de cada nível aparece um resumo da matéria.
 - Toda pergunta, certa ou errada, mostra a resposta dada, a resposta certa e a resolução passo a passo. Nas de marcar, o jogo explica por que cada alternativa errada está errada.
@@ -66,10 +68,10 @@ Modo extra de estudo, aberto pela tela inicial, com 117 perguntas de Polinômios
 
   Ou seja, 20 acertos seguidos derrubam o boneco. Para ajustar a curva, mude `MAT_FORCA_PASSO`, `MAT_EXP_INICIAL` e `MAT_EXP_SOMA` em `index.html`.
 - Pontos por acerto: `10 × golpe × nível + dano causado`. O nocaute dá bônus de 250 × nível. Depois do nocaute dá para continuar respondendo as perguntas que faltam (sem dano, só pontos).
-- Parte das perguntas é de marcar; a maioria pede a conta e a resposta digitada. Use ponto como separador decimal (a vírgula também é aceita). O leitor entende frações (`3/4`), raízes (`2√3`, `-1+√3`), complexos (`3-i`, `-1/2+√3/2i`) e um `x =` no começo. Decimais são aceitos com 2 casas. Quando há várias raízes, a ordem não importa.
+- Metade das perguntas é de marcar e metade pede a conta e a resposta digitada. Use ponto como separador decimal (a vírgula também é aceita). O leitor entende frações (`3/4`), raízes (`6√3`), π (`36π`, `π/3`, `9√3π`), unidades no fim (`5 cm³`) e um `x =` no começo. Decimais são aceitos com 2 casas (`113.1` para `36π`).
 - Os recordes da DLC (pontos, nocaute e maior sequência por nível) ficam salvos por conta no próprio aparelho.
 - As perguntas ficam em `MAT_RAW`, no formato `{ l, q, s: [passos], o: [...], ow: [...] }` (marcar) ou `{ l, q, s, f: [...], lab?, set? }` (digitar).
-- Erros dos gabaritos das listas que foram corrigidos no jogo: Lista 1, questão 8 (a = −10/3, não −10/2); Lista 2, exercício geral 1c (resto 97, não 98) e 18 (a = −3 e b = −7, logo a − b = 4); Lista 3, exercício 16 (o resto é 30, não 0). A questão 21 da Lista 3 ficou de fora porque não tem solução: com x = 2i a parte real nunca zera.
+- Os conteúdos anteriores da DLC (Números Complexos e Polinômios) estão no histórico do git.
 
 ## Desenvolvimento do app para computador
 
