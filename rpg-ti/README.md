@@ -58,7 +58,17 @@ npm run dist:linux
 npm run dist:win
 ```
 
-O `.exe` precisa ser gerado no Windows (ou no Linux com Wine funcionando). O jeito mais simples é o GitHub Actions: o workflow `.github/workflows/rpg-ti-desktop.yml` gera os dois instaladores e, ao receber uma tag `rpg-ti-vX.Y.Z`, publica uma Release com eles.
+Para gerar o instalador do Windows a partir do Linux, sem Wine, instale o NSIS (`sudo apt install nsis`) e rode:
+
+```bash
+npm run dist:win-linux
+```
+
+Esse script (`desktop/windows/build.sh`) monta o app com o electron-builder, grava ícone e versão no executável com a biblioteca `resedit` e cria o instalador com `makensis` a partir de `desktop/windows/installer.nsi`. O instalador fica em `dist/Masmorra-do-Deploy-Setup-<versão>.exe`, instala só para o usuário atual (sem pedir administrador), cria atalhos no Menu Iniciar e na Área de Trabalho e aparece em “Aplicativos instalados” para desinstalar. A desinstalação mantém as contas salvas.
+
+Para trocar o ícone, substitua `desktop/icon.png` e rode `node desktop/windows/make-ico.js` (usa o Playwright) para gerar o `icon.ico`.
+
+Também dá para gerar os dois instaladores no GitHub Actions: o workflow `.github/workflows/rpg-ti-desktop.yml` gera os dois instaladores e, ao receber uma tag `rpg-ti-vX.Y.Z`, publica uma Release com eles.
 
 ```bash
 git tag rpg-ti-v1.0.1
